@@ -289,3 +289,150 @@ h2, h3 {
     display: block;
   }
 }
+/* style.css */
+/* Базові стилі */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0; padding: 0;
+  background: #f4f4f4;
+  color: #333;
+}
+
+.hidden {
+  display: none;
+}
+
+#auth-section, #main-section {
+  max-width: 500px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Аватар */
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* Список користувачів */
+#users-list div {
+  padding: 8px 12px;
+  margin-bottom: 5px;
+  background: #e7e7e7;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+#users-list div:hover {
+  background: #d4d4d4;
+}
+
+/* Повідомлення в чаті */
+#messages {
+  height: 300px;
+  overflow-y: auto;
+  background: #fafafa;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+}
+
+/* Кнопки */
+button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 5px 0;
+  font-size: 14px;
+}
+button:hover {
+  background-color: #45a049;
+}
+
+/* Інпут поля */
+input[type="text"], input[type="email"], input[type="password"], input[type="file"] {
+  width: 100%;
+  padding: 8px 10px;
+  margin: 6px 0;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Меню-бургер */
+#menu-toggle {
+  display: none;
+}
+
+#menu-label {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+  user-select: none;
+  padding: 10px;
+}
+
+/* Секції меню */
+#main-section {
+  position: relative;
+}
+
+/* Відповідно до ширини екрану */
+@media (max-width: 700px) {
+  #auth-section, #main-section {
+    margin: 10px;
+    padding: 10px;
+  }
+  
+  #users-list {
+    max-height: 150px;
+    overflow-y: auto;
+  }
+  
+  #messages {
+    height: 200px;
+  }
+  
+  /* Показуємо меню-бургер */
+  #menu-label {
+    display: block;
+  }
+
+  /* Приховуємо список користувачів за замовчуванням */
+  #users-list {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    width: 80%;
+    max-width: 300px;
+    max-height: 300px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow-y: auto;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  
+  /* При натисканні на чекбокс показуємо список користувачів */
+  #menu-toggle:checked + #menu-label + #users-list {
+    display: block;
+  }
+  
+  /* Трохи відступу для чату коли меню показано */
+  #menu-toggle:checked ~ #messages {
+    margin-left: 320px;
+  }
+}
