@@ -299,7 +299,7 @@
   let currentChatUser = null;
   let unsubscribeMessages = null;
 
-  // --- AUTH ---
+
 
   btnLogin.onclick = async () => {
     const email = emailInput.value.trim();
@@ -329,7 +329,7 @@
     await signOut(auth);
   };
 
-  // --- ОБНОВЛЕННЯ ПРОФІЛЮ ---
+
 
   btnUpdateProfile.onclick = async () => {
     if (!currentUser) return;
@@ -354,7 +354,7 @@
     }
   };
 
-  // --- КОРИСТУВАЧІ ---
+
 
   async function loadUsers() {
     const usersCol = collection(db, 'users');
@@ -362,7 +362,7 @@
     usersListDiv.innerHTML = '';
     usersSnapshot.forEach(docSnap => {
       const user = docSnap.data();
-      // Не показуємо себе у списку
+
       if (user.uid === currentUser.uid) return;
 
       const userDiv = document.createElement('div');
@@ -386,7 +386,6 @@
     });
   }
 
-  // --- ВІДКРИТТЯ ЧАТУ ---
 
   async function openChatWith(user) {
     currentChatUser = user;
@@ -395,7 +394,7 @@
     messagesDiv.innerHTML = '';
     messageInput.value = '';
     emojiPicker.style.display = 'none';
-    // Закрити меню на мобілках
+
     sidebarMenu.classList.remove('visible');
 
     if (unsubscribeMessages) unsubscribeMessages();
@@ -408,7 +407,7 @@
       messagesDiv.innerHTML = '';
       snapshot.forEach(docSnap => {
         const msg = docSnap.data();
-        // Показуємо тільки повідомлення між currentUser і currentChatUser
+  
         if (
           (msg.from === currentUser.uid && msg.to === currentChatUser.uid) ||
           (msg.from === currentChatUser.uid && msg.to === currentUser.uid)
@@ -445,7 +444,7 @@
     });
   }
 
-  // --- ВІДПРАВКА ПОВІДОМЛЕННЯ ---
+  
 
   async function sendMessage(text, imageUrl = null) {
     if (!currentChatUser) {
@@ -453,7 +452,7 @@
       return;
     }
     if ((!text || text.trim() === '') && !imageUrl) {
-      return; // Порожнє повідомлення не відправляємо
+      return; 
     }
     const messagesRef = collection(db, 'messages');
     try {
@@ -482,7 +481,7 @@
     }
   });
 
-  // --- ПАНЕЛЬ СМАЙЛИКІВ ---
+
 
   const emojis = [
     "😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊",
@@ -515,7 +514,7 @@
     }
   };
 
-  // --- ВІДПРАВКА ФОТО ---
+
 
   btnGallery.onclick = () => {
     fileInput.click();
@@ -539,13 +538,13 @@
     fileInput.value = '';
   };
 
-  // --- МЕНЮ ТА АДАПТИВНІСТЬ ---
+
 
   menuToggleBtn.onclick = () => {
     sidebarMenu.classList.toggle('visible');
   };
 
-  // --- ПОШУК КОРИСТУВАЧІВ ---
+
 
   searchUserInput.addEventListener('input', () => {
     const filter = searchUserInput.value.toLowerCase();
@@ -555,7 +554,7 @@
     });
   });
 
-  // --- ПРИВ’ЯЗКА КОРИСТУВАЧА ДО БАЗИ ---
+
 
   onAuthStateChanged(auth, async user => {
     currentUser = user;
@@ -563,7 +562,7 @@
       authSection.classList.add('hidden');
       mainSection.classList.remove('hidden');
       header.classList.remove('hidden');
-      // Завантажуємо профіль
+ 
       updateUIProfile();
       // Додаємо користувача у колекцію users
       const userDocRef = doc(db, 'users', user.uid);
@@ -576,7 +575,7 @@
           photoURL: user.photoURL || ''
         });
       } else {
-        // Оновлюємо ім'я та фото якщо змінилися
+      
         await updateDoc(userDocRef, {
           displayName: user.displayName || user.email,
           photoURL: user.photoURL || ''

@@ -1,4 +1,4 @@
-/* Загальні стилі */
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -47,14 +47,14 @@ img.avatar {
   display: block;
 }
 
-/* Контейнери */
+
 #main-section {
   display: flex;
   height: 100vh;
   overflow: hidden;
 }
 
-/* Хедер */
+
 header {
   display: none;
   align-items: center;
@@ -75,7 +75,7 @@ header.visible {
   cursor: pointer;
 }
 
-/* Бічне меню (тільки після входу) */
+
 #sidebar-menu {
   background-color: #1f1f1f;
   padding: 10px;
@@ -91,7 +91,7 @@ header.visible {
   display: none;
 }
 
-/* Список контактів */
+
 #users-list {
   flex: 1;
   overflow-y: auto;
@@ -109,7 +109,7 @@ header.visible {
   background-color: #444;
 }
 
-/* Чат */
+
 #chat-section {
   flex: 1;
   display: none;
@@ -141,7 +141,7 @@ header.visible {
   display: inline-block;
 }
 
-/* Мобільна адаптивність */
+
 @media (max-width: 768px) {
   #main-section {
     flex-direction: column;
@@ -171,7 +171,7 @@ header.visible {
   }
 }
 
-/* Заборонити масштабування на телефонах */
+
 html, body {
   touch-action: manipulation;
   -webkit-user-select: none;
