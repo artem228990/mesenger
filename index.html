@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <title>Приватний чат</title>
+  <style>
+    body { background: #121212; color: #eee; font-family: Arial, sans-serif; padding: 20px; }
+    input, button { padding: 8px; margin: 5px; font-size: 16px; }
+    .hidden { display: none; }
+    #messages { height: 300px; overflow-y: auto; border: 1px solid #555; padding: 5px; background: #222; }
+    img.avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; vertical-align: middle; }
+    #users-list div { cursor: pointer; padding: 5px; border-bottom: 1px solid #444; }
+    #users-list div:hover { background: #333; }
+  </style>
+</head>
+<body>
+
+  <!-- Форма авторизації -->
+  <div id="auth-section">
+    <h2>Вхід або реєстрація</h2>
+    <input id="email" type="email" placeholder="Email" required /><br />
+    <input id="password" type="password" placeholder="Пароль" required /><br />
+    <button id="btn-login">Увійти</button>
+    <button id="btn-register">Зареєструватися</button>
+  </div>
+
+  <!-- Головний інтерфейс після входу -->
+  <div id="main-section" class="hidden">
+    <h3>Профіль</h3>
+    <img id="user-avatar" src="" alt="Аватар" class="avatar" />
+    <p id="user-email"></p>
+    <input id="nickname-input" type="text" placeholder="Нікнейм" />
+    <input id="avatar-input" type="file" accept="image/*" />
+    <button id="btn-update-profile">Оновити профіль</button>
+    <button id="btn-logout">Вийти</button>
+
+    <hr />
+
+    <h3>Список користувачів</h3>
+    <input id="search-user" type="text" placeholder="Пошук користувачів..." />
+    <div id="users-list"></div>
+
+    <hr />
+
+    <h3>Чат з <span id="chat-with"></span></h3>
+    <div id="messages"></div>
+    <input id="message-input" type="text" placeholder="Написати повідомлення..." />
+    <button id="btn-send-message">Відправити</button>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, query, where, getDocs, onSnapshot, updateDoc, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-storage.js";
+
+    // Твій Firebase конфіг:
+    const firebaseConfig = {
+      apiKey: "AIzaSyBEwIyf5_e4sUL_XDIJmk8FgZ-Fmd4j43A",
+      authDomain: "my-private-chat-788ac.firebaseapp.com",
+      projectId: "my-private-chat-788ac",
+      storageBucket: "my-private-chat-788ac.appspot.com",
+      messagingSenderId: "492996612629",
+      appId: "1:492996612629:web:ab07f72a2423e2b534b41c",
+      measurementId: "G-3RSQPWD6WN"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    // Елементи
+    const authSection = document.getElementById('auth-section');
+    const mainSection = document.getElementById('main-section');
+
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const btnLogin = document.getElementById('btn-login');
+    const btnRegister = document.getElementById('btn-register');
+
+    const userAvatar = document.getElementById('user-avatar');
+    const userEmail = document.getElementById('user-email');
+    const nicknameInput = document.getElementById('nickname-input');
+    const avatarInput = document.getElementById('avatar-input');
+    const btnUpdateProfile = document.getElementById('btn-update-profile');
+    const btnLogout = document.getElementById('btn-logout');
+
+    const searchUserInput = document.getElementById('search-user');
+    const usersList = document.getElementById('users-list');
+
+    const chatWithSpan = document.getElementById('chat-with');
+    const messagesDiv = document.getElementById('messages');
+    const messageInput = document.getElementById('message-input');
+    const btnSendMessage = document.getElementById('btn-send-message');
+
+    let currentUser = null;
+    let currentChatUser = null;
+
+    // --- Авторизація ---
+    btnLogin.onclick = async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      if (!email || !password) return alert("Введіть email і пароль");
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+        if (!userCredential.user.emailVerified) {
+          alert("Будь ласка, підтвердіть вашу пошту!");
+          await signOut(auth);
+          return;
+        }
+      } catch(e) {
+        alert("Помилка входу: " + e.message);
+      }
+    };
+
+    btnRegister.onclick = async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      if (!email || !password) return alert("Введіть email і пароль");
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+        // Відправка листа підтвердження пошти
+        await sendEmailVerification(userCredential.user);
+        alert("Лист підтвердження відправлено. Будь ласка, підтвердіть пошту та увійдіть знову.");
+
+        await signOut(auth);
+      } catch(e) {
+        alert("Помилка реєстрації: " + e.message);
+      }
+    };
+
+    // --- Вихід ---
+    btnLogout.onclick = () => {
+      signOut(auth);
+    };
+
+    // --- Обробка змін авторизації ---
+    onAuthStateChanged(auth, async user => {
+      if (user) {
+        if (!user.emailVerified) {
+          alert("Підтвердіть вашу пошту, будь ласка.");
+          await signOut(auth);
+          return;
+        }
+
+        currentUser = user;
+        authSection.classList.add('hidden');
+        mainSection.classList.remove('hidden');
+
+        userEmail.textContent = "Email: " + user.email;
+
+        // Завантажуємо дані профілю з Firestore
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (!docSnap.exists()) {
+          // Створюємо профіль при першому вході
+          await setDoc(docRef, {
+            nickname: user.email.split('@')[0],
+            avatarUrl: "",
+            uid: user.uid,
+            email: user.email,
+          });
+          nicknameInput.value = user.email.split('@')[0];
+          userAvatar.src = "";
+        } else {
+          const data = docSnap.data();
+          nicknameInput.value = data.nickname || "";
+          userAvatar.src = data.avatarUrl || "";
+        }
+
+        loadUsers();
+
+      } else {
+        currentUser = null;
+        currentChatUser = null;
+        authSection.classList.remove('hidden');
+        mainSection.classList.add('hidden');
+        messagesDiv.innerHTML = "";
+        usersList.innerHTML = "";
+        chatWithSpan.textContent = "";
+      }
+    });
+
+    // --- Оновлення профілю ---
+    btnUpdateProfile.onclick = async () => {
+      if (!currentUser) return;
+
+      const newNickname = nicknameInput.value.trim();
+      let newAvatarUrl = userAvatar.src;
+
+      if (avatarInput.files.length > 0) {
+        const avatarFile = avatarInput.files[0];
+        const avatarRef = ref(storage, `avatars/${currentUser.uid}`);
+        await uploadBytes(avatarRef, avatarFile);
+        newAvatarUrl = await getDownloadURL(avatarRef);
+        userAvatar.src = newAvatarUrl;
+      }
+
+      const userDocRef = doc(db, "users", currentUser.uid);
+      await updateDoc(userDocRef, {
+        nickname: newNickname,
+        avatarUrl: newAvatarUrl
+      });
+
+      // Оновлюємо Firebase Auth профіль
+      await updateProfile(currentUser, {
+        displayName: newNickname,
+        photoURL: newAvatarUrl
+      });
+
+      alert("Профіль оновлено!");
+      avatarInput.value = "";
+    };
+
+    // --- Завантаження користувачів ---
+    async function loadUsers() {
+      const q = query(collection(db, "users"), orderBy("nickname"));
+      const querySnapshot = await getDocs(q);
+      usersList.innerHTML = "";
+
+      querySnapshot.forEach(docSnap => {
+        const userData = docSnap.data();
+
+        // Не показуємо самого себе у списку
+        if (userData.uid === currentUser.uid) return;
+
+        const div = document.createElement("div");
+        div.textContent = userData.nickname || userData.email;
+        div.dataset.uid = userData.uid;
+        div.dataset.nickname = userData.nickname || userData.email;
+        div.dataset.avatarUrl = userData.avatarUrl || "";
+
+        div.onclick = () => {
+          startChatWith(userData.uid, userData.nickname, userData.avatarUrl);
+        };
+
+        usersList.appendChild(div);
+      });
+    }
+
+    // --- Початок чату ---
+    let unsubscribeMessages = null;
+
+    function startChatWith(uid, nickname, avatarUrl) {
+      currentChatUser = { uid, nickname, avatarUrl };
+      chatWithSpan.textContent = nickname;
+      messagesDiv.innerHTML = "";
+
+      if (unsubscribeMessages) unsubscribeMessages();
+
+      // Генеруємо id чату, щоб було однаково для обох користувачів (маленька буква + "_"+ більший)
+      const chatId = [currentUser.uid, uid].sort().join("_");
+
+      const messagesRef = collection(db, "chats", chatId, "messages");
+      const messagesQuery = query(messagesRef, orderBy("timestamp"));
+
+      unsubscribeMessages = onSnapshot(messagesQuery, (querySnapshot) => {
+        messagesDiv.innerHTML = "";
+        querySnapshot.forEach(docSnap => {
+          const msg = docSnap.data();
+          const div = document.createElement("div");
+          div.textContent = `${msg.from === currentUser.uid ? "Я" : nickname}: ${msg.text}`;
+          messagesDiv.appendChild(div);
+        });
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      });
+    }
+
+    // --- Відправка повідомлень ---
+    btnSendMessage.onclick = async () => {
+      if (!currentChatUser) return alert("Оберіть користувача для чату");
+      const text = messageInput.value.trim();
+      if (!text) return;
+
+      const chatId = [currentUser.uid, currentChatUser.uid].sort().join("_");
+      const messagesRef = collection(db, "chats", chatId, "messages");
+
+      await setDoc(doc(messagesRef), {
+        text,
+        from: currentUser.uid,
+        to: currentChatUser.uid,
+        timestamp: new Date()
+      });
+
+      messageInput.value = "";
+    };
+
+    // --- Пошук користувачів ---
+    searchUserInput.oninput = async () => {
+      const searchText = searchUserInput.value.trim().toLowerCase();
+      const q = query(collection(db, "users"), orderBy("nickname"));
+      const querySnapshot = await getDocs(q);
+      usersList.innerHTML = "";
+
+      querySnapshot.forEach(docSnap => {
+        const userData = docSnap.data();
+        if (userData.uid === currentUser.uid) return;
+        const nickname = userData.nickname || "";
+        if (nickname.toLowerCase().includes(searchText)) {
+          const div = document.createElement("div");
+          div.textContent = nickname;
+          div.dataset.uid = userData.uid;
+          div.dataset.nickname = nickname;
+          div.dataset.avatarUrl = userData.avatarUrl || "";
+          div.onclick = () => {
+            startChatWith(userData.uid, nickname, userData.avatarUrl);
+          };
+          usersList.appendChild(div);
+        }
+      });
+    };
+  </script>
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyBEwIyf5_e4sUL_XDIJmk8FgZ-Fmd4j43A",
+    authDomain: "my-private-chat-788ac.firebaseapp.com",
+    projectId: "my-private-chat-788ac",
+    storageBucket: "my-private-chat-788ac.firebasestorage.app",
+    messagingSenderId: "492996612629",
+    appId: "1:492996612629:web:ab07f72a2423e2b534b41c",
+    measurementId: "G-3RSQPWD6WN"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+</body>
+</html>
