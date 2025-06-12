@@ -3,15 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>Приватний чат</title>
-  <style>
-    body { background: #121212; color: #eee; font-family: Arial, sans-serif; padding: 20px; }
-    input, button { padding: 8px; margin: 5px; font-size: 16px; }
-    .hidden { display: none; }
-    #messages { height: 300px; overflow-y: auto; border: 1px solid #555; padding: 5px; background: #222; }
-    img.avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; vertical-align: middle; }
-    #users-list div { cursor: pointer; padding: 5px; border-bottom: 1px solid #444; }
-    #users-list div:hover { background: #333; }
-  </style>
+  <link rel="stylesheet" href="style.css">
+  
 </head>
 <body>
 
@@ -23,6 +16,23 @@
     <button id="btn-login">Увійти</button>
     <button id="btn-register">Зареєструватися</button>
   </div>
+<div id="content-wrapper">
+  <div>
+    <input id="search-user" type="text" placeholder="Пошук користувачів..." />
+    <div id="users-list"></div>
+  </div>
+
+  <div id="chat-section">
+    <h3>Чат з <span id="chat-with"></span></h3>
+    <div id="messages"></div>
+    <div id="input-area">
+      <input id="message-input" type="text" placeholder="Написати повідомлення..." />
+      <button id="btn-send-message">Відправити</button>
+    </div>
+  </div>
+</div>
+
+<button id="menu-button">&#9776;</button>
 
   <!-- Головний інтерфейс після входу -->
   <div id="main-section" class="hidden">

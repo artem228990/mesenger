@@ -1,4 +1,15 @@
 // app.js
+
+
+const menuButton = document.getElementById('menu-button');
+const usersListDiv = document.getElementById('users-list');
+
+menuButton.addEventListener('click', () => {
+  usersListDiv.classList.toggle('active');
+});
+
+
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
 import {
   getAuth, onAuthStateChanged, createUserWithEmailAndPassword,

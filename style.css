@@ -1,0 +1,291 @@
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #121212;
+  color: #eee;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Приховані блоки */
+.hidden {
+  display: none !important;
+}
+
+/* Заголовки */
+h2, h3 {
+  margin-bottom: 10px;
+}
+
+/* --- Авторизація --- */
+#auth-section {
+  max-width: 400px;
+  margin: 50px auto;
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #000;
+  text-align: center;
+}
+
+#auth-section input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 4px;
+}
+
+#auth-section button {
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: #6200ee;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#auth-section button:hover {
+  background-color: #3700b3;
+}
+
+/* --- Головний інтерфейс --- */
+#main-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Профіль */
+#main-section > h3:first-of-type {
+  margin-bottom: 5px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  background: #333;
+  display: block;
+}
+
+/* Профільні інпут і кнопки */
+#nickname-input, #avatar-input {
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 4px;
+  border: none;
+  width: 100%;
+  max-width: 300px;
+}
+
+#btn-update-profile, #btn-logout {
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  background-color: #03dac6;
+  color: #000;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#btn-update-profile:hover {
+  background-color: #018786;
+}
+
+#btn-logout:hover {
+  background-color: #b00020;
+  color: white;
+}
+
+/* --- Основний лейаут --- */
+#main-section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Контейнер для списку користувачів та чату */
+#content-wrapper {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+/* Сайдбар користувачів */
+#users-list {
+  background-color: #222;
+  width: 250px;
+  overflow-y: auto;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: inset 0 0 5px #000;
+}
+
+#users-list div {
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  transition: background-color 0.3s;
+}
+
+#users-list div:hover {
+  background-color: #333;
+}
+
+/* Пошук користувачів */
+#search-user {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 4px;
+  border: none;
+}
+
+/* Чат */
+#chat-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+  background-color: #222;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: inset 0 0 5px #000;
+  height: 100%;
+}
+
+#chat-with {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#messages {
+  flex: 1;
+  overflow-y: auto;
+  background: #121212;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  color: #ccc;
+  font-size: 14px;
+}
+
+#messages div {
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+#messages div:nth-child(odd) {
+  background-color: #3700b3;
+  color: white;
+  align-self: flex-start;
+}
+
+#messages div:nth-child(even) {
+  background-color: #03dac6;
+  color: black;
+  align-self: flex-end;
+}
+
+/* Поле вводу повідомлення та кнопка */
+#message-input {
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  flex-grow: 1;
+  margin-right: 10px;
+  background: #333;
+  color: white;
+}
+
+#btn-send-message {
+  background-color: #6200ee;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#btn-send-message:hover {
+  background-color: #3700b3;
+}
+
+/* Контейнер для поля і кнопки */
+#input-area {
+  display: flex;
+  align-items: center;
+}
+
+/* --- Кнопка меню (гамбургер) --- */
+#menu-button {
+  display: none;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #6200ee;
+  border: none;
+  color: white;
+  font-size: 24px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* --- Адаптивність --- */
+@media (max-width: 768px) {
+  #main-section {
+    padding: 10px;
+  }
+
+  #content-wrapper {
+    flex-direction: column;
+    margin-top: 10px;
+    height: calc(100vh - 250px);
+  }
+
+  #users-list {
+    width: 100%;
+    max-height: 200px;
+    margin-bottom: 10px;
+    overflow-y: auto;
+    display: none; /* Приховано по замовчуванню на мобільних */
+  }
+
+  #users-list.active {
+    display: block;
+  }
+
+  #chat-section {
+    margin-left: 0;
+    flex-grow: 1;
+    height: auto;
+  }
+
+  #menu-button {
+    display: block;
+  }
+}
