@@ -301,3 +301,22 @@ sendBtn.addEventListener("click", async () => {
 messageInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendBtn.click();
 });
+const menuToggle = document.getElementById("menu-toggle");
+const sidebarMenu = document.getElementById("sidebar-menu");
+const chatSection = document.getElementById("chat-section");
+
+menuToggle.onclick = () => {
+  sidebarMenu.classList.toggle("visible");
+};
+
+// Коли обрано користувача — ховаємо меню, показуємо чат
+function startChatWith(uid, nickname, avatarUrl) {
+  // ... твоя логіка
+  sidebarMenu.classList.remove("visible");
+  chatSection.classList.add("visible");
+}
+
+// При виході — сховати чат
+btnLogout.onclick = () => {
+  chatSection.classList.remove("visible");
+};

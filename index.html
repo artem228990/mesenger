@@ -35,32 +35,36 @@
 
 <button id="menu-button">&#9776;</button>
 
-  <!-- Головний інтерфейс після входу -->
-  <div id="main-section" class="hidden">
-    <h3>Профіль</h3>
+ <div id="main-section" class="hidden">
+  <!-- Хедер -->
+  <header id="mobile-header">
+    <button id="menu-toggle">☰</button>
+    <span id="current-user-name"></span>
+  </header>
+
+  <!-- Меню зліва (ховається на мобільному) -->
+  <div id="sidebar-menu" class="hidden">
+    <!-- Профіль -->
     <img id="user-avatar" src="" alt="Аватар" class="avatar" />
     <p id="user-email"></p>
     <input id="nickname-input" type="text" placeholder="Нікнейм" />
     <input id="avatar-input" type="file" accept="image/*" />
     <button id="btn-update-profile">Оновити профіль</button>
     <button id="btn-logout">Вийти</button>
-
-    <hr />
-<!-- меню-бургер для мобільних -->
-<input type="checkbox" id="menu-toggle" />
-<label for="menu-toggle" id="menu-label">&#9776; Меню</label>
-
-    <h3>Список користувачів</h3>
     <input id="search-user" type="text" placeholder="Пошук користувачів..." />
-    <div id="users-list"></div>
+  </div>
 
-    <hr />
+  <!-- Контакти -->
+  <div id="users-list" class="user-list"></div>
 
+  <!-- Чат -->
+  <div id="chat-section" class="hidden">
     <h3>Чат з <span id="chat-with"></span></h3>
     <div id="messages"></div>
     <input id="message-input" type="text" placeholder="Написати повідомлення..." />
     <button id="btn-send-message">Відправити</button>
   </div>
+</div>
 
   <!-- Firebase SDK -->
   <script type="module">
