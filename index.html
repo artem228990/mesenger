@@ -994,6 +994,152 @@
             
             alert("Профіль оновлено!");
         });
+
+        
     </script>
+    
+    
+
+
+
+
+
+
+    <script>
+        // База даних (LocalStorage)
+        let usersDB = JSON.parse(localStorage.getItem('users')) || [];
+        let chatsDB = JSON.parse(localStorage.getItem('chats')) || [];
+        let currentUser = null;
+        let currentChat = null;
+
+        // Додамо тестових користувачів, якщо база пуста
+        if (usersDB.length === 0) {
+            usersDB = [
+                {
+                    uid: "1",
+                    name: "Іван",
+                    username: "ivan123",
+                    email: "ivan@example.com",
+                    password: "password123",
+                    avatar: "https://i.pravatar.cc/150?img=1",
+                    status: "online"
+                },
+                {
+                    uid: "2",
+                    name: "Марія",
+                    username: "maria456",
+                    email: "maria@example.com",
+                    password: "password123",
+                    avatar: "https://i.pravatar.cc/150?img=2",
+                    status: "online"
+                },
+                {
+                    uid: "3",
+                    name: "Петро",
+                    username: "petro789",
+                    email: "petro@example.com",
+                    password: "password123",
+                    avatar: "https://i.pravatar.cc/150?img=3",
+                    status: "offline"
+                }
+            ];
+            localStorage.setItem('users', JSON.stringify(usersDB));
+        }
+
+        // DOM елементи
+        const searchInput = document.getElementById('search-input');
+        const contactsList = document.getElementById('contacts-list');
+
+        // Оновлений пошук користувачів
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            
+            // Очищаємо список перед новим пошуком
+            contactsList.innerHTML = '';
+            
+            if (searchTerm.length < 1) {
+                loadContacts(); // Показуємо всі контакти, якщо поле пошуку пусте
+                return;
+            }
+
+            // Шукаємо серед усіх користувачів, крім поточного
+            const results = usersDB.filter(user => {
+                return user.username.toLowerCase().includes(searchTerm) && 
+                       user.uid !== currentUser.uid;
+            });
+            
+            if (results.length === 0) {
+                // Якщо нічого не знайдено
+                const noResults = document.createElement('div');
+                noResults.className = 'no-results';
+                noResults.textContent = 'Користувачів не знайдено';
+                contactsList.appendChild(noResults);
+            } else {
+                // Відображаємо знайдених користувачів
+                results.forEach(user => {
+                    const contactItem = document.createElement('div');
+                    contactItem.className = 'chat-item';
+                    
+                    // Перевіряємо, чи вже є чат з цим користувачем
+                    const hasChat = chatsDB.some(chat => 
+                        chat.participants.includes(currentUser.uid) && 
+                        chat.participants.includes(user.uid)
+                    );
+                    
+                    contactItem.innerHTML = `
+                        <img src="${user.avatar}" alt="Аватар" class="avatar">
+                        <div class="chat-info">
+                            <span class="chat-name">${user.name} (@${user.username})</span>
+                            <span class="last-msg">${user.status === 'online' ? 'В мережі' : 'Не в мережі'}</span>
+                        </div>
+                        <div class="status ${user.status}"></div>
+                        ${!hasChat ? '<button class="btn-add">Додати</button>' : ''}
+                    `;
+                    
+                    // Додаємо обробник кліку для кнопки "Додати"
+                    if (!hasChat) {
+                        const addBtn = contactItem.querySelector('.btn-add');
+                        addBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            createNewChat(user);
+                        });
+                    }
+                    
+                    contactItem.addEventListener('click', () => openChat(user));
+                    contactsList.appendChild(contactItem);
+                });
+            }
+        });
+
+        // Функція для створення нового чату
+        function createNewChat(user) {
+            const newChat = {
+                id: Date.now().toString(),
+                participants: [currentUser.uid, user.uid],
+                messages: [],
+                createdAt: new Date().toISOString()
+            };
+            
+            chatsDB.push(newChat);
+            localStorage.setItem('chats', JSON.stringify(chatsDB));
+            
+            // Оновлюємо інтерфейс
+            loadChats();
+            loadContacts();
+            
+            // Відкриваємо новий чат
+            openChat(user);
+            
+            alert(`Чат з ${user.name} створено!`);
+        }
+
+        // Решта вашого коду залишається без змін
+        // ... (ваші інші функції)
+    </script>
+
+
+
+
+    
 </body>
 </html>
