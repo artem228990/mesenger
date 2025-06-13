@@ -1,231 +1,176 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Чат | Dark Messenger</title>
-  <style>
-    body {
-      margin: 0;
-      background: #0a0a0a;
-      color: #fff;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
-
-    header {
-      background: #111;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 0 10px cyan;
-    }
-
-    header span {
-      color: cyan;
-      font-weight: bold;
-    }
-
-    #chatBox {
-      flex: 1;
-      overflow-y: auto;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .msg {
-      max-width: 70%;
-      padding: 10px;
-      border-radius: 12px;
-      background: #1c1c1c;
-      word-break: break-word;
-    }
-
-    .my {
-      align-self: flex-end;
-      background: #003344;
-    }
-
-    .other {
-      align-self: flex-start;
-      background: #222;
-    }
-
-    .input-section {
-      padding: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #121212;
-      border-top: 1px solid #333;
-    }
-
-    .input-section input {
-      flex: 1;
-      padding: 10px;
-      background: #1f1f1f;
-      border: none;
-      border-radius: 10px;
-      color: #fff;
-    }
-
-    .input-section button, .input-section label {
-      background: cyan;
-      border: none;
-      padding: 8px 10px;
-      border-radius: 10px;
-      cursor: pointer;
-      color: #000;
-    }
-
-    .input-section input[type="file"] {
-      display: none;
-    }
-
-    #emojiPanel {
-      display: none;
-      flex-wrap: wrap;
-      background: #222;
-      padding: 8px;
-      max-height: 120px;
-      overflow-y: auto;
-    }
-
-    #emojiPanel span {
-      font-size: 20px;
-      padding: 4px;
-      cursor: pointer;
-    }
-
-    @media screen and (max-width: 600px) {
-      header {
-        font-size: 14px;
-      }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dark Messenger - Чат</title>
+<style>
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #121212;
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  header {
+    background: #0f0;
+    color: #000;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  #messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 20px;
+  }
+  .message {
+    margin-bottom: 10px;
+    max-width: 75%;
+    padding: 10px;
+    border-radius: 10px;
+    word-wrap: break-word;
+  }
+  .message.me {
+    background: #0f0;
+    color: #000;
+    margin-left: auto;
+    text-align: right;
+  }
+  .message.other {
+    background: #333;
+  }
+  #input-container {
+    display: flex;
+    padding: 10px 20px;
+    background: #222;
+  }
+  #inputMessage {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: #333;
+    color: #eee;
+    font-size: 16px;
+  }
+  #sendBtn {
+    background: #0f0;
+    border: none;
+    color: #000;
+    font-weight: bold;
+    padding: 0 20px;
+    margin-left: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+</style>
 </head>
 <body>
-  <header>
-    <span id="chatName">Чат</span>
-    <button onclick="startCall()">📞</button>
-  </header>
 
-  <div id="chatBox"></div>
-  <div id="emojiPanel"></div>
+<header id="chatHeader">Чат</header>
 
-  <div class="input-section">
-    <button onclick="toggleEmojiPanel()">😊</button>
-    <input type="text" id="msgInput" placeholder="Повідомлення...">
-    <label for="imgInput">🖼️</label>
-    <input type="file" id="imgInput" accept="image/*">
-    <button onclick="sendMessage()">➤</button>
-  </div>
+<div id="messages">Завантаження...</div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+<div id="input-container">
+  <input id="inputMessage" placeholder="Написати повідомлення..." autocomplete="off" />
+  <button id="sendBtn">Відправити</button>
+</div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAhO-l7hHZjFCC9YJq1GYH445jphDmjGZY",
-      authDomain: "dark-mesenger.firebaseapp.com",
-      projectId: "dark-mesenger",
-      storageBucket: "dark-mesenger.firebasestorage.app",
-      messagingSenderId: "629206445270",
-      appId: "1:629206445270:web:8fec4853b432a4f4f66d77",
-      measurementId: "G-171K0PBQWZ"
-    };
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+  import { getFirestore, collection, addDoc, query, where, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
-    const db = getFirestore();
-    const storage = getStorage();
+  const firebaseConfig = {
+    apiKey: "AIzaSyAhO-l7hHZjFCC9YJq1GYH445jphDmjGZY",
+    authDomain: "dark-mesenger.firebaseapp.com",
+    projectId: "dark-mesenger",
+    storageBucket: "dark-mesenger.firebasestorage.app",
+    messagingSenderId: "629206445270",
+    appId: "1:629206445270:web:8fec4853b432a4f4f66d77",
+    measurementId: "G-171K0PBQWZ"
+  };
 
-    const chatBox = document.getElementById("chatBox");
-    const msgInput = document.getElementById("msgInput");
-    const emojiPanel = document.getElementById("emojiPanel");
-    const imgInput = document.getElementById("imgInput");
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-    const params = new URLSearchParams(window.location.search);
-    const recipientId = params.get("uid");
+  const urlParams = new URLSearchParams(window.location.search);
+  const otherUid = urlParams.get('uid');
 
-    let currentUser;
+  const messagesDiv = document.getElementById('messages');
+  const inputMessage = document.getElementById('inputMessage');
+  const sendBtn = document.getElementById('sendBtn');
+  const chatHeader = document.getElementById('chatHeader');
 
-    onAuthStateChanged(auth, async user => {
-      if (!user) return (window.location.href = "index.html");
-      currentUser = user;
-      const roomId = [user.uid, recipientId].sort().join("_");
+  let currentUser = null;
 
-      const q = query(collection(db, `messages/${roomId}/chats`), orderBy("createdAt"));
-      onSnapshot(q, snapshot => {
-        chatBox.innerHTML = "";
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          const div = document.createElement("div");
-          div.className = `msg ${data.sender === user.uid ? "my" : "other"}`;
-          div.innerHTML = data.text || (data.imageURL ? `<img src="${data.imageURL}" style="max-width:200px;border-radius:10px;">` : "") || "";
-          chatBox.appendChild(div);
-        });
-        chatBox.scrollTop = chatBox.scrollHeight;
-      });
-
-      document.getElementById("chatName").textContent = "Співрозмовник";
-
-      window.sendMessage = async () => {
-        const text = msgInput.value.trim();
-        if (!text && !imgInput.files[0]) return;
-        const roomRef = collection(db, `messages/${roomId}/chats`);
-
-        if (imgInput.files[0]) {
-          const file = imgInput.files[0];
-          const storageRef = ref(storage, `images/${roomId}/${Date.now()}`);
-          const snap = await uploadBytes(storageRef, file);
-          const imageURL = await getDownloadURL(snap.ref);
-          await addDoc(roomRef, {
-            sender: user.uid,
-            imageURL,
-            createdAt: serverTimestamp()
-          });
-          imgInput.value = "";
-        }
-
-        if (text) {
-          await addDoc(roomRef, {
-            sender: user.uid,
-            text,
-            createdAt: serverTimestamp()
-          });
-          msgInput.value = "";
-        }
-      }
-    });
-
-    function toggleEmojiPanel() {
-      if (emojiPanel.style.display === "none") {
-        emojiPanel.style.display = "flex";
-        if (!emojiPanel.innerHTML) {
-          ["😀","😂","😍","😎","😢","😡","👍","🔥","❤️","🤔"].forEach(e => {
-            const span = document.createElement("span");
-            span.textContent = e;
-            span.onclick = () => msgInput.value += e;
-            emojiPanel.appendChild(span);
-          });
-        }
-      } else {
-        emojiPanel.style.display = "none";
-      }
+  onAuthStateChanged(auth, user => {
+    if (!user) {
+      window.location.href = 'index.html';
+      return;
     }
+    currentUser = user;
+    loadOtherUserInfo(otherUid);
+    subscribeMessages();
+  });
 
-    window.startCall = () => {
-      alert("🔔 Дзвінок починається...");
-      // Тут буде WebRTC логіка у наступному оновленні
-    };
-  </script>
+  async function loadOtherUserInfo(uid) {
+    if (!uid) {
+      chatHeader.textContent = "Користувач не вибраний";
+      return;
+    }
+    const docRef = doc(db, "users", uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const otherUser = docSnap.data();
+      chatHeader.textContent = `Чат з ${otherUser.displayName}`;
+    } else {
+      chatHeader.textContent = "Користувач не знайдений";
+    }
+  }
+
+  function subscribeMessages() {
+    if (!currentUser || !otherUid) return;
+
+    const chatId = getChatId(currentUser.uid, otherUid);
+    const messagesRef = collection(db, "chats", chatId, "messages");
+    const q = query(messagesRef, orderBy("timestamp", "asc"));
+
+    onSnapshot(q, snapshot => {
+      messagesDiv.innerHTML = "";
+      snapshot.forEach(doc => {
+        const msg = doc.data();
+        const div = document.createElement("div");
+        div.classList.add("message");
+        div.classList.add(msg.sender === currentUser.uid ? "me" : "other");
+        div.textContent = msg.text;
+        messagesDiv.appendChild(div);
+      });
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    });
+  }
+
+  function getChatId(uid1, uid2) {
+    return uid1 < uid2 ? uid1 + "_" + uid2 : uid2 + "_" + uid1;
+  }
+
+  sendBtn.onclick = async () => {
+    const text = inputMessage.value.trim();
+    if (!text) return;
+    const chatId = getChatId(currentUser.uid, otherUid);
+    const messagesRef = collection(db, "chats", chatId, "messages");
+    await addDoc(messagesRef, {
+      sender: currentUser.uid,
+      text: text,
+      timestamp: Date.now()
+    });
+    inputMessage.value = "";
+  };
+</script>
+
 </body>
 </html>

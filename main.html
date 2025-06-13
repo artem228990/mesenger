@@ -1,246 +1,146 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dark Messenger – Головна</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Roboto', sans-serif;
-      background: #0d0d0d;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
-
-    header {
-      background: #111;
-      padding: 10px 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
-    }
-
-    header h1 {
-      font-size: 20px;
-      color: cyan;
-    }
-
-    .profile-section {
-      padding: 10px;
-      background: #181818;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      border-bottom: 1px solid #333;
-    }
-
-    .profile-section img {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid cyan;
-    }
-
-    .profile-section input[type="text"] {
-      background: #262626;
-      border: none;
-      color: #fff;
-      padding: 6px 12px;
-      border-radius: 8px;
-      flex: 1;
-    }
-
-    .search-section {
-      padding: 10px;
-      background: #121212;
-    }
-
-    .search-section input {
-      width: 100%;
-      padding: 10px;
-      background: #202020;
-      border: none;
-      border-radius: 10px;
-      color: #fff;
-    }
-
-    .user-list {
-      flex: 1;
-      overflow-y: auto;
-      background: #111;
-    }
-
-    .user {
-      padding: 10px 15px;
-      border-bottom: 1px solid #1c1c1c;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-    }
-
-    .user:hover {
-      background: #222;
-    }
-
-    .user img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-    }
-
-    .user span {
-      color: cyan;
-      font-size: 16px;
-    }
-
-    @media screen and (max-width: 600px) {
-      header h1 {
-        font-size: 16px;
-      }
-      .profile-section input[type="text"] {
-        font-size: 14px;
-      }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dark Messenger - Головна</title>
+<style>
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  header {
+    background-color: #0f0;
+    color: #000;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  #search-container {
+    padding: 10px 20px;
+    background: #222;
+  }
+  #searchInput {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    background: #333;
+    color: #eee;
+  }
+  #usersList {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 20px;
+  }
+  .user-card {
+    background: #222;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s;
+  }
+  .user-card:hover {
+    background-color: #0f0;
+    color: #000;
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+</style>
 </head>
 <body>
-  <header>
-    <h1>Dark Messenger</h1>
-    <button onclick="logout()" style="background: transparent; border: 1px solid cyan; color: cyan; padding: 5px 10px; border-radius: 8px;">Вийти</button>
-  </header>
 
-  <div class="profile-section">
-    <img src="default-avatar.png" id="userPhoto" alt="User Photo">
-    <input type="text" id="usernameInput" placeholder="Ваш нікнейм">
-  </div>
+<header>Dark Messenger</header>
 
-  <div class="search-section">
-    <input type="text" id="searchUser" placeholder="Знайти користувача за іменем...">
-  </div>
+<div id="search-container">
+  <input id="searchInput" type="text" placeholder="Пошук користувача..." />
+</div>
 
-  <div class="user-list" id="userList">
-    <!-- Список користувачів буде тут -->
-  </div>
-<input type="text" id="searchInput" placeholder="Пошук користувача..." oninput="searchUsers()" />
-<div id="usersList"></div>
+<div id="usersList">Введіть 3 або більше символів для пошуку</div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-    import { getFirestore, collection, query, where, getDocs, doc, getDoc, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+  import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAhO-l7hHZjFCC9YJq1GYH445jphDmjGZY",
-      authDomain: "dark-mesenger.firebaseapp.com",
-      projectId: "dark-mesenger",
-      storageBucket: "dark-mesenger.firebasestorage.app",
-      messagingSenderId: "629206445270",
-      appId: "1:629206445270:web:8fec4853b432a4f4f66d77",
-      measurementId: "G-171K0PBQWZ"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyAhO-l7hHZjFCC9YJq1GYH445jphDmjGZY",
+    authDomain: "dark-mesenger.firebaseapp.com",
+    projectId: "dark-mesenger",
+    storageBucket: "dark-mesenger.firebasestorage.app",
+    messagingSenderId: "629206445270",
+    appId: "1:629206445270:web:8fec4853b432a4f4f66d77",
+    measurementId: "G-171K0PBQWZ"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
-    const db = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-    const usernameInput = document.getElementById("usernameInput");
-    const userPhoto = document.getElementById("userPhoto");
-    const searchInput = document.getElementById("searchUser");
-    const userList = document.getElementById("userList");
-
-    let currentUser;
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        currentUser = user;
-        usernameInput.value = user.displayName || "";
-        if (user.photoURL) userPhoto.src = user.photoURL;
-        
-        usernameInput.addEventListener("change", async () => {
-          await updateProfile(user, { displayName: usernameInput.value });
-          const userRef = doc(db, "users", user.uid);
-          await setDoc(userRef, {
-            displayName: usernameInput.value,
-            email: user.email,
-            photoURL: user.photoURL || ""
-          });
-        });
-
-        searchInput.addEventListener("input", async () => {
-          const q = query(collection(db, "users"), where("displayName", ">=", searchInput.value));
-          const querySnapshot = await getDocs(q);
-          userList.innerHTML = "";
-          querySnapshot.forEach(docSnap => {
-            const data = docSnap.data();
-            if (docSnap.id !== user.uid) {
-              const el = document.createElement("div");
-              el.className = "user";
-              el.innerHTML = `<img src="${data.photoURL || 'default-avatar.png'}"><span>${data.displayName}</span>`;
-              el.onclick = () => {
-                // Переходимо в чат
-                window.location.href = `chat.html?uid=${docSnap.id}`;
-              };
-              userList.appendChild(el);
-            }
-          });
-        });
-      } else {
-        window.location.href = "index.html";
-      }
-    });
-
-    window.logout = async function() {
-      await signOut(auth);
-      window.location.href = "index.html";
+  // Перевірка авторизації
+  onAuthStateChanged(auth, user => {
+    if (!user) {
+      window.location.href = 'index.html';
     }
-    import { getFirestore, collection, query, where, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-const db = getFirestore(app);
-
-// Додаємо користувача в Firestore після входу/реєстрації
-async function saveUserData(user) {
-  const userRef = doc(db, "users", user.uid);
-  await setDoc(userRef, {
-    uid: user.uid,
-    displayName: user.displayName || "Без імені",
-    photoURL: user.photoURL || "",
-    email: user.email
   });
-}
 
-// Пошук користувачів
-window.searchUsers = async function() {
-  const term = document.getElementById('searchInput').value.trim();
+  const searchInput = document.getElementById('searchInput');
   const usersList = document.getElementById('usersList');
-  usersList.innerHTML = '🔍 Пошук...';
 
-  const q = query(collection(db, "users"), where("displayName", ">=", term), where("displayName", "<=", term + "\uf8ff"));
-  const querySnapshot = await getDocs(q);
+  async function searchUsers(term) {
+    if (term.length < 3) {
+      usersList.textContent = "Введіть 3 або більше символів для пошуку";
+      return;
+    }
 
-  let html = "";
-  querySnapshot.forEach((doc) => {
-    const user = doc.data();
-    html += `
-      <div class="user-card" onclick="startChat('${user.uid}', '${user.displayName}', '${user.photoURL}')">
-        <img src="${user.photoURL || 'default.png'}" alt="аватар" class="avatar">
+    const usersRef = collection(db, "users");
+    const q = query(usersRef,
+      where("displayName", ">=", term),
+      where("displayName", "<=", term + "\uf8ff")
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      usersList.textContent = "Користувачів не знайдено.";
+      return;
+    }
+
+    usersList.innerHTML = "";
+
+    querySnapshot.forEach(doc => {
+      const user = doc.data();
+      const div = document.createElement("div");
+      div.className = "user-card";
+      div.innerHTML = `
+        <img src="${user.photoURL || 'default.png'}" alt="avatar" class="avatar" />
         <span>${user.displayName}</span>
-      </div>`;
+      `;
+      div.onclick = () => {
+        window.location.href = `chat.html?uid=${user.uid}`;
+      };
+      usersList.appendChild(div);
+    });
+  }
+
+  searchInput.addEventListener('input', e => {
+    searchUsers(e.target.value.trim());
   });
+</script>
 
-  usersList.innerHTML = html || "Нічого не знайдено";
-}
-
-// Функція запуску чату
-window.startChat = function(uid, name, photo) {
-  window.location.href = `chat.html?uid=${uid}`;
-}
-
-  </script>
 </body>
 </html>

@@ -1,144 +1,161 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dark Messenger – Вхід/Реєстрація</title>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyAhO-l7hHZjFCC9YJq1GYH445jphDmjGZY",
-      authDomain: "dark-mesenger.firebaseapp.com",
-      projectId: "dark-mesenger",
-      storageBucket: "dark-mesenger.firebasestorage.app",
-      messagingSenderId: "629206445270",
-      appId: "1:629206445270:web:8fec4853b432a4f4f66d77",
-      measurementId: "G-171K0PBQWZ"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    window.handleRegister = async function() {
-      const email = document.getElementById('regEmail').value;
-      const password = document.getElementById('regPassword').value;
-      const username = document.getElementById('regUsername').value;
-
-      try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        await updateProfile(userCredential.user, {
-          displayName: username
-        });
-        alert('Успішна реєстрація!');
-        location.reload();
-      } catch (error) {
-        alert('Помилка: ' + error.message);
-      }
-    }
-
-    window.handleLogin = async function() {
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "main.html";
-      } catch (error) {
-        alert('Помилка входу: ' + error.message);
-      }
-    }
-  </script>
-  <style>
-    body {
-      background: #0e0e0e;
-      color: #f0f0f0;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .container {
-      width: 90%;
-      max-width: 400px;
-      background: #1e1e1e;
-      padding: 20px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-      transition: all 0.3s ease;
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: cyan;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      background: #2a2a2a;
-      border: none;
-      border-radius: 10px;
-      color: white;
-      font-size: 16px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      background: cyan;
-      color: black;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    .switch {
-      text-align: center;
-      margin-top: 15px;
-      color: #aaa;
-    }
-
-    .switch a {
-      color: cyan;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dark Messenger - Вхід / Реєстрація</title>
+<style>
+  body {
+    margin:0; padding:0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #eee;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+  }
+  #auth-container {
+    background: #222;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #0f0;
+    width: 320px;
+  }
+  h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #0f0;
+  }
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    background: #333;
+    border: none;
+    border-radius: 6px;
+    color: #eee;
+  }
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #0f0;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #0c0;
+  }
+  #toggle-auth {
+    margin-top: 15px;
+    text-align: center;
+    cursor: pointer;
+    color: #0f0;
+    user-select: none;
+  }
+  #error-msg {
+    color: #f33;
+    margin-bottom: 10px;
+    height: 18px;
+  }
+</style>
 </head>
 <body>
-  <div class="container" id="loginBox">
-    <h2>Вхід</h2>
-    <input type="email" id="loginEmail" placeholder="Електронна пошта" />
-    <input type="password" id="loginPassword" placeholder="Пароль" />
-    <button onclick="handleLogin()">Увійти</button>
-    <div class="switch">Немає акаунту? <a onclick="toggleForm()">Зареєструватися</a></div>
-  </div>
 
-  <div class="container" id="registerBox" style="display: none;">
-    <h2>Реєстрація</h2>
-    <input type="text" id="regUsername" placeholder="Нікнейм" />
-    <input type="email" id="regEmail" placeholder="Електронна пошта" />
-    <input type="password" id="regPassword" placeholder="Пароль" />
-    <button onclick="handleRegister()">Зареєструватися</button>
-    <div class="switch">Вже є акаунт? <a onclick="toggleForm()">Увійти</a></div>
-  </div>
+<div id="auth-container">
+  <h2 id="auth-title">Увійти</h2>
+  <div id="error-msg"></div>
+  <input type="email" id="email" placeholder="Email" />
+  <input type="password" id="password" placeholder="Пароль" />
+  <input type="text" id="username" placeholder="Нікнейм (для реєстрації)" style="display:none;" />
+  <button id="auth-btn">Увійти</button>
+  <div id="toggle-auth">Немає акаунту? Зареєструватися</div>
+</div>
 
-  <script>
-    function toggleForm() {
-      const login = document.getElementById('loginBox');
-      const reg = document.getElementById('registerBox');
-      login.style.display = login.style.display === 'none' ? 'block' : 'none';
-      reg.style.display = reg.style.display === 'none' ? 'block' : 'none';
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAhO-l7hHZjFCC9YJq1GYH445jphDmjGZY",
+    authDomain: "dark-mesenger.firebaseapp.com",
+    projectId: "dark-mesenger",
+    storageBucket: "dark-mesenger.firebasestorage.app",
+    messagingSenderId: "629206445270",
+    appId: "1:629206445270:web:8fec4853b432a4f4f66d77",
+    measurementId: "G-171K0PBQWZ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const usernameInput = document.getElementById('username');
+  const authBtn = document.getElementById('auth-btn');
+  const toggleAuth = document.getElementById('toggle-auth');
+  const authTitle = document.getElementById('auth-title');
+  const errorMsg = document.getElementById('error-msg');
+
+  let isLogin = true;
+
+  toggleAuth.onclick = () => {
+    isLogin = !isLogin;
+    if(isLogin) {
+      authTitle.textContent = 'Увійти';
+      authBtn.textContent = 'Увійти';
+      usernameInput.style.display = 'none';
+      toggleAuth.textContent = 'Немає акаунту? Зареєструватися';
+    } else {
+      authTitle.textContent = 'Реєстрація';
+      authBtn.textContent = 'Зареєструватися';
+      usernameInput.style.display = 'block';
+      toggleAuth.textContent = 'Вже є акаунт? Увійти';
     }
-  </script>
+    errorMsg.textContent = '';
+  };
+
+  authBtn.onclick = async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    const username = usernameInput.value.trim();
+
+    errorMsg.textContent = '';
+
+    if (!email || !password || (!isLogin && !username)) {
+      errorMsg.textContent = 'Всі поля повинні бути заповнені.';
+      return;
+    }
+
+    try {
+      if (isLogin) {
+        // Вхід
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = 'main.html';
+      } else {
+        // Реєстрація
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, { displayName: username });
+        // Записуємо користувача в Firestore
+        await setDoc(doc(db, "users", userCredential.user.uid), {
+          uid: userCredential.user.uid,
+          displayName: username,
+          email: email,
+          photoURL: "",
+          createdAt: Date.now()
+        });
+        window.location.href = 'main.html';
+      }
+    } catch (error) {
+      errorMsg.textContent = error.message;
+    }
+  };
+</script>
+
 </body>
 </html>
