@@ -131,6 +131,9 @@
             float: right;
             font-size: 24px;
             cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-primary);
         }
 
         /* Основний інтерфейс */
@@ -215,6 +218,8 @@
             color: var(--text-primary);
             text-decoration: none;
             font-size: 18px;
+            display: block;
+            padding: 5px 0;
         }
 
         nav ul li a.active {
@@ -326,7 +331,6 @@
             padding: 10px;
             background: var(--bg-darker);
             border-top: 1px solid var(--border-color);
-            gap: 5px;
         }
 
         .message-input input {
@@ -336,30 +340,6 @@
             border: 1px solid var(--border-color);
             border-radius: 20px;
             color: var(--text-primary);
-        }
-
-        .message-actions {
-            display: flex;
-            gap: 5px;
-        }
-
-        .emoji-picker {
-            position: absolute;
-            bottom: 60px;
-            right: 10px;
-            background: var(--bg-darker);
-            border-radius: 8px;
-            padding: 10px;
-            display: none;
-        }
-
-        .emoji-picker.active {
-            display: block;
-        }
-
-        .emoji-btn {
-            font-size: 20px;
-            cursor: pointer;
         }
 
         /* Налаштування профілю */
@@ -392,45 +372,22 @@
             }
         }
 
-        /* Смайлики */
-        .emoji-container {
-            display: flex;
-            flex-wrap: wrap;
-            width: 200px;
-            max-height: 150px;
-            overflow-y: auto;
+        /* Сповіщення */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            animation: fadeIn 0.3s;
         }
 
-        .emoji {
-            font-size: 20px;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        /* Голосові повідомлення */
-        .voice-message-btn {
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .recording {
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        /* Фото */
-        .image-message {
-            max-width: 100%;
-            border-radius: 8px;
-            margin-top: 5px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -449,7 +406,7 @@
     <!-- Модальні вікна авторизації -->
     <div id="login-modal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <button class="close">&times;</button>
             <h2>Вхід</h2>
             <form id="login-form">
                 <input type="email" placeholder="Пошта" required>
@@ -461,7 +418,7 @@
 
     <div id="register-modal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <button class="close">&times;</button>
             <h2>Реєстрація</h2>
             <form id="register-form">
                 <input type="text" placeholder="Ім'я" required>
@@ -520,19 +477,7 @@
                 </div>
                 <div class="message-input">
                     <input type="text" placeholder="Написати повідомлення..." id="message-input">
-                    <div class="message-actions">
-                        <button id="emoji-btn" class="icon-btn emoji-btn">😊</button>
-                        <button id="image-btn" class="icon-btn">🖼️</button>
-                        <button id="voice-btn" class="voice-message-btn">🎤</button>
-                        <button id="send-btn" class="icon-btn">➤</button>
-                    </div>
-                    <div class="emoji-picker" id="emoji-picker">
-                        <div class="emoji-container" id="emoji-container">
-                            <!-- Смайлики будуть тут -->
-                        </div>
-                    </div>
-                    <input type="file" id="image-upload" accept="image/*" style="display: none;">
-                    <input type="file" id="voice-upload" accept="audio/*" style="display: none;">
+                    <button class="icon-btn" id="send-btn">➤</button>
                 </div>
             </div>
         </div>
@@ -569,12 +514,6 @@
         let chatsDB = JSON.parse(localStorage.getItem('chats')) || [];
         let currentUser = null;
         let currentChat = null;
-        let isRecording = false;
-        let mediaRecorder = null;
-        let audioChunks = [];
-
-        // Емоджі для вибору
-        const emojis = ["😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "😊", "😇", "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘", "😗", "😙", "😚", "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐", "🤓", "😎", "🤩", "🥳", "😏", "😒", "😞", "😔", "😟", "😕", "🙁", "☹️", "😣", "😖", "😫", "😩", "🥺", "😢", "😭", "😤", "😠", "😡", "🤬", "🤯", "😳", "🥵", "🥶", "😱", "😨", "😰", "😥", "😓", "🤗", "🤔", "🤭", "🤫", "🤥", "😶", "😐", "😑", "😬", "🙄", "😯", "😦", "😧", "😮", "😲", "🥱", "😴", "🤤", "😪", "😵", "🤐", "🥴", "🤢", "🤮", "🤧", "😷", "🤒", "🤕", "🤑", "🤠", "😈", "👿", "👹", "👺", "🤡", "💩", "👻", "💀", "☠️", "👽", "👾", "🤖", "🎃", "😺", "😸", "😹", "😻", "😼", "😽", "🙀", "😿", "😾"];
 
         // Додамо тестових користувачів, якщо база пуста
         if (usersDB.length === 0) {
@@ -596,43 +535,27 @@
                     password: "password123",
                     avatar: "https://i.pravatar.cc/150?img=2",
                     status: "online"
-                },
-                {
-                    uid: "3",
-                    name: "Петро",
-                    username: "petro789",
-                    email: "petro@example.com",
-                    password: "password123",
-                    avatar: "https://i.pravatar.cc/150?img=3",
-                    status: "offline"
                 }
             ];
             localStorage.setItem('users', JSON.stringify(usersDB));
             
-            // Створюємо чати між усіма користувачами
-            createChatBetweenAllUsers();
-        }
-
-        // Функція для створення чатів між усіма користувачами
-        function createChatBetweenAllUsers() {
-            for (let i = 0; i < usersDB.length; i++) {
-                for (let j = i + 1; j < usersDB.length; j++) {
-                    const chatExists = chatsDB.some(chat => 
-                        (chat.participants.includes(usersDB[i].uid) && 
-                        (chat.participants.includes(usersDB[j].uid))
-                    );
-                    
-                    if (!chatExists) {
-                        const newChat = {
-                            id: Date.now().toString() + i + j,
-                            participants: [usersDB[i].uid, usersDB[j].uid],
-                            messages: [],
-                            createdAt: new Date().toISOString()
-                        };
-                        chatsDB.push(newChat);
+            // Створюємо чат між тестовими користувачами
+            chatsDB = [{
+                id: "1",
+                participants: ["1", "2"],
+                messages: [
+                    {
+                        sender: "1",
+                        text: "Привіт, Маріє!",
+                        timestamp: Date.now() - 3600000
+                    },
+                    {
+                        sender: "2",
+                        text: "Привіт, Іване! Як справи?",
+                        timestamp: Date.now() - 1800000
                     }
-                }
-            }
+                ]
+            }];
             localStorage.setItem('chats', JSON.stringify(chatsDB));
         }
 
@@ -642,6 +565,8 @@
         const loginModal = document.getElementById('login-modal');
         const registerModal = document.getElementById('register-modal');
         const closeButtons = document.querySelectorAll('.close');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
         const app = document.getElementById('app');
         const menuBtn = document.getElementById('menu-btn');
         const sidebar = document.querySelector('.sidebar');
@@ -674,24 +599,18 @@
         const profileName = document.getElementById('profile-name');
         const profileUsername = document.getElementById('profile-username');
         const profileEmail = document.getElementById('profile-email');
-        const emojiBtn = document.getElementById('emoji-btn');
-        const emojiPicker = document.getElementById('emoji-picker');
-        const emojiContainer = document.getElementById('emoji-container');
-        const imageBtn = document.getElementById('image-btn');
-        const imageUpload = document.getElementById('image-upload');
-        const voiceBtn = document.getElementById('voice-btn');
-        const voiceUpload = document.getElementById('voice-upload');
 
-        // Заповнюємо контейнер смайликів
-        emojis.forEach(emoji => {
-            const emojiElement = document.createElement('span');
-            emojiElement.className = 'emoji';
-            emojiElement.textContent = emoji;
-            emojiElement.addEventListener('click', () => {
-                messageInput.value += emoji;
-            });
-            emojiContainer.appendChild(emojiElement);
-        });
+        // Функція для показу сповіщень
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
 
         // Перевірка, чи користувач вже ввійшов
         const loggedInUser = localStorage.getItem('currentUser');
@@ -701,8 +620,13 @@
         }
 
         // Відкриття модалок
-        loginBtn.addEventListener('click', () => loginModal.style.display = 'flex');
-        registerBtn.addEventListener('click', () => registerModal.style.display = 'flex');
+        loginBtn.addEventListener('click', () => {
+            loginModal.style.display = 'flex';
+        });
+
+        registerBtn.addEventListener('click', () => {
+            registerModal.style.display = 'flex';
+        });
 
         // Закриття модалок
         closeButtons.forEach(btn => {
@@ -712,8 +636,18 @@
             });
         });
 
+        // Закриття модалок при кліку поза них
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.style.display = 'none';
+            }
+            if (e.target === registerModal) {
+                registerModal.style.display = 'none';
+            }
+        });
+
         // Реєстрація
-        document.getElementById('register-form').addEventListener('submit', (e) => {
+        registerForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const name = e.target[0].value.trim();
             const username = e.target[1].value.trim().toLowerCase();
@@ -721,21 +655,21 @@
             const password = e.target[3].value.trim();
 
             if (!name || !username || !email || !password) {
-                alert("Усі поля обов'язкові!");
+                showNotification("Усі поля обов'язкові!");
                 return;
             }
 
             // Перевірка на унікальність email
             const emailExists = usersDB.some(user => user.email === email);
             if (emailExists) {
-                alert("Користувач з такою поштою вже існує!");
+                showNotification("Користувач з такою поштою вже існує!");
                 return;
             }
 
             // Перевірка на унікальність юзернейму
             const usernameExists = usersDB.some(user => user.username === username);
             if (usernameExists) {
-                alert("Цей юзернейм вже зайнятий!");
+                showNotification("Цей юзернейм вже зайнятий!");
                 return;
             }
 
@@ -772,13 +706,13 @@
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
             
             initApp();
-            alert("Реєстрація успішна!");
+            showNotification("Реєстрація успішна!");
             registerModal.style.display = 'none';
             e.target.reset();
         });
 
         // Вхід
-        document.getElementById('login-form').addEventListener('submit', (e) => {
+        loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const email = e.target[0].value.trim();
             const password = e.target[1].value.trim();
@@ -787,7 +721,7 @@
             const user = usersDB.find(user => user.email === email && user.password === password);
 
             if (!user) {
-                alert("Невірна пошта або пароль!");
+                showNotification("Невірна пошта або пароль!");
                 return;
             }
 
@@ -795,6 +729,7 @@
             currentUser = user;
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
             initApp();
+            showNotification("Вхід успішний!");
             loginModal.style.display = 'none';
             e.target.reset();
         });
@@ -836,19 +771,18 @@
                     const chatItem = document.createElement('div');
                     chatItem.className = 'chat-item';
                     chatItem.dataset.userId = user.uid;
+                    
+                    // Отримуємо останнє повідомлення
+                    const lastMessage = chat.messages.length > 0 ? chat.messages[chat.messages.length - 1] : null;
+                    const lastMessageText = lastMessage ? 
+                        (lastMessage.sender === currentUser.uid ? "Ви: " : "") + lastMessage.text : 
+                        "Немає повідомлень";
+                    
                     chatItem.innerHTML = `
                         <img src="${user.avatar}" alt="Аватар" class="avatar">
                         <div class="chat-info">
                             <span class="chat-name">${user.name}</span>
-                            <span class="last-msg">${chat.messages.length > 0 ? 
-                                (chat.messages[chat.messages.length-1].type === 'text' ? 
-                                    chat.messages[chat.messages.length-1].text : 
-                                    chat.messages[chat.messages.length-1].type === 'image' ? 
-                                        '📷 Фото' : 
-                                        chat.messages[chat.messages.length-1].type === 'voice' ? 
-                                            '🎤 Голосове повідомлення' : 
-                                            'Немає повідомлень') 
-                                : 'Немає повідомлень'}</span>
+                            <span class="last-msg">${lastMessageText}</span>
                         </div>
                         <div class="status ${user.status}"></div>
                     `;
@@ -897,32 +831,28 @@
                 chat.participants.includes(user.uid)
             );
             
-            // Відображення повідомлень
-            if (chat && chat.messages) {
-                chat.messages.forEach(msg => {
-                    const messageDiv = document.createElement('div');
-                    messageDiv.className = `message ${msg.sender === currentUser.uid ? 'sent' : 'received'}`;
-                    
-                    if (msg.type === 'text') {
-                        messageDiv.innerHTML = `
-                            <span class="msg-text">${msg.text}</span>
-                            <span class="msg-time">${new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                        `;
-                    } else if (msg.type === 'image') {
-                        messageDiv.innerHTML = `
-                            <img src="${msg.content}" class="image-message" alt="Фото">
-                            <span class="msg-time">${new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                        `;
-                    } else if (msg.type === 'voice') {
-                        messageDiv.innerHTML = `
-                            <audio controls src="${msg.content}"></audio>
-                            <span class="msg-time">${new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                        `;
-                    }
-                    
-                    chatMessages.appendChild(messageDiv);
-                });
+            // Якщо чату немає - створюємо новий
+            if (!chat) {
+                chat = {
+                    id: Date.now().toString(),
+                    participants: [currentUser.uid, user.uid],
+                    messages: [],
+                    createdAt: new Date().toISOString()
+                };
+                chatsDB.push(chat);
+                localStorage.setItem('chats', JSON.stringify(chatsDB));
             }
+            
+            // Відображення повідомлень
+            chat.messages.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${msg.sender === currentUser.uid ? 'sent' : 'received'}`;
+                messageDiv.innerHTML = `
+                    <span class="msg-text">${msg.text}</span>
+                    <span class="msg-time">${new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                `;
+                chatMessages.appendChild(messageDiv);
+            });
             
             // Прокрутка до останнього повідомлення
             chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -932,7 +862,7 @@
             activeChat.classList.remove('hidden');
         }
 
-        // Надсилання текстового повідомлення
+        // Надсилання повідомлення
         function sendMessage() {
             const text = messageInput.value.trim();
             if (!text || !currentChat) return;
@@ -943,19 +873,8 @@
                 chat.participants.includes(currentChat.uid)
             );
             
-            if (!chat) {
-                chat = {
-                    id: Date.now().toString(),
-                    participants: [currentUser.uid, currentChat.uid],
-                    messages: [],
-                    createdAt: new Date().toISOString()
-                };
-                chatsDB.push(chat);
-            }
-            
             // Додавання повідомлення
             const newMessage = {
-                type: 'text',
                 sender: currentUser.uid,
                 text,
                 timestamp: Date.now()
@@ -982,187 +901,6 @@
             // Оновлення списку чатів
             loadChats();
         }
-
-        // Надсилання фото
-        function sendImage(file) {
-            if (!file || !currentChat) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                // Пошук чату
-                let chat = chatsDB.find(chat => 
-                    chat.participants.includes(currentUser.uid) && 
-                    chat.participants.includes(currentChat.uid)
-                );
-                
-                if (!chat) {
-                    chat = {
-                        id: Date.now().toString(),
-                        participants: [currentUser.uid, currentChat.uid],
-                        messages: [],
-                        createdAt: new Date().toISOString()
-                    };
-                    chatsDB.push(chat);
-                }
-                
-                // Додавання повідомлення
-                const newMessage = {
-                    type: 'image',
-                    sender: currentUser.uid,
-                    content: e.target.result,
-                    timestamp: Date.now()
-                };
-                
-                chat.messages.push(newMessage);
-                localStorage.setItem('chats', JSON.stringify(chatsDB));
-                
-                // Оновлення інтерфейсу
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'message sent';
-                messageDiv.innerHTML = `
-                    <img src="${e.target.result}" class="image-message" alt="Фото">
-                    <span class="msg-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                `;
-                chatMessages.appendChild(messageDiv);
-                
-                // Прокрутка до останнього повідомлення
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-                
-                // Оновлення списку чатів
-                loadChats();
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Запис голосового повідомлення
-        async function startRecording() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = [];
-                
-                mediaRecorder.ondataavailable = (e) => {
-                    if (e.data.size > 0) {
-                        audioChunks.push(e.data);
-                    }
-                };
-                
-                mediaRecorder.onstop = () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                    sendVoiceMessage(audioBlob);
-                };
-                
-                mediaRecorder.start();
-                isRecording = true;
-                voiceBtn.classList.add('recording');
-            } catch (error) {
-                console.error('Помилка запису:', error);
-                alert('Не вдалося отримати доступ до мікрофона');
-            }
-        }
-
-        function stopRecording() {
-            if (mediaRecorder && isRecording) {
-                mediaRecorder.stop();
-                isRecording = false;
-                voiceBtn.classList.remove('recording');
-                
-                // Зупиняємо всі треки в потоці
-                mediaRecorder.stream.getTracks().forEach(track => track.stop());
-            }
-        }
-
-        // Надсилання голосового повідомлення
-        function sendVoiceMessage(blob) {
-            if (!blob || !currentChat) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                // Пошук чату
-                let chat = chatsDB.find(chat => 
-                    chat.participants.includes(currentUser.uid) && 
-                    chat.participants.includes(currentChat.uid)
-                );
-                
-                if (!chat) {
-                    chat = {
-                        id: Date.now().toString(),
-                        participants: [currentUser.uid, currentChat.uid],
-                        messages: [],
-                        createdAt: new Date().toISOString()
-                    };
-                    chatsDB.push(chat);
-                }
-                
-                // Додавання повідомлення
-                const newMessage = {
-                    type: 'voice',
-                    sender: currentUser.uid,
-                    content: e.target.result,
-                    timestamp: Date.now()
-                };
-                
-                chat.messages.push(newMessage);
-                localStorage.setItem('chats', JSON.stringify(chatsDB));
-                
-                // Оновлення інтерфейсу
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'message sent';
-                messageDiv.innerHTML = `
-                    <audio controls src="${e.target.result}"></audio>
-                    <span class="msg-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                `;
-                chatMessages.appendChild(messageDiv);
-                
-                // Прокрутка до останнього повідомлення
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-                
-                // Оновлення списку чатів
-                loadChats();
-            };
-            reader.readAsDataURL(blob);
-        }
-
-        // Обробники подій
-        emojiBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            emojiPicker.classList.toggle('active');
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!emojiPicker.contains(e.target) && e.target !== emojiBtn) {
-                emojiPicker.classList.remove('active');
-            }
-        });
-
-        imageBtn.addEventListener('click', () => {
-            imageUpload.click();
-        });
-
-        imageUpload.addEventListener('change', (e) => {
-            if (e.target.files[0]) {
-                sendImage(e.target.files[0]);
-                e.target.value = ''; // Очищаємо input
-            }
-        });
-
-        voiceBtn.addEventListener('click', () => {
-            if (isRecording) {
-                stopRecording();
-            } else {
-                startRecording();
-            }
-        });
-
-        // Надсилання повідомлення при натисканні кнопки
-        sendBtn.addEventListener('click', sendMessage);
-
-        // Надсилання повідомлення при натисканні Enter
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
 
         // Вихід
         logoutBtn.addEventListener('click', () => {
@@ -1194,6 +932,16 @@
             document.querySelector('.chat-list').classList.remove('hidden');
             activeChat.classList.add('hidden');
             currentChat = null;
+        });
+
+        // Надсилання повідомлення при натисканні кнопки
+        sendBtn.addEventListener('click', sendMessage);
+
+        // Надсилання повідомлення при натисканні Enter
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
         });
 
         // Навігація
@@ -1252,7 +1000,7 @@
             
             // Валідація
             if (!name || !username || !email) {
-                alert("Усі поля обов'язкові!");
+                showNotification("Усі поля обов'язкові!");
                 return;
             }
 
@@ -1263,7 +1011,7 @@
                     user.uid !== currentUser.uid
                 );
                 if (emailExists) {
-                    alert("Користувач з такою поштою вже існує!");
+                    showNotification("Користувач з такою поштою вже існує!");
                     return;
                 }
             }
@@ -1275,7 +1023,7 @@
                     user.uid !== currentUser.uid
                 );
                 if (usernameExists) {
-                    alert("Цей юзернейм вже зайнятий!");
+                    showNotification("Цей юзернейм вже зайнятий!");
                     return;
                 }
             }
@@ -1298,7 +1046,7 @@
             loadChats();
             loadContacts();
             
-            alert("Профіль оновлено!");
+            showNotification("Профіль оновлено!");
         });
     </script>
 </body>
