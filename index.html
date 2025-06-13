@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dark Messenger</title>
     <style>
+        /* Ваш CSS залишається без змін */
         :root {
             --bg-dark: #121212;
             --bg-darker: #0a0a0a;
@@ -485,109 +486,37 @@
         </div>
     </div>
 
-    <script type="module">
-        // Імітація Firebase
-        class MockFirebase {
-            constructor() {
-                this.users = [];
-                this.chats = [];
-                this.currentUser = null;
-            }
-
-            async createUser(email, password, userData) {
-                const user = {
-                    uid: Date.now().toString(),
-                    email,
-                    ...userData
-                };
-                this.users.push(user);
-                return { user };
-            }
-
-            async signIn(email, password) {
-                const user = this.users.find(u => u.email === email && u.password === password);
-                if (!user) throw new Error("Користувача не знайдено");
-                this.currentUser = user;
-                return { user };
-            }
-
-            async signOut() {
-                this.currentUser = null;
-            }
-
-            async getUsers() {
-                return this.users.filter(u => u.uid !== this.currentUser?.uid);
-            }
-
-            async searchUsers(username) {
-                return this.users.filter(u => 
-                    u.username.includes(username) && 
-                    u.uid !== this.currentUser?.uid
-                );
-            }
-
-            async createChat(user1, user2) {
-                const chat = {
-                    id: Date.now().toString(),
-                    participants: [user1.uid, user2.uid],
-                    messages: []
-                };
-                this.chats.push(chat);
-                return chat;
-            }
-
-            async getChats(userId) {
-                return this.chats.filter(c => c.participants.includes(userId));
-            }
-
-            async sendMessage(chatId, senderId, text) {
-                const chat = this.chats.find(c => c.id === chatId);
-                if (!chat) throw new Error("Чат не знайдено");
-                chat.messages.push({
-                    sender: senderId,
-                    text,
-                    timestamp: new Date()
-                });
-            }
-        }
-
-        // Ініціалізація імітації Firebase
-        const firebase = new MockFirebase();
-
-        // Додамо тестових користувачів
-        firebase.users = [
-            {
-                uid: "1",
-                name: "Іван",
-                username: "ivan123",
-                email: "ivan@example.com",
-                password: "password123",
-                avatar: "https://i.pravatar.cc/150?img=1",
-                status: "online"
-            },
-            {
-                uid: "2",
-                name: "Марія",
-                username: "maria456",
-                email: "maria@example.com",
-                password: "password123",
-                avatar: "https://i.pravatar.cc/150?img=2",
-                status: "online"
-            },
-            {
-                uid: "3",
-                name: "Петро",
-                username: "petro789",
-                email: "petro@example.com",
-                password: "password123",
-                avatar: "https://i.pravatar.cc/150?img=3",
-                status: "offline"
-            }
-        ];
-
-        // Глобальні змінні
+    <script>
+        // База даних (LocalStorage)
+        let usersDB = JSON.parse(localStorage.getItem('users')) || [];
+        let chatsDB = JSON.parse(localStorage.getItem('chats')) || [];
         let currentUser = null;
         let currentChat = null;
+
+        // Додамо тестових користувачів, якщо база пуста
+        if (usersDB.length === 0) {
+            usersDB = [
+                {
+                    uid: "1",
+                    name: "Іван",
+                    username: "ivan123",
+                    email: "ivan@example.com",
+                    password: "password123",
+                    avatar: "https://i.pravatar.cc/150?img=1",
+                    status: "online"
+                },
+                {
+                    uid: "2",
+                    name: "Марія",
+                    username: "maria456",
+                    email: "maria@example.com",
+                    password: "password123",
+                    avatar: "https://i.pravatar.cc/150?img=2",
+                    status: "online"
+                }
+            ];
+            localStorage.setItem('users', JSON.stringify(usersDB));
+        }
 
         // DOM елементи
         const loginBtn = document.getElementById('login-btn');
@@ -628,6 +557,13 @@
         const profileUsername = document.getElementById('profile-username');
         const profileEmail = document.getElementById('profile-email');
 
+        // Перевірка, чи користувач вже ввійшов
+        const loggedInUser = localStorage.getItem('currentUser');
+        if (loggedInUser) {
+            currentUser = JSON.parse(loggedInUser);
+            initApp();
+        }
+
         // Відкриття модалок
         loginBtn.addEventListener('click', () => loginModal.style.display = 'flex');
         registerBtn.addEventListener('click', () => registerModal.style.display = 'flex');
@@ -641,7 +577,7 @@
         });
 
         // Реєстрація
-        document.getElementById('register-form').addEventListener('submit', async (e) => {
+        document.getElementById('register-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const name = e.target[0].value.trim();
             const username = e.target[1].value.trim().toLowerCase();
@@ -653,51 +589,68 @@
                 return;
             }
 
-            try {
-                // Перевірка на унікальність юзернейму
-                const users = await firebase.getUsers();
-                if (users.some(u => u.username === username)) {
-                    alert("Цей юзернейм вже зайнятий!");
-                    return;
-                }
-
-                // Реєстрація
-                const { user } = await firebase.createUser(email, password, {
-                    name,
-                    username,
-                    avatar: "https://i.pravatar.cc/150?img=4",
-                    status: "online"
-                });
-
-                currentUser = user;
-                initApp();
-                alert("Реєстрація успішна!");
-                registerModal.style.display = 'none';
-                e.target.reset();
-            } catch (error) {
-                alert(`Помилка: ${error.message}`);
+            // Перевірка на унікальність email
+            const emailExists = usersDB.some(user => user.email === email);
+            if (emailExists) {
+                alert("Користувач з такою поштою вже існує!");
+                return;
             }
+
+            // Перевірка на унікальність юзернейму
+            const usernameExists = usersDB.some(user => user.username === username);
+            if (usernameExists) {
+                alert("Цей юзернейм вже зайнятий!");
+                return;
+            }
+
+            // Додавання нового користувача
+            const newUser = {
+                uid: Date.now().toString(),
+                name,
+                username,
+                email,
+                password,
+                avatar: "https://i.pravatar.cc/150?img=3",
+                status: "online"
+            };
+            
+            usersDB.push(newUser);
+            localStorage.setItem('users', JSON.stringify(usersDB));
+            
+            // Автоматичний вхід після реєстрації
+            currentUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            initApp();
+            alert("Реєстрація успішна!");
+            registerModal.style.display = 'none';
+            e.target.reset();
         });
 
         // Вхід
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
+        document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = e.target[0].value.trim();
             const password = e.target[1].value.trim();
 
-            try {
-                const { user } = await firebase.signIn(email, password);
-                currentUser = user;
-                initApp();
-                loginModal.style.display = 'none';
-                e.target.reset();
-            } catch (error) {
-                alert(`Помилка: ${error.message}`);
+            // Пошук користувача
+            const user = usersDB.find(user => user.email === email && user.password === password);
+
+            if (!user) {
+                alert("Невірна пошта або пароль!");
+                return;
             }
+
+            // Вхід у систему
+            currentUser = user;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            initApp();
+            loginModal.style.display = 'none';
+            e.target.reset();
         });
 
         // Ініціалізація додатку
-        async function initApp() {
+        function initApp() {
             app.classList.remove('hidden');
             document.querySelector('.auth-container').style.display = 'none';
 
@@ -718,14 +671,16 @@
         }
 
         // Завантаження чатів
-        async function loadChats() {
+        function loadChats() {
             chatList.innerHTML = '';
             
-            const chats = await firebase.getChats(currentUser.uid);
+            const userChats = chatsDB.filter(chat => 
+                chat.participants.includes(currentUser.uid)
+            );
             
-            for (const chat of chats) {
+            for (const chat of userChats) {
                 const participantId = chat.participants.find(id => id !== currentUser.uid);
-                const user = firebase.users.find(u => u.uid === participantId);
+                const user = usersDB.find(u => u.uid === participantId);
                 
                 if (user) {
                     const chatItem = document.createElement('div');
@@ -747,12 +702,12 @@
         }
 
         // Завантаження контактів
-        async function loadContacts() {
+        function loadContacts() {
             contactsList.innerHTML = '';
             
-            const users = await firebase.getUsers();
+            const contacts = usersDB.filter(user => user.uid !== currentUser.uid);
             
-            users.forEach(user => {
+            contacts.forEach(user => {
                 const contactItem = document.createElement('div');
                 contactItem.className = 'chat-item';
                 contactItem.dataset.userId = user.uid;
@@ -771,7 +726,7 @@
         }
 
         // Пошук користувачів
-        searchInput.addEventListener('input', async (e) => {
+        searchInput.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase().trim();
             
             if (searchTerm.length < 2) {
@@ -779,44 +734,52 @@
                 return;
             }
 
-            try {
-                const users = await firebase.searchUsers(searchTerm);
-                contactsList.innerHTML = '';
-                
-                users.forEach(user => {
-                    const contactItem = document.createElement('div');
-                    contactItem.className = 'chat-item';
-                    contactItem.innerHTML = `
-                        <img src="${user.avatar}" alt="Аватар" class="avatar">
-                        <div class="chat-info">
-                            <span class="chat-name">${user.name} (@${user.username})</span>
-                            <span class="last-msg">${user.status === 'online' ? 'В мережі' : 'Не в мережі'}</span>
-                        </div>
-                        <div class="status ${user.status}"></div>
-                    `;
-                    contactItem.addEventListener('click', () => openChat(user));
-                    contactsList.appendChild(contactItem);
-                });
-            } catch (error) {
-                console.error("Помилка пошуку:", error);
-            }
+            contactsList.innerHTML = '';
+            
+            const results = usersDB.filter(user => 
+                user.username.includes(searchTerm) && 
+                user.uid !== currentUser.uid
+            );
+            
+            results.forEach(user => {
+                const contactItem = document.createElement('div');
+                contactItem.className = 'chat-item';
+                contactItem.innerHTML = `
+                    <img src="${user.avatar}" alt="Аватар" class="avatar">
+                    <div class="chat-info">
+                        <span class="chat-name">${user.name} (@${user.username})</span>
+                        <span class="last-msg">${user.status === 'online' ? 'В мережі' : 'Не в мережі'}</span>
+                    </div>
+                    <div class="status ${user.status}"></div>
+                `;
+                contactItem.addEventListener('click', () => openChat(user));
+                contactsList.appendChild(contactItem);
+            });
         });
 
         // Відкриття чату
-        async function openChat(user) {
+        function openChat(user) {
             currentChat = user;
             chatWithUser.textContent = user.name;
             
             // Очищення повідомлень
             chatMessages.innerHTML = '';
             
-            // Отримання чату
-            let chat = (await firebase.getChats(currentUser.uid))
-                .find(c => c.participants.includes(user.uid));
+            // Пошук чату
+            let chat = chatsDB.find(chat => 
+                chat.participants.includes(currentUser.uid) && 
+                chat.participants.includes(user.uid)
+            );
             
             // Якщо чату немає - створюємо новий
             if (!chat) {
-                chat = await firebase.createChat(currentUser, user);
+                chat = {
+                    id: Date.now().toString(),
+                    participants: [currentUser.uid, user.uid],
+                    messages: []
+                };
+                chatsDB.push(chat);
+                localStorage.setItem('chats', JSON.stringify(chatsDB));
             }
             
             // Відображення повідомлень
@@ -825,7 +788,7 @@
                 messageDiv.className = `message ${msg.sender === currentUser.uid ? 'sent' : 'received'}`;
                 messageDiv.innerHTML = `
                     <span class="msg-text">${msg.text}</span>
-                    <span class="msg-time">${msg.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                    <span class="msg-time">${new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
                 `;
                 chatMessages.appendChild(messageDiv);
             });
@@ -839,20 +802,34 @@
         }
 
         // Надсилання повідомлення
-        async function sendMessage() {
+        function sendMessage() {
             const text = messageInput.value.trim();
             if (!text || !currentChat) return;
             
-            // Отримання чату
-            let chat = (await firebase.getChats(currentUser.uid))
-                .find(c => c.participants.includes(currentChat.uid));
+            // Пошук чату
+            let chat = chatsDB.find(chat => 
+                chat.participants.includes(currentUser.uid) && 
+                chat.participants.includes(currentChat.uid)
+            );
             
             if (!chat) {
-                chat = await firebase.createChat(currentUser, currentChat);
+                chat = {
+                    id: Date.now().toString(),
+                    participants: [currentUser.uid, currentChat.uid],
+                    messages: []
+                };
+                chatsDB.push(chat);
             }
             
-            // Надсилання повідомлення
-            await firebase.sendMessage(chat.id, currentUser.uid, text);
+            // Додавання повідомлення
+            const newMessage = {
+                sender: currentUser.uid,
+                text,
+                timestamp: Date.now()
+            };
+            
+            chat.messages.push(newMessage);
+            localStorage.setItem('chats', JSON.stringify(chatsDB));
             
             // Оновлення інтерфейсу
             const messageDiv = document.createElement('div');
@@ -874,15 +851,11 @@
         }
 
         // Вихід
-        logoutBtn.addEventListener('click', async () => {
-            try {
-                await firebase.signOut();
-                currentUser = null;
-                app.classList.add('hidden');
-                document.querySelector('.auth-container').style.display = 'flex';
-            } catch (error) {
-                alert(`Помилка: ${error.message}`);
-            }
+        logoutBtn.addEventListener('click', () => {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            app.classList.add('hidden');
+            document.querySelector('.auth-container').style.display = 'flex';
         });
 
         // Бокове меню
@@ -950,13 +923,21 @@
                     avatarPreview.src = event.target.result;
                     userAvatar.src = event.target.result;
                     currentUser.avatar = event.target.result;
+                    
+                    // Оновлення в базі даних
+                    const userIndex = usersDB.findIndex(u => u.uid === currentUser.uid);
+                    if (userIndex !== -1) {
+                        usersDB[userIndex].avatar = event.target.result;
+                        localStorage.setItem('users', JSON.stringify(usersDB));
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    }
                 };
                 reader.readAsDataURL(file);
             }
         });
 
         // Оновлення профілю
-        profileForm.addEventListener('submit', async (e) => {
+        profileForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
             const name = profileName.value.trim();
@@ -969,17 +950,42 @@
                 return;
             }
 
-            // Перевірка на унікальність юзернейму
-            const users = await firebase.getUsers();
-            if (users.some(u => u.username === username && u.uid !== currentUser.uid)) {
-                alert("Цей юзернейм вже зайнятий!");
-                return;
+            // Перевірка на унікальність email (якщо змінено)
+            if (email !== currentUser.email) {
+                const emailExists = usersDB.some(user => 
+                    user.email === email && 
+                    user.uid !== currentUser.uid
+                );
+                if (emailExists) {
+                    alert("Користувач з такою поштою вже існує!");
+                    return;
+                }
+            }
+
+            // Перевірка на унікальність юзернейму (якщо змінено)
+            if (username !== currentUser.username) {
+                const usernameExists = usersDB.some(user => 
+                    user.username === username && 
+                    user.uid !== currentUser.uid
+                );
+                if (usernameExists) {
+                    alert("Цей юзернейм вже зайнятий!");
+                    return;
+                }
             }
 
             // Оновлення даних
             currentUser.name = name;
             currentUser.username = username;
             currentUser.email = email;
+            
+            // Оновлення в базі даних
+            const userIndex = usersDB.findIndex(u => u.uid === currentUser.uid);
+            if (userIndex !== -1) {
+                usersDB[userIndex] = {...currentUser};
+                localStorage.setItem('users', JSON.stringify(usersDB));
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
             
             // Оновлення інтерфейсу
             usernameDisplay.textContent = username;
