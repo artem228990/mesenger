@@ -3,1705 +3,919 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShadowLink - Темний Месенджер</title>
+    <title>Dark Messenger</title>
     <style>
         :root {
-            --bg-dark: #0f0f12;
-            --bg-darker: #09090c;
-            --bg-light: #1a1a24;
-            --accent-color: #6e44ff;
-            --accent-hover: #7d5bff;
+            --bg-dark: #121212;
+            --bg-darker: #0a0a0a;
+            --accent-color: #6a1b9a;
             --text-primary: #e0e0e0;
             --text-secondary: #a0a0a0;
-            --online: #00e676;
-            --offline: #ff5252;
-            --unread: var(--accent-color);
+            --border-color: #333;
+            --online-status: #4caf50;
+            --offline-status: #f44336;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-primary);
             height: 100vh;
-            display: flex;
             overflow: hidden;
         }
 
-        /* Сайдбар */
-        .sidebar {
-            width: 350px;
-            background-color: var(--bg-darker);
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
+        .hidden {
+            display: none !important;
         }
 
-        .sidebar-header {
-            padding: 20px;
+        /* Авторизація */
+        .auth-container {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+            text-align: center;
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            margin-bottom: 2rem;
         }
 
-        .logo-icon {
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(135deg, var(--accent-color), #9d4dff);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo-text {
-            font-weight: 700;
-            font-size: 18px;
-            background: linear-gradient(to right, var(--accent-color), #9d4dff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
+        .dm-icon {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--accent-color);
+            font-size: 24px;
+            line-height: 60px;
+            margin-bottom: 1rem;
         }
 
-        .search-bar {
-            padding: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .search-input {
+        .auth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
             width: 100%;
-            padding: 10px 15px;
-            background-color: var(--bg-light);
-            border: none;
-            border-radius: 20px;
-            color: var(--text-primary);
-            font-size: 14px;
-            outline: none;
+            max-width: 300px;
         }
 
-        .search-input::placeholder {
-            color: var(--text-secondary);
-        }
-
-        .chats-list {
-            flex: 1;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent-color) var(--bg-darker);
-        }
-
-        .chats-list::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .chats-list::-webkit-scrollbar-thumb {
-            background-color: var(--accent-color);
-            border-radius: 3px;
-        }
-
-        .chat-item {
-            display: flex;
-            padding: 15px;
-            gap: 15px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .chat-item:hover {
-            background-color: var(--bg-light);
-        }
-
-        .chat-item.active {
-            background-color: var(--bg-light);
-            border-left: 3px solid var(--accent-color);
-        }
-
-        .chat-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            position: relative;
-        }
-
-        .online-status {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: var(--online);
-            border: 2px solid var(--bg-darker);
-            bottom: 0;
-            right: 0;
-        }
-
-        .offline .online-status {
-            background-color: var(--offline);
-        }
-
-        .chat-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .chat-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .chat-last-message {
-            font-size: 13px;
-            color: var(--text-secondary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .chat-time {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .unread-count {
-            background-color: var(--unread);
-            color: white;
-            font-size: 12px;
-            padding: 2px 6px;
-            border-radius: 10px;
-            margin-left: 5px;
-        }
-
-        /* Основной контент */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-header {
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .chat-title {
-            font-weight: 600;
-            font-size: 18px;
-        }
-
-        .chat-status {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .chat-actions {
-            margin-left: auto;
-            display: flex;
-            gap: 15px;
-        }
-
-        .action-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 20px;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .action-btn:hover {
-            color: var(--accent-color);
-        }
-
-        .messages-container {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(circle at 25% 25%, rgba(110, 68, 255, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(110, 68, 255, 0.05) 0%, transparent 50%);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .message {
-            max-width: 70%;
-            padding: 12px 15px;
-            border-radius: 18px;
-            position: relative;
-            word-wrap: break-word;
-            line-height: 1.4;
-        }
-
-        .incoming {
-            align-self: flex-start;
-            background-color: var(--bg-light);
-            border-bottom-left-radius: 5px;
-        }
-
-        .outgoing {
-            align-self: flex-end;
-            background-color: var(--accent-color);
-            color: white;
-            border-bottom-right-radius: 5px;
-        }
-
-        .message-time {
-            font-size: 11px;
-            color: var(--text-secondary);
-            text-align: right;
-            margin-top: 5px;
-        }
-
-        .outgoing .message-time {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .message-input-container {
-            padding: 15px;
-            display: flex;
-            gap: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .message-input {
-            flex: 1;
-            padding: 12px 20px;
-            background-color: var(--bg-light);
-            border: none;
-            border-radius: 25px;
-            color: var(--text-primary);
-            font-size: 14px;
-            outline: none;
-            resize: none;
-            max-height: 150px;
-        }
-
-        .send-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background-color: var(--accent-color);
+        .btn {
+            background: var(--accent-color);
             color: white;
             border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: background 0.3s;
         }
 
-        .send-btn:hover {
-            background-color: var(--accent-hover);
+        .btn:hover {
+            background: #7b2cbf;
         }
 
-        /* Модальные окна */
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--accent-color);
+        }
+
+        /* Модальні вікна */
         .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
             justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        .modal.active {
-            opacity: 1;
-            pointer-events: all;
+            align-items: center;
         }
 
         .modal-content {
-            background-color: var(--bg-darker);
-            border-radius: 10px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            transform: translateY(20px);
-            transition: transform 0.3s;
-        }
-
-        .modal.active .modal-content {
-            transform: translateY(0);
-        }
-
-        .modal-header {
+            background: var(--bg-darker);
             padding: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+        }
+
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Основний інтерфейс */
+        #app {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 15px;
+            background: var(--bg-darker);
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .modal-title {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .close-btn {
+        .icon-btn {
             background: none;
             border: none;
-            color: var(--text-secondary);
+            color: var(--text-primary);
             font-size: 20px;
             cursor: pointer;
         }
 
-        .modal-body {
-            padding: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            background-color: var(--bg-light);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .form-input:focus {
-            border-color: var(--accent-color);
-        }
-
-        .form-error {
-            color: #ff5252;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .modal-footer {
-            padding: 15px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-primary {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--accent-hover);
-        }
-
-        .btn-secondary {
-            background-color: var(--bg-light);
-            color: var(--text-primary);
-            border: none;
-        }
-
-        .btn-secondary:hover {
-            background-color: #22222e;
-        }
-
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                position: absolute;
-                z-index: 100;
-                height: 100%;
-                transform: translateX(-100%);
-            }
-
-            .sidebar.active {
-                transform: translateX(0);
-            }
-
-            .mobile-menu-btn {
-                display: block;
-                background: none;
-                border: none;
-                color: var(--text-primary);
-                font-size: 20px;
-                cursor: pointer;
-            }
-
-            .desktop-menu-btn {
-                display: none;
-            }
-        }
-
-        @media (min-width: 769px) {
-            .mobile-menu-btn {
-                display: none;
-            }
-        }
-
-        /* Анимации */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .message {
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        /* Страница входа */
-        .auth-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            width: 100%;
-            background-color: var(--bg-darker);
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(110, 68, 255, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(110, 68, 255, 0.1) 0%, transparent 40%);
-        }
-
-        .auth-box {
-            background-color: var(--bg-dark);
-            border-radius: 15px;
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-            text-align: center;
-        }
-
-        .auth-logo {
-            margin-bottom: 30px;
-        }
-
-        .auth-logo-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--accent-color), #9d4dff);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-        }
-
-        .auth-logo-text {
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(to right, var(--accent-color), #9d4dff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .auth-tabs {
-            display: flex;
-            margin-bottom: 25px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .auth-tab {
-            flex: 1;
-            padding: 12px;
-            cursor: pointer;
-            font-weight: 500;
-            color: var(--text-secondary);
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .auth-tab.active {
-            color: var(--text-primary);
-        }
-
-        .auth-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
+        .sidebar {
+            position: fixed;
+            top: 0;
             left: 0;
-            width: 100%;
-            height: 3px;
-            background-color: var(--accent-color);
-            border-radius: 3px 3px 0 0;
-        }
-
-        .auth-form {
-            display: none;
-        }
-
-        .auth-form.active {
-            display: block;
-        }
-
-        .auth-footer {
-            margin-top: 20px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .auth-link {
-            color: var(--accent-color);
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* Страница профиля */
-        .profile-container {
+            width: 70%;
+            height: 100%;
+            background: var(--bg-darker);
+            z-index: 10;
             padding: 20px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .profile-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--accent-color);
-            margin-bottom: 15px;
-            cursor: pointer;
-            position: relative;
+            transform: translateX(-100%);
             transition: transform 0.3s;
         }
 
-        .profile-avatar:hover {
-            transform: scale(1.05);
+        .sidebar.active {
+            transform: translateX(0);
         }
 
-        .profile-name {
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .profile-status {
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-
-        .profile-edit-btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .profile-edit-btn:hover {
-            background-color: var(--accent-hover);
-        }
-
-        .profile-section {
-            margin-bottom: 30px;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--accent-color);
+        .profile {
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-bottom: 30px;
         }
 
-        .profile-info {
-            background-color: var(--bg-light);
-            border-radius: 10px;
-            padding: 15px;
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
         }
 
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        .status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-left: auto;
         }
 
-        .info-item:last-child {
-            border-bottom: none;
+        .online {
+            background: var(--online-status);
         }
 
-        .info-label {
-            color: var(--text-secondary);
+        .offline {
+            background: var(--offline-status);
         }
 
-        .info-value {
-            font-weight: 500;
+        nav ul {
+            list-style: none;
         }
 
-        .info-change {
+        nav ul li {
+            margin-bottom: 15px;
+        }
+
+        nav ul li a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav ul li a.active {
             color: var(--accent-color);
-            cursor: pointer;
-            font-size: 13px;
         }
-        /* Адаптивність для телефонів (менше 768px) */
-@media (max-width: 768px) {
-    /* Сайдбар */
-    .sidebar {
-        width: 100%; /* Сайдбар займає всю ширину екрану */
-        position: fixed; /* Фіксоване позиціонування */
-        height: 100%; /* Займає всю висоту екрану */
-        top: 0;
-        left: 0;
-        transform: translateX(-100%); /* Прихований за замовчуванням */
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5); /* Додаємо тінь для кращого візуального ефекту */
-        border-right: none; /* Забираємо рамку, оскільки він тепер повноекранний */
-        z-index: 200; /* Перекриває інший вміст, коли активний */
-    }
 
-    .sidebar.active {
-        transform: translateX(0); /* Повністю видно, коли активний */
-    }
+        .search-bar {
+            display: flex;
+            padding: 15px;
+            background: var(--bg-darker);
+            border-bottom: 1px solid var(--border-color);
+        }
 
-    .mobile-menu-btn {
-        display: block; /* Показ кнопки меню для мобільних */
-        margin-left: 10px; /* Трохи відступу зліва для кнопки */
-        font-size: 24px; /* Збільшимо розмір кнопки для зручності натискання */
-    }
+        .search-bar input {
+            flex: 1;
+            padding: 10px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+        }
 
-    .desktop-menu-btn {
-        display: none; /* Приховуємо кнопку меню для десктопів */
-    }
+        .chat-area {
+            flex: 1;
+            overflow-y: auto;
+        }
 
-    /* Заголовок чату для мобільних пристроїв */
-    .chat-header {
-        padding: 10px 15px; /* Зменшимо відступи */
-        gap: 10px; /* Зменшимо відстань між елементами */
-        /* Додамо елементи керування для мобільних, якщо вони є (наприклад, кнопка "назад" до списку чатів) */
-    }
+        .chat-list {
+            padding: 10px;
+        }
 
-    .chat-title {
-        font-size: 16px; /* Трохи зменшимо розмір заголовка */
-    }
+        .chat-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
 
-    .chat-actions {
-        gap: 10px; /* Зменшимо відстань між кнопками дій */
-    }
+        .chat-item:hover {
+            background: var(--bg-darker);
+        }
 
-    .action-btn {
-        font-size: 18px; /* Зменшимо розмір іконок дій */
-    }
+        .chat-info {
+            margin-left: 10px;
+            flex: 1;
+        }
 
-    /* Контейнер повідомлень */
-    .messages-container {
-        padding: 15px; /* Зменшимо відступи для повідомлень */
-    }
+        .chat-name {
+            font-weight: bold;
+        }
 
-    .message {
-        max-width: 85%; /* Збільшимо ширину повідомлень, щоб краще використовувати простір */
-        padding: 10px 12px; /* Зменшимо відступи повідомлень */
-        font-size: 14px; /* Трохи зменшимо розмір шрифту */
-    }
+        .last-msg {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
 
-    .message-time {
-        font-size: 10px; /* Зменшимо розмір часу повідомлення */
-    }
+        .active-chat {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
 
-    /* Контейнер введення повідомлень */
-    .message-input-container {
-        padding: 10px; /* Зменшимо відступи */
-        gap: 8px; /* Зменшимо відстань між полем вводу та кнопкою */
-    }
+        .chat-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: var(--bg-darker);
+            border-bottom: 1px solid var(--border-color);
+        }
 
-    .message-input {
-        padding: 10px 15px; /* Зменшимо відступи в полі вводу */
-        font-size: 14px; /* Зменшимо розмір шрифту */
-    }
+        .messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-    .send-btn {
-        width: 40px; /* Зменшимо розмір кнопки відправки */
-        height: 40px;
-    }
+        .message {
+            max-width: 70%;
+            padding: 10px;
+            border-radius: 8px;
+            position: relative;
+        }
 
-    /* Модальні вікна (профіль, редагування, пароль) */
-    .modal-content {
-        max-width: 95%; /* Займає майже всю ширину екрану на телефонах */
-        margin: 10px; /* Додамо невеликі відступи з боків */
-        border-radius: 8px; /* Трохи зменшимо радіус заокруглення */
-        /* Додамо прокрутку, якщо вміст не поміщається */
-        max-height: 90vh; /* Максимальна висота, щоб було видно футер, якщо вміст довгий */
-        overflow-y: auto; /* Дозволяє прокрутку вмісту модалки */
-        -webkit-overflow-scrolling: touch; /* Покращує прокрутку на iOS */
-    }
+        .message.received {
+            background: var(--bg-darker);
+            align-self: flex-start;
+        }
 
-    .modal-header,
-    .modal-footer {
-        padding: 15px; /* Зменшимо відступи в заголовку та футері модалок */
-    }
+        .message.sent {
+            background: var(--accent-color);
+            align-self: flex-end;
+        }
 
-    .modal-title {
-        font-size: 17px; /* Трохи зменшимо розмір заголовка модалки */
-    }
+        .msg-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: block;
+            text-align: right;
+            margin-top: 5px;
+        }
 
-    .modal-body {
-        padding: 15px; /* Зменшимо відступи в тілі модалки */
-    }
+        .message-input {
+            display: flex;
+            padding: 10px;
+            background: var(--bg-darker);
+            border-top: 1px solid var(--border-color);
+        }
 
-    .form-group {
-        margin-bottom: 15px; /* Зменшимо відступи між полями форми */
-    }
+        .message-input input {
+            flex: 1;
+            padding: 10px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            color: var(--text-primary);
+        }
 
-    .form-input,
-    .btn {
-        padding: 10px 15px; /* Зменшимо розмір інпутів та кнопок у формах */
-        font-size: 14px;
-    }
+        /* Налаштування профілю */
+        .settings-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .btn {
-        width: 100%; /* Кнопки в футері модалки будуть займати всю ширину */
-        margin-top: 10px; /* Відступи між кнопками, якщо вони на різних рядках */
-    }
+        .settings-content {
+            background: var(--bg-darker);
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+        }
 
-    .modal-footer {
-        flex-direction: column-reverse; /* Розмістимо кнопки вертикально для зручності */
-    }
+        .avatar-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
-    .modal-footer .btn-secondary {
-        margin-top: 0; /* Прибираємо верхній відступ для першої кнопки (Скасувати) */
-        margin-bottom: 10px; /* Додаємо нижній відступ */
-    }
-    .auth-box {
-        padding: 25px; /* Зменшуємо внутрішні відступи для форми входу/реєстрації */
-        max-width: 90%; /* Займає майже всю ширину на маленьких екранах */
-        margin: 15px; /* Додаємо невеликі відступи */
-    }
+        .avatar-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
 
-    .auth-logo-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 12px;
-    }
-
-    .auth-logo-text {
-        font-size: 20px;
-    }
-
-    .auth-tabs {
-        margin-bottom: 20px;
-    }
-
-    .auth-tab {
-        padding: 10px;
-        font-size: 14px;
-    }
-}
-
-/* Додаткові покращення, які застосовуються незалежно від розміру екрана, але важливі для мобільних */
-
-/* Зробимо user-profile в сайдбарі також клікабельним і більшим для легкого натискання */
-.user-profile {
-    padding: 10px; /* Збільшимо зону для натискання */
-    margin-right: -10px; /* Компенсуємо відступ, якщо потрібно */
-}
-
-/* Забезпечимо, щоб user-avatar в сайдбарі виглядав добре на мобільних */
-.sidebar .user-avatar {
-    width: 35px; /* Трохи менше на мобільних */
-    height: 35px;
-}
-
-/* Переконаємось, що елементи в chats-list добре масштабуються */
-.chat-item {
-    align-items: center; /* Центруємо вміст по вертикалі */
-    padding: 12px 15px; /* Трохи зменшимо відступи */
-}
-
-.chat-avatar {
-    width: 45px; /* Трохи менший розмір аватарів чатів */
-    height: 45px;
-}
-
-.chat-name {
-    font-size: 15px; /* Зменшимо розмір назви чату */
-}
-
-.chat-last-message {
-    font-size: 12px; /* Зменшимо розмір останнього повідомлення */
-}
-
-.unread-count {
-    font-size: 11px; /* Зменшимо розмір лічильника непрочитаних */
-    padding: 1px 5px;
-}
-
-/* Забезпечимо, щоб прокрутка працювала добре на дотикових пристроях */
-.chats-list,
-.messages-container {
-    -webkit-overflow-scrolling: touch; /* Покращує прокрутку на iOS */
-}
+        /* Адаптивність */
+        @media (min-width: 768px) {
+            .sidebar {
+                width: 250px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Страница аутентификации -->
-    <div class="auth-container" id="authPage">
-        <div class="auth-box">
-            <div class="auth-logo">
-                <div class="auth-logo-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                </div>
-                <div class="auth-logo-text">ShadowLink</div>
-            </div>
-
-            <div class="auth-tabs">
-                <div class="auth-tab active" data-tab="login">Увійти</div>
-                <div class="auth-tab" data-tab="register">Реєстрація</div>
-            </div>
-
-            <!-- Форма входа -->
-            <div class="auth-form active" id="loginForm">
-                <div class="form-group">
-                    <input type="email" class="form-input" placeholder="Електронна пошта" id="loginEmail">
-                    <div class="form-error" id="loginEmailError"></div>
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-input" placeholder="Пароль" id="loginPassword">
-                    <div class="form-error" id="loginPasswordError"></div>
-                </div>
-                <button class="btn btn-primary" id="loginBtn" style="width: 100%;">Увійти</button>
-                <div class="auth-footer">
-                    Забули пароль? <span class="auth-link" id="forgotPassword">Відновити</span>
-                </div>
-            </div>
-
-            <!-- Форма регистрации -->
-            <div class="auth-form" id="registerForm">
-                <div class="form-group">
-                    <input type="text" class="form-input" placeholder="Ім'я користувача" id="registerUsername">
-                    <div class="form-error" id="registerUsernameError"></div>
-                </div>
-                <div class="form-group">
-                    <input type="email" class="form-input" placeholder="Електронна пошта" id="registerEmail">
-                    <div class="form-error" id="registerEmailError"></div>
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-input" placeholder="Пароль" id="registerPassword">
-                    <div class="form-error" id="registerPasswordError"></div>
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-input" placeholder="Підтвердіть пароль" id="registerConfirmPassword">
-                    <div class="form-error" id="registerConfirmPasswordError"></div>
-                </div>
-                <button class="btn btn-primary" id="registerBtn" style="width: 100%;">Зареєструватись</button>
-            </div>
+    <div class="auth-container">
+        <div class="logo">
+            <span class="dm-icon">DM</span>
+            <h1>Dark Messenger</h1>
+        </div>
+        <div class="auth-buttons">
+            <button id="login-btn" class="btn">Увійти</button>
+            <button id="register-btn" class="btn btn-secondary">Реєстрація</button>
         </div>
     </div>
 
-    <!-- Основной интерфейс мессенджера -->
-    <div class="app-container" id="appContainer" style="display: none;">
-        <!-- Сайдбар -->
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <div class="logo-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                    </div>
-                    <div class="logo-text">ShadowLink</div>
-                </div>
-                <button class="mobile-menu-btn" id="mobileMenuBtn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
-                <div class="user-profile" id="userProfileBtn">
-                    <img src="https://via.placeholder.com/150" alt="User Avatar" class="user-avatar" id="userAvatar">
-                </div>
-            </div>
-
-            <div class="search-bar">
-                <input type="text" class="search-input" placeholder="Пошук чатів та контактів..." id="searchInput">
-            </div>
-
-            <div class="chats-list" id="chatsList">
-                <!-- Чат 1 -->
-                <div class="chat-item active">
-                    <div class="chat-avatar">
-                        <img src="https://via.placeholder.com/150" alt="User Avatar">
-                        <div class="online-status"></div>
-                    </div>
-                    <div class="chat-info">
-                        <div class="chat-name">
-                            <span>Андрій Коваленко</span>
-                            <span class="chat-time">12:30</span>
-                        </div>
-                        <div class="chat-last-message">Привіт, як справи?</div>
-                    </div>
-                </div>
-
-                <!-- Чат 2 -->
-                <div class="chat-item">
-                    <div class="chat-avatar offline">
-                        <img src="https://via.placeholder.com/150" alt="User Avatar">
-                        <div class="online-status"></div>
-                    </div>
-                    <div class="chat-info">
-                        <div class="chat-name">
-                            <span>Марія Іваненко</span>
-                            <span class="chat-time">Вчора</span>
-                        </div>
-                        <div class="chat-last-message">Нагадай, будь ласка, про нашу зустріч</div>
-                    </div>
-                </div>
-
-                <!-- Чат 3 -->
-                <div class="chat-item">
-                    <div class="chat-avatar">
-                        <img src="https://via.placeholder.com/150" alt="User Avatar">
-                        <div class="online-status"></div>
-                    </div>
-                    <div class="chat-info">
-                        <div class="chat-name">
-                            <span>Робоча група <span class="unread-count">3</span></span>
-                            <span class="chat-time">Понеділок</span>
-                        </div>
-                        <div class="chat-last-message">Олексій: Я закінчив звіт</div>
-                    </div>
-                </div>
-            </div>
+    <!-- Модальні вікна авторизації -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Вхід</h2>
+            <form id="login-form">
+                <input type="email" placeholder="Пошта" required>
+                <input type="password" placeholder="Пароль" required>
+                <button type="submit" class="btn">Увійти</button>
+            </form>
         </div>
+    </div>
 
-        <!-- Основной контент -->
-        <div class="main-content">
-            <div class="chat-header">
-                <button class="mobile-menu-btn desktop-menu-btn" id="desktopMenuBtn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
-                <div class="chat-avatar">
-                    <img src="https://via.placeholder.com/150" alt="User Avatar">
-                    <div class="online-status"></div>
-                </div>
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Реєстрація</h2>
+            <form id="register-form">
+                <input type="text" placeholder="Ім'я" required>
+                <input type="text" placeholder="Юзернейм" required>
+                <input type="email" placeholder="Пошта" required>
+                <input type="password" placeholder="Пароль" required>
+                <button type="submit" class="btn">Зареєструватись</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Основний інтерфейс -->
+    <div id="app" class="hidden">
+        <header class="app-header">
+            <button id="menu-btn" class="icon-btn">☰</button>
+            <h2 id="current-screen">Чати</h2>
+            <button id="search-btn" class="icon-btn">🔍</button>
+        </header>
+
+        <div class="sidebar hidden">
+            <div class="profile">
+                <img src="https://via.placeholder.com/50" alt="Аватар" class="avatar" id="user-avatar">
                 <div>
-                    <div class="chat-title">Андрій Коваленко</div>
-                    <div class="chat-status">online</div>
-                </div>
-                <div class="chat-actions">
-                    <button class="action-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="1"></circle>
-                            <circle cx="12" cy="5" r="1"></circle>
-                            <circle cx="12" cy="19" r="1"></circle>
-                        </svg>
-                    </button>
+                    <span id="username-display">User123</span>
+                    <div class="status online" id="user-status"></div>
                 </div>
             </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active" data-screen="chats">Чати</a></li>
+                    <li><a href="#" data-screen="contacts">Контакти</a></li>
+                    <li><a href="#" data-screen="settings">Налаштування</a></li>
+                    <li><a href="#" id="logout-btn">Вийти</a></li>
+                </ul>
+            </nav>
+        </div>
 
-            <div class="messages-container" id="messagesContainer">
-                <!-- Входящее сообщение -->
-                <div class="message incoming">
-                    Привіт! Як справи?
-                    <div class="message-time">12:30</div>
-                </div>
+        <div class="search-bar hidden">
+            <input type="text" placeholder="Пошук людей..." id="search-input">
+            <button id="close-search" class="icon-btn">✕</button>
+        </div>
 
-                <!-- Исходящее сообщение -->
-                <div class="message outgoing">
-                    Все добре, дякую! А у тебе?
-                    <div class="message-time">12:32</div>
-                </div>
-
-                <!-- Входящее сообщение -->
-                <div class="message incoming">
-                    Теж добре. Слухай, ти вже подивився той новий фільм?
-                    <div class="message-time">12:33</div>
-                </div>
-
-                <!-- Исходящее сообщение -->
-                <div class="message outgoing">
-                    Так, вчора якраз подивився. Дуже сподобався!
-                    <div class="message-time">12:35</div>
-                </div>
+        <!-- Екран чатів -->
+        <div class="chat-area" id="chats-screen">
+            <div class="chat-list" id="chat-list">
+                <!-- Список чатів буде генеруватися JavaScript -->
             </div>
 
-            <div class="message-input-container">
-                <textarea class="message-input" placeholder="Напишіть повідомлення..." id="messageInput"></textarea>
-                <button class="send-btn" id="sendBtn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
-                </button>
+            <div class="active-chat hidden" id="active-chat">
+                <div class="chat-header">
+                    <button id="back-to-chats" class="icon-btn">←</button>
+                    <span class="chat-with" id="chat-with-user"></span>
+                </div>
+                <div class="messages" id="chat-messages">
+                    <!-- Повідомлення чату -->
+                </div>
+                <div class="message-input">
+                    <input type="text" placeholder="Написати повідомлення..." id="message-input">
+                    <button class="icon-btn" id="send-btn">➤</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Екран контактів -->
+        <div class="chat-area hidden" id="contacts-screen">
+            <div class="chat-list" id="contacts-list">
+                <!-- Список контактів буде генеруватися JavaScript -->
+            </div>
+        </div>
+
+        <!-- Екран налаштувань -->
+        <div class="chat-area hidden" id="settings-screen">
+            <div class="settings-content">
+                <h2>Налаштування профілю</h2>
+                <div class="avatar-upload">
+                    <img src="https://via.placeholder.com/100" alt="Аватар" class="avatar-preview" id="avatar-preview">
+                    <input type="file" id="avatar-upload" accept="image/*">
+                    <button class="btn" id="change-avatar-btn">Змінити аватар</button>
+                </div>
+                <form id="profile-form">
+                    <input type="text" id="profile-name" placeholder="Ім'я" required>
+                    <input type="text" id="profile-username" placeholder="Юзернейм" required>
+                    <input type="email" id="profile-email" placeholder="Пошта" required>
+                    <button type="submit" class="btn">Зберегти зміни</button>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Модальное окно профиля -->
-    <div class="modal" id="profileModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Мій профіль</div>
-                <button class="close-btn" id="closeProfileModal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="profile-container">
-                    <div class="profile-header">
-                        <img src="https://via.placeholder.com/150" alt="User Avatar" class="profile-avatar" id="profileAvatar">
-                        <div class="profile-name" id="profileName">Іван Петренко</div>
-                        <div class="profile-status" id="profileStatus">online</div>
-                        <button class="profile-edit-btn" id="editProfileBtn">Редагувати</button>
-                    </div>
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, query, where, onSnapshot, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
 
-                    <div class="profile-section">
-                        <div class="section-title">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
-                            Особиста інформація
-                        </div>
-                        <div class="profile-info">
-                            <div class="info-item">
-                                <div class="info-label">Ім'я користувача</div>
-                                <div class="info-value" id="profileUsername">ivan_petrenko</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Електронна пошта</div>
-                                <div class="info-value" id="profileEmail">ivan.petrenko@example.com</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Телефон</div>
-                                <div class="info-value" id="profilePhone">+380991234567</div>
-                            </div>
-                        </div>
-                    </div>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAhO-l7hHZjFCC9YJq1GYH445jphDmjGZY",
+            authDomain: "dark-mesenger.firebaseapp.com",
+            projectId: "dark-mesenger",
+            storageBucket: "dark-mesenger.appspot.com",
+            messagingSenderId: "629206445270",
+            appId: "1:629206445270:web:8fec4853b432a4f4f66d77",
+            measurementId: "G-171K0PBQWZ"
+        };
 
-                    <div class="profile-section">
-                        <div class="section-title">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
-                            Соціальні мережі
-                        </div>
-                        <div class="profile-info">
-                            <div class="info-item">
-                                <div class="info-label">Telegram</div>
-                                <div class="info-value">@ivan_petrenko</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">Instagram</div>
-                                <div class="info-value">ivan_petrenko</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="logoutBtn">Вийти</button>
-            </div>
-        </div>
-    </div>
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-    <!-- Модальное окно редактирования профиля -->
-    <div class="modal" id="editProfileModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Редагування профілю</div>
-                <button class="close-btn" id="closeEditProfileModal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">Аватар</label>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <img src="https://via.placeholder.com/150" alt="User Avatar" class="user-avatar" id="editAvatarPreview" style="width: 60px; height: 60px;">
-                        <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
-                        <button class="btn btn-secondary" id="changeAvatarBtn">Змінити</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Ім'я користувача</label>
-                    <input type="text" class="form-input" id="editUsername" value="Іван Петренко">
-                    <div class="form-error" id="editUsernameError"></div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Статус</label>
-                    <input type="text" class="form-input" id="editStatus" value="online">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Електронна пошта</label>
-                    <input type="email" class="form-input" id="editEmail" value="ivan.petrenko@example.com">
-                    <div class="form-error" id="editEmailError"></div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Телефон</label>
-                    <input type="tel" class="form-input" id="editPhone" value="+380991234567">
-                    <div class="form-error" id="editPhoneError"></div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="cancelEditProfileBtn">Скасувати</button>
-                           <button class="btn btn-primary" id="saveProfileBtn">Зберегти</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно смены пароля -->
-    <div class="modal" id="changePasswordModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Зміна пароля</div>
-                <button class="close-btn" id="closeChangePasswordModal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">Поточний пароль</label>
-                    <input type="password" class="form-input" id="currentPassword">
-                    <div class="form-error" id="currentPasswordError"></div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Новий пароль</label>
-                    <input type="password" class="form-input" id="newPassword">
-                    <div class="form-error" id="newPasswordError"></div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Підтвердіть новий пароль</label>
-                    <input type="password" class="form-input" id="confirmNewPassword">
-                    <div class="form-error" id="confirmNewPasswordError"></div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="cancelChangePasswordBtn">Скасувати</button>
-                <button class="btn btn-primary" id="savePasswordBtn">Зберегти</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // DOM элементы
-        const authPage = document.getElementById('authPage');
-        const appContainer = document.getElementById('appContainer');
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        const loginBtn = document.getElementById('loginBtn');
-        const registerBtn = document.getElementById('registerBtn');
-        const forgotPassword = document.getElementById('forgotPassword');
-        const tabs = document.querySelectorAll('.auth-tab');
-        const sidebar = document.getElementById('sidebar');
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const desktopMenuBtn = document.getElementById('desktopMenuBtn');
-        const userProfileBtn = document.getElementById('userProfileBtn');
-        const profileModal = document.getElementById('profileModal');
-        const closeProfileModal = document.getElementById('closeProfileModal');
-        const editProfileBtn = document.getElementById('editProfileBtn');
-        const editProfileModal = document.getElementById('editProfileModal');
-        const closeEditProfileModal = document.getElementById('closeEditProfileModal');
-        const cancelEditProfileBtn = document.getElementById('cancelEditProfileBtn');
-        const saveProfileBtn = document.getElementById('saveProfileBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const changeAvatarBtn = document.getElementById('changeAvatarBtn');
-        const avatarUpload = document.getElementById('avatarUpload');
-        const editAvatarPreview = document.getElementById('editAvatarPreview');
-        const messageInput = document.getElementById('messageInput');
-        const sendBtn = document.getElementById('sendBtn');
-        const messagesContainer = document.getElementById('messagesContainer');
-        const chatsList = document.getElementById('chatsList');
-        const chatItems = document.querySelectorAll('.chat-item');
-
-        // Переменные состояния
+        // Глобальні змінні
         let currentUser = null;
-        let isMobile = window.innerWidth <= 768;
+        let currentChat = null;
 
-        // Инициализация приложения
-        document.addEventListener('DOMContentLoaded', () => {
-            // Проверяем, авторизован ли пользователь (в реальном приложении здесь была бы проверка токена)
-            const isLoggedIn = localStorage.getItem('shadowlink_user') !== null;
-            
-            if (isLoggedIn) {
-                currentUser = JSON.parse(localStorage.getItem('shadowlink_user'));
-                authPage.style.display = 'none';
-                appContainer.style.display = 'flex';
-                updateProfileData();
+        // DOM елементи
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const loginModal = document.getElementById('login-modal');
+        const registerModal = document.getElementById('register-modal');
+        const closeButtons = document.querySelectorAll('.close');
+        const app = document.getElementById('app');
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.querySelector('.sidebar');
+        const searchBtn = document.getElementById('search-btn');
+        const searchBar = document.querySelector('.search-bar');
+        const closeSearch = document.getElementById('close-search');
+        const logoutBtn = document.getElementById('logout-btn');
+        const backToChats = document.getElementById('back-to-chats');
+        const chatList = document.getElementById('chat-list');
+        const activeChat = document.getElementById('active-chat');
+        const usernameDisplay = document.getElementById('username-display');
+        const userAvatar = document.getElementById('user-avatar');
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatWithUser = document.getElementById('chat-with-user');
+        const contactsList = document.getElementById('contacts-list');
+        const searchInput = document.getElementById('search-input');
+        const currentScreen = document.getElementById('current-screen');
+        const screens = {
+            chats: document.getElementById('chats-screen'),
+            contacts: document.getElementById('contacts-screen'),
+            settings: document.getElementById('settings-screen')
+        };
+        const navLinks = document.querySelectorAll('nav a');
+        const avatarUpload = document.getElementById('avatar-upload');
+        const avatarPreview = document.getElementById('avatar-preview');
+        const changeAvatarBtn = document.getElementById('change-avatar-btn');
+        const profileForm = document.getElementById('profile-form');
+        const profileName = document.getElementById('profile-name');
+        const profileUsername = document.getElementById('profile-username');
+        const profileEmail = document.getElementById('profile-email');
+
+        // Слухач стану автентифікації
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                initApp();
             } else {
-                authPage.style.display = 'flex';
-                appContainer.style.display = 'none';
+                app.classList.add('hidden');
+                document.querySelector('.auth-container').style.display = 'flex';
             }
-
-            // Инициализация чатов
-            initChats();
-            
-            // Адаптивность
-            window.addEventListener('resize', handleResize);
-            handleResize();
         });
 
-        // Функции для работы с аутентификацией
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
+        // Реєстрація
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = e.target[0].value.trim();
+            const username = e.target[1].value.trim().toLowerCase();
+            const email = e.target[2].value.trim();
+            const password = e.target[3].value.trim();
+
+            if (!name || !username || !email || !password) {
+                alert("Усі поля обов'язкові!");
+                return;
+            }
+
+            try {
+                // Перевірка на унікальність юзернейму
+                const q = query(collection(db, "users"), where("username", "==", username));
+                const querySnapshot = await getDocs(q);
                 
-                loginForm.classList.remove('active');
-                registerForm.classList.remove('active');
+                if (!querySnapshot.empty) {
+                    alert("Цей юзернейм вже зайнятий!");
+                    return;
+                }
+
+                // Реєстрація в Firebase Auth
+                const { user } = await createUserWithEmailAndPassword(auth, email, password);
                 
-                if (tab.dataset.tab === 'login') {
-                    loginForm.classList.add('active');
-                } else {
-                    registerForm.classList.add('active');
+                // Додавання користувача до Firestore
+                await addDoc(collection(db, "users"), {
+                    uid: user.uid,
+                    name,
+                    username,
+                    email,
+                    avatar: "https://via.placeholder.com/50",
+                    status: "online",
+                    createdAt: serverTimestamp()
+                });
+
+                alert("Реєстрація успішна!");
+                registerModal.style.display = 'none';
+                e.target.reset();
+            } catch (error) {
+                alert(`Помилка: ${error.message}`);
+            }
+        });
+
+        // Вхід
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = e.target[0].value.trim();
+            const password = e.target[1].value.trim();
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                loginModal.style.display = 'none';
+                e.target.reset();
+            } catch (error) {
+                alert(`Помилка: ${error.message}`);
+            }
+        });
+
+        // Ініціалізація додатку після входу
+        async function initApp() {
+            app.classList.remove('hidden');
+            document.querySelector('.auth-container').style.display = 'none';
+
+            // Отримання даних користувача
+            const q = query(collection(db, "users"), where("uid", "==", currentUser.uid));
+            const querySnapshot = await getDocs(q);
+            
+            if (!querySnapshot.empty) {
+                const userData = querySnapshot.docs[0].data();
+                currentUser = { ...currentUser, ...userData };
+                
+                // Оновлення інтерфейсу
+                usernameDisplay.textContent = currentUser.username;
+                userAvatar.src = currentUser.avatar;
+                document.getElementById('user-status').className = `status ${currentUser.status}`;
+                
+                // Заповнення профілю в налаштуваннях
+                profileName.value = currentUser.name;
+                profileUsername.value = currentUser.username;
+                profileEmail.value = currentUser.email;
+                avatarPreview.src = currentUser.avatar;
+                
+                // Завантаження даних
+                loadChats();
+                loadContacts();
+            }
+        }
+
+        // Завантаження чатів
+        async function loadChats() {
+            chatList.innerHTML = '';
+            
+            const q = query(collection(db, "chats"), where("participants", "array-contains", currentUser.uid));
+            const querySnapshot = await getDocs(q);
+            
+            querySnapshot.forEach(async (doc) => {
+                const chatData = doc.data();
+                const participantId = chatData.participants.find(id => id !== currentUser.uid);
+                
+                const userQuery = query(collection(db, "users"), where("uid", "==", participantId));
+                const userSnapshot = await getDocs(userQuery);
+                
+                if (!userSnapshot.empty) {
+                    const user = userSnapshot.docs[0].data();
+                    
+                    const chatItem = document.createElement('div');
+                    chatItem.className = 'chat-item';
+                    chatItem.dataset.userId = user.uid;
+                    chatItem.innerHTML = `
+                        <img src="${user.avatar}" alt="Аватар" class="avatar">
+                        <div class="chat-info">
+                            <span class="chat-name">${user.name}</span>
+                            <span class="last-msg">${chatData.lastMessage || 'Немає повідомлень'}</span>
+                        </div>
+                        <div class="status ${user.status}"></div>
+                    `;
+                    
+                    chatItem.addEventListener('click', () => openChat(user));
+                    chatList.appendChild(chatItem);
                 }
             });
-        });
+        }
 
-        loginBtn.addEventListener('click', handleLogin);
-        registerBtn.addEventListener('click', handleRegister);
-        forgotPassword.addEventListener('click', showForgotPassword);
-
-        // Функции для работы с профилем
-        userProfileBtn.addEventListener('click', () => {
-            profileModal.classList.add('active');
-        });
-
-        closeProfileModal.addEventListener('click', () => {
-            profileModal.classList.remove('active');
-        });
-
-        editProfileBtn.addEventListener('click', () => {
-            profileModal.classList.remove('active');
-            editProfileModal.classList.add('active');
-            populateEditForm();
-        });
-
-        closeEditProfileModal.addEventListener('click', () => {
-            editProfileModal.classList.remove('active');
-        });
-
-        cancelEditProfileBtn.addEventListener('click', () => {
-            editProfileModal.classList.remove('active');
-        });
-
-        saveProfileBtn.addEventListener('click', saveProfile);
-
-        logoutBtn.addEventListener('click', handleLogout);
-
-        changeAvatarBtn.addEventListener('click', () => {
-            avatarUpload.click();
-        });
-
-        avatarUpload.addEventListener('change', handleAvatarUpload);
-
-        // Функции для работы с чатом
-        mobileMenuBtn.addEventListener('click', toggleSidebar);
-        desktopMenuBtn.addEventListener('click', toggleSidebar);
-
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
-
-        sendBtn.addEventListener('click', sendMessage);
-
-        chatItems.forEach(item => {
-            item.addEventListener('click', () => {
-                chatItems.forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-                loadChat(item);
+        // Завантаження контактів
+        async function loadContacts() {
+            contactsList.innerHTML = '';
+            
+            const q = query(collection(db, "users"), where("uid", "!=", currentUser.uid));
+            const querySnapshot = await getDocs(q);
+            
+            querySnapshot.forEach((doc) => {
+                const user = doc.data();
+                
+                const contactItem = document.createElement('div');
+                contactItem.className = 'chat-item';
+                contactItem.dataset.userId = user.uid;
+                contactItem.innerHTML = `
+                    <img src="${user.avatar}" alt="Аватар" class="avatar">
+                    <div class="chat-info">
+                        <span class="chat-name">${user.name} (@${user.username})</span>
+                        <span class="last-msg">${user.status === 'online' ? 'В мережі' : 'Не в мережі'}</span>
+                    </div>
+                    <div class="status ${user.status}"></div>
+                `;
+                
+                contactItem.addEventListener('click', () => openChat(user));
+                contactsList.appendChild(contactItem);
             });
+        }
+
+        // Пошук користувачів
+        searchInput.addEventListener('input', async (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            
+            if (searchTerm.length < 2) {
+                contactsList.innerHTML = '';
+                loadContacts();
+                return;
+            }
+
+            try {
+                const q = query(
+                    collection(db, "users"),
+                    where("username", ">=", searchTerm),
+                    where("username", "<=", searchTerm + "\uf8ff")
+                );
+                
+                const querySnapshot = await getDocs(q);
+                contactsList.innerHTML = '';
+                
+                querySnapshot.forEach((doc) => {
+                    const user = doc.data();
+                    if (user.uid !== currentUser.uid) {
+                        const contactItem = document.createElement('div');
+                        contactItem.className = 'chat-item';
+                        contactItem.innerHTML = `
+                            <img src="${user.avatar}" alt="Аватар" class="avatar">
+                            <div class="chat-info">
+                                <span class="chat-name">${user.name} (@${user.username})</span>
+                                <span class="last-msg">${user.status === 'online' ? 'В мережі' : 'Не в мережі'}</span>
+                            </div>
+                            <div class="status ${user.status}"></div>
+                        `;
+                        contactItem.addEventListener('click', () => openChat(user));
+                        contactsList.appendChild(contactItem);
+                    }
+                });
+            } catch (error) {
+                console.error("Помилка пошуку:", error);
+            }
         });
 
-        // Основные функции
-        function handleLogin() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
+        // Відкриття чату
+        async function openChat(user) {
+            currentChat = user;
+            chatWithUser.textContent = user.name;
             
-            // Валидация
-            if (!validateEmail(email)) {
-                showError('loginEmailError', 'Будь ласка, введіть дійсну email адресу');
-                return;
+            // Очищення повідомлень
+            chatMessages.innerHTML = '';
+            
+            // Створення/отримання чату
+            const q = query(
+                collection(db, "chats"),
+                where("participants", "array-contains", currentUser.uid)
+            );
+            
+            const querySnapshot = await getDocs(q);
+            let chatId = null;
+            
+            // Пошук існуючого чату
+            querySnapshot.forEach((doc) => {
+                const chatData = doc.data();
+                if (chatData.participants.includes(user.uid)) {
+                    chatId = doc.id;
+                }
+            });
+            
+            // Якщо чату немає - створюємо новий
+            if (!chatId) {
+                const newChat = await addDoc(collection(db, "chats"), {
+                    participants: [currentUser.uid, user.uid],
+                    lastMessage: "",
+                    lastMessageTime: serverTimestamp()
+                });
+                chatId = newChat.id;
             }
             
-            if (password.length < 6) {
-                showError('loginPasswordError', 'Пароль повинен містити щонайменше 6 символів');
-                return;
-            }
-            
-            // В реальном приложении здесь был бы запрос к серверу
-            // Для демонстрации используем mock-данные
-            const mockUser = {
-                id: '1',
-                username: 'demo_user',
-                name: 'Демо Користувач',
-                email: email,
-                avatar: 'https://via.placeholder.com/150',
-                status: 'online',
-                phone: '+380991234567'
-            };
-            
-            // Сохраняем пользователя в localStorage
-            localStorage.setItem('shadowlink_user', JSON.stringify(mockUser));
-            currentUser = mockUser;
-            
-            // Переходим в приложение
-            authPage.style.display = 'none';
-            appContainer.style.display = 'flex';
-            updateProfileData();
-        }
-
-        function handleRegister() {
-            const username = document.getElementById('registerUsername').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            const confirmPassword = document.getElementById('registerConfirmPassword').value;
-            
-            // Валидация
-            if (username.length < 3) {
-                showError('registerUsernameError', 'Ім\'я користувача повинно містити щонайменше 3 символи');
-                return;
-            }
-            
-            if (!validateEmail(email)) {
-                showError('registerEmailError', 'Будь ласка, введіть дійсну email адресу');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showError('registerPasswordError', 'Пароль повинен містити щонайменше 6 символів');
-                return;
-            }
-            
-            if (password !== confirmPassword) {
-                showError('registerConfirmPasswordError', 'Паролі не співпадають');
-                return;
-            }
-            
-            // В реальном приложении здесь был бы запрос к серверу
-            // Для демонстрации используем mock-данные
-            const mockUser = {
-                id: '1',
-                username: username,
-                name: username,
-                email: email,
-                avatar: 'https://via.placeholder.com/150',
-                status: 'online',
-                phone: '+380991234567'
-            };
-            
-            // Сохраняем пользователя в localStorage
-            localStorage.setItem('shadowlink_user', JSON.stringify(mockUser));
-            currentUser = mockUser;
-            
-            // Переходим в приложение
-            authPage.style.display = 'none';
-            appContainer.style.display = 'flex';
-            updateProfileData();
-        }
-
-        function showForgotPassword() {
-            alert('Функція відновлення пароля буде реалізована в майбутньому');
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('shadowlink_user');
-            currentUser = null;
-            profileModal.classList.remove('active');
-            authPage.style.display = 'flex';
-            appContainer.style.display = 'none';
-            
-            // Очищаем поля ввода
-            document.getElementById('loginEmail').value = '';
-            document.getElementById('loginPassword').value = '';
-        }
-
-        function updateProfileData() {
-            if (!currentUser) return;
-            
-            // Обновляем аватар в сайдбаре
-            const userAvatar = document.getElementById('userAvatar');
-            if (userAvatar) userAvatar.src = currentUser.avatar;
-            
-            // Обновляем данные в модальном окне профиля
-            document.getElementById('profileName').textContent = currentUser.name;
-            document.getElementById('profileUsername').textContent = currentUser.username;
-            document.getElementById('profileEmail').textContent = currentUser.email;
-            document.getElementById('profilePhone').textContent = currentUser.phone;
-            document.getElementById('profileStatus').textContent = currentUser.status;
-            document.getElementById('profileAvatar').src = currentUser.avatar;
-        }
-
-        function populateEditForm() {
-            if (!currentUser) return;
-            
-            document.getElementById('editUsername').value = currentUser.name;
-            document.getElementById('editStatus').value = currentUser.status;
-            document.getElementById('editEmail').value = currentUser.email;
-            document.getElementById('editPhone').value = currentUser.phone;
-            editAvatarPreview.src = currentUser.avatar;
-        }
-
-        function saveProfile() {
-            const name = document.getElementById('editUsername').value;
-            const status = document.getElementById('editStatus').value;
-            const email = document.getElementById('editEmail').value;
-            const phone = document.getElementById('editPhone').value;
-            
-            // Валидация
-            if (name.length < 3) {
-                showError('editUsernameError', 'Ім\'я повинно містити щонайменше 3 символи');
-                return;
-            }
-            
-            if (!validateEmail(email)) {
-                showError('editEmailError', 'Будь ласка, введіть дійсну email адресу');
-                return;
-            }
-            
-            if (phone && !validatePhone(phone)) {
-                showError('editPhoneError', 'Будь ласка, введіть дійсний номер телефону');
-                return;
-            }
-            
-            // Обновляем данные пользователя
-            currentUser.name = name;
-            currentUser.status = status;
-            currentUser.email = email;
-            currentUser.phone = phone;
-            
-            // Сохраняем в localStorage
-            localStorage.setItem('shadowlink_user', JSON.stringify(currentUser));
-            
-            // Обновляем интерфейс
-            updateProfileData();
-            editProfileModal.classList.remove('active');
-        }
-
-        function handleAvatarUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            // В реальном приложении здесь была бы загрузка на сервер
-            // Для демонстрации используем FileReader
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                currentUser.avatar = event.target.result;
-                editAvatarPreview.src = event.target.result;
+            // Підписка на повідомлення чату
+            const messagesRef = collection(db, "chats", chatId, "messages");
+            onSnapshot(messagesRef, (snapshot) => {
+                chatMessages.innerHTML = '';
                 
-                // Сохраняем в localStorage
-                localStorage.setItem('shadowlink_user', JSON.stringify(currentUser));
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === "added") {
+                        const msg = change.doc.data();
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = `message ${msg.sender === currentUser.uid ? 'sent' : 'received'}`;
+                        messageDiv.innerHTML = `
+                            <span class="msg-text">${msg.text}</span>
+                            <span class="msg-time">${new Date(msg.timestamp?.toDate()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                        `;
+                        chatMessages.appendChild(messageDiv);
+                    }
+                });
                 
-                // Обновляем аватар в интерфейсе
-                updateProfileData();
-            };
-            reader.readAsDataURL(file);
+                // Прокрутка до останнього повідомлення
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
+            
+            // Переключення екранів
+            document.querySelector('.chat-list').classList.add('hidden');
+            activeChat.classList.remove('hidden');
         }
 
-        function toggleSidebar() {
-            sidebar.classList.toggle('active');
-        }
-
-        function sendMessage() {
+        // Надсилання повідомлення
+        async function sendMessage() {
             const text = messageInput.value.trim();
-            if (!text || !currentUser) return;
+            if (!text || !currentChat) return;
             
-            // Создаем новое сообщение
-            const message = {
-                id: Date.now(),
-                text: text,
-                sender: currentUser.id,
-                time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-                isOutgoing: true
-            };
+            // Пошук існуючого чату
+            const q = query(
+                collection(db, "chats"),
+                where("participants", "array-contains", currentUser.uid)
+            );
             
-            // Добавляем сообщение в чат
-            addMessageToChat(message);
+            const querySnapshot = await getDocs(q);
+            let chatId = null;
             
-            // Очищаем поле ввода
-            messageInput.value = '';
-            
-            // В реальном приложении здесь был бы запрос к серверу
-            // Для демонстрации добавляем mock-ответ через 1 секунду
-            setTimeout(() => {
-                const reply = {
-                    id: Date.now(),
-                    text: 'Це автоматична відповідь на ваше повідомлення: "' + text + '"',
-                    sender: '2',
-                    time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-                    isOutgoing: false
-                };
-                addMessageToChat(reply);
-            }, 1000);
-        }
-
-        function addMessageToChat(message) {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message');
-            messageElement.classList.add(message.isOutgoing ? 'outgoing' : 'incoming');
-            
-            messageElement.innerHTML = `
-                ${message.text}
-                <div class="message-time">${message.time}</div>
-            `;
-            
-            messagesContainer.appendChild(messageElement);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function loadChat(chatItem) {
-            // В реальном приложении здесь была бы загрузка истории чата с сервера
-            // Для демонстрации очищаем контейнер и добавляем mock-сообщения
-            
-            messagesContainer.innerHTML = '';
-            
-            // Добавляем заголовок чата
-            const chatName = chatItem.querySelector('.chat-name span').textContent;
-            document.querySelector('.chat-title').textContent = chatName;
-            
-            // Mock-сообщения
-            const messages = [
-                {
-                    id: 1,
-                    text: 'Привіт! Як справи?',
-                    sender: '2',
-                    time: '12:30',
-                    isOutgoing: false
-                },
-                {
-                    id: 2,
-                    text: 'Все добре, дякую! А у тебе?',
-                    sender: currentUser.id,
-                    time: '12:32',
-                    isOutgoing: true
-                },
-                {
-                    id: 3,
-                    text: 'Теж добре. Слухай, ти вже подивився той новий фільм?',
-                    sender: '2',
-                    time: '12:33',
-                    isOutgoing: false
-                },
-                {
-                    id: 4,
-                    text: 'Так, вчора якраз подивився. Дуже сподобався!',
-                    sender: currentUser.id,
-                    time: '12:35',
-                    isOutgoing: true
+            querySnapshot.forEach((doc) => {
+                const chatData = doc.data();
+                if (chatData.participants.includes(currentChat.uid)) {
+                    chatId = doc.id;
                 }
-            ];
+            });
             
-            // Добавляем сообщения в чат
-            messages.forEach(msg => addMessageToChat(msg));
-        }
-
-        function initChats() {
-            // В реальном приложении здесь была бы загрузка списка чатов с сервера
-            // Для демонстрации используем mock-данные из HTML
-            
-            // Загружаем первый чат по умолчанию
-            if (chatItems.length > 0) {
-                loadChat(chatItems[0]);
+            if (chatId) {
+                // Додавання повідомлення
+                await addDoc(collection(db, "chats", chatId, "messages"), {
+                    sender: currentUser.uid,
+                    text,
+                    timestamp: serverTimestamp()
+                });
+                
+                // Оновлення останнього повідомлення в чаті
+                await updateDoc(doc(db, "chats", chatId), {
+                    lastMessage: text,
+                    lastMessageTime: serverTimestamp()
+                });
+                
+                messageInput.value = '';
             }
         }
 
-        function handleResize() {
-            isMobile = window.innerWidth <= 768;
-            
-            if (!isMobile) {
-                sidebar.classList.remove('active');
+        // Вихід
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                // Оновлення статусу
+                const userRef = doc(db, "users", currentUser.uid);
+                await updateDoc(userRef, {
+                    status: "offline"
+                });
+                
+                await signOut(auth);
+            } catch (error) {
+                alert(`Помилка: ${error.message}`);
             }
-        }
+        });
 
-        // Вспомогательные функции
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
-        }
+        // Інші обробники подій
+        menuBtn.addEventListener('click', () => sidebar.classList.toggle('hidden'));
+        searchBtn.addEventListener('click', () => searchBar.classList.remove('hidden'));
+        closeSearch.addEventListener('click', () => searchBar.classList.add('hidden'));
+        backToChats.addEventListener('click', () => {
+            document.querySelector('.chat-list').classList.remove('hidden');
+            activeChat.classList.add('hidden');
+            currentChat = null;
+        });
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
 
-        function validatePhone(phone) {
-            const re = /^\+?[0-9]{10,15}$/;
-            return re.test(phone);
-        }
-
-        function showError(elementId, message) {
-            const element = document.getElementById(elementId);
-            if (element) {
-                element.textContent = message;
-                element.style.display = 'block';
-            }
-        }
-
-        function hideError(elementId) {
-            const element = document.getElementById(elementId);
-            if (element) {
-                element.style.display = 'none';
-            }
-        }
+        // Навігація
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const screen = link.dataset.screen;
+                
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                
+                Object.values(screens).forEach(s => s.classList.add('hidden'));
+                screens[screen].classList.remove('hidden');
+                currentScreen.textContent = link.textContent;
+                
+                sidebar.classList.add('hidden');
+            });
+        });
     </script>
 </body>
 </html>
