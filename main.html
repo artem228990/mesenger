@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dark Messenger – Головна</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #0d0d0d;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      background: #111;
+      padding: 10px 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    }
+
+    header h1 {
+      font-size: 20px;
+      color: cyan;
+    }
+
+    .profile-section {
+      padding: 10px;
+      background: #181818;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      border-bottom: 1px solid #333;
+    }
+
+    .profile-section img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid cyan;
+    }
+
+    .profile-section input[type="text"] {
+      background: #262626;
+      border: none;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 8px;
+      flex: 1;
+    }
+
+    .search-section {
+      padding: 10px;
+      background: #121212;
+    }
+
+    .search-section input {
+      width: 100%;
+      padding: 10px;
+      background: #202020;
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+    }
+
+    .user-list {
+      flex: 1;
+      overflow-y: auto;
+      background: #111;
+    }
+
+    .user {
+      padding: 10px 15px;
+      border-bottom: 1px solid #1c1c1c;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .user:hover {
+      background: #222;
+    }
+
+    .user img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    .user span {
+      color: cyan;
+      font-size: 16px;
+    }
+
+    @media screen and (max-width: 600px) {
+      header h1 {
+        font-size: 16px;
+      }
+      .profile-section input[type="text"] {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Dark Messenger</h1>
+    <button onclick="logout()" style="background: transparent; border: 1px solid cyan; color: cyan; padding: 5px 10px; border-radius: 8px;">Вийти</button>
+  </header>
+
+  <div class="profile-section">
+    <img src="default-avatar.png" id="userPhoto" alt="User Photo">
+    <input type="text" id="usernameInput" placeholder="Ваш нікнейм">
+  </div>
+
+  <div class="search-section">
+    <input type="text" id="searchUser" placeholder="Знайти користувача за іменем...">
+  </div>
+
+  <div class="user-list" id="userList">
+    <!-- Список користувачів буде тут -->
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    import { getFirestore, collection, query, where, getDocs, doc, getDoc, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAhO-l7hHZjFCC9YJq1GYH445jphDmjGZY",
+      authDomain: "dark-mesenger.firebaseapp.com",
+      projectId: "dark-mesenger",
+      storageBucket: "dark-mesenger.firebasestorage.app",
+      messagingSenderId: "629206445270",
+      appId: "1:629206445270:web:8fec4853b432a4f4f66d77",
+      measurementId: "G-171K0PBQWZ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const db = getFirestore(app);
+
+    const usernameInput = document.getElementById("usernameInput");
+    const userPhoto = document.getElementById("userPhoto");
+    const searchInput = document.getElementById("searchUser");
+    const userList = document.getElementById("userList");
+
+    let currentUser;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUser = user;
+        usernameInput.value = user.displayName || "";
+        if (user.photoURL) userPhoto.src = user.photoURL;
+        
+        usernameInput.addEventListener("change", async () => {
+          await updateProfile(user, { displayName: usernameInput.value });
+          const userRef = doc(db, "users", user.uid);
+          await setDoc(userRef, {
+            displayName: usernameInput.value,
+            email: user.email,
+            photoURL: user.photoURL || ""
+          });
+        });
+
+        searchInput.addEventListener("input", async () => {
+          const q = query(collection(db, "users"), where("displayName", ">=", searchInput.value));
+          const querySnapshot = await getDocs(q);
+          userList.innerHTML = "";
+          querySnapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            if (docSnap.id !== user.uid) {
+              const el = document.createElement("div");
+              el.className = "user";
+              el.innerHTML = `<img src="${data.photoURL || 'default-avatar.png'}"><span>${data.displayName}</span>`;
+              el.onclick = () => {
+                // Переходимо в чат
+                window.location.href = `chat.html?uid=${docSnap.id}`;
+              };
+              userList.appendChild(el);
+            }
+          });
+        });
+      } else {
+        window.location.href = "index.html";
+      }
+    });
+
+    window.logout = async function() {
+      await signOut(auth);
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
