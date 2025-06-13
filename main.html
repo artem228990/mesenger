@@ -128,6 +128,8 @@
   <div class="user-list" id="userList">
     <!-- Список користувачів буде тут -->
   </div>
+<input type="text" id="searchInput" placeholder="Пошук користувача..." oninput="searchUsers()" />
+<div id="usersList"></div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
@@ -198,6 +200,47 @@
       await signOut(auth);
       window.location.href = "index.html";
     }
+    import { getFirestore, collection, query, where, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+const db = getFirestore(app);
+
+// Додаємо користувача в Firestore після входу/реєстрації
+async function saveUserData(user) {
+  const userRef = doc(db, "users", user.uid);
+  await setDoc(userRef, {
+    uid: user.uid,
+    displayName: user.displayName || "Без імені",
+    photoURL: user.photoURL || "",
+    email: user.email
+  });
+}
+
+// Пошук користувачів
+window.searchUsers = async function() {
+  const term = document.getElementById('searchInput').value.trim();
+  const usersList = document.getElementById('usersList');
+  usersList.innerHTML = '🔍 Пошук...';
+
+  const q = query(collection(db, "users"), where("displayName", ">=", term), where("displayName", "<=", term + "\uf8ff"));
+  const querySnapshot = await getDocs(q);
+
+  let html = "";
+  querySnapshot.forEach((doc) => {
+    const user = doc.data();
+    html += `
+      <div class="user-card" onclick="startChat('${user.uid}', '${user.displayName}', '${user.photoURL}')">
+        <img src="${user.photoURL || 'default.png'}" alt="аватар" class="avatar">
+        <span>${user.displayName}</span>
+      </div>`;
+  });
+
+  usersList.innerHTML = html || "Нічого не знайдено";
+}
+
+// Функція запуску чату
+window.startChat = function(uid, name, photo) {
+  window.location.href = `chat.html?uid=${uid}`;
+}
+
   </script>
 </body>
 </html>
