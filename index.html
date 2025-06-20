@@ -651,6 +651,16 @@
         }
 
         .language-btn {
+            display: none;
+        }
+
+        .mobile-menu-btn-right {
+            display: block;
+            background: none;
+            border: none;
+            color: #bbb;
+            font-size: 24px;
+            cursor: pointer;
             margin-left: 10px;
         }
 
@@ -685,6 +695,12 @@
 
         .modal-content {
             padding: 15px;
+        }
+    }
+
+    @media (min-width: 769px) {
+        .mobile-menu-btn-right {
+            display: none;
         }
     }
 
@@ -735,7 +751,7 @@
         <div class="right-header">
             <button class="nav-btn desktop-only" onclick="openModal('assetsModal')"><i class="fas fa-coins"></i> Активы</button>
             <button class="account-btn" onclick="openModal('accountModal')"><i class="fas fa-user"></i> Аккаунт</button>
-            <button class="language-btn" onclick="changeLanguage()">RU</button>
+            <button class="mobile-menu-btn-right" id="mobileMenuBtnRight"><i class="fas fa-ellipsis-v"></i></button>
         </div>
 
         <div class="mobile-menu" id="mobileMenu">
