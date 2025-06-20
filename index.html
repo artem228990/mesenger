@@ -440,15 +440,9 @@
         border-radius: 50%;
     }
 
-/* Підсвітка кнопок при наведенні */
-.nav-btn:hover, .account-btn:hover, .language-btn:hover {
-    box-shadow: 0 0 8px #ffa500;
-}
 
-/* Підсвітка активної кнопки */
-.nav-btn.active {
-    box-shadow: 0 0 10px #ffa500;
-}
+
+
 
 /* Підсвітка при наведенні на рядок з монетою */
 .asset-item:hover {
@@ -480,28 +474,243 @@
     text-shadow: 0 0 10px #ffa500, 0 0 20px #ff8c00;
 }
 
+.popup {
+    position: absolute;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: 0 0 15px rgba(255,165,0,0.3);
+    z-index: 100;
+    display: none;
+    width: 280px;
+}
+
+.popup-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffa500;
+    margin-bottom: 8px;
+}
+
+.popup-description {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.popup.wide-popup {
+    width: 360px;
+    max-width: 90vw;
+}
+
+.popup-item {
+    margin-bottom: 15px;
+}
+
+.popup-item:last-child {
+    margin-bottom: 0;
+}
+
+.popup.small-popup {
+  width: 240px;
+  max-width: 90vw;
+  padding: 12px 15px;
+  background-color: #1a1a1a;
+  color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(255,165,0,0.4);
+}
+
+.popup-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: #ffa500;
+}
+
+#assetsContent .asset-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #333;
+}
+
+.asset-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.asset-icon-small {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.asset-right {
+  font-family: monospace;
+  font-weight: bold;
+  min-width: 50px;
+  text-align: right;
+  color: #00cc66;
+}
+
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
  <header>
+ 
+    
+    <div id="assetsPopup" class="popup small-popup">
+  <div class="popup-title"> Активы</div>
+  <div style="font-size: 24px; color: white; font-weight: bold; font-family: monospace;">
+  0.00
+</div>
+
+</div>
+
+    <div id="docsPopup" class="popup wide-popup" style="max-height: 400px; overflow-y: auto; padding-right: 15px;">
+    <div class="popup-item">
+        <div class="popup-title">Введение</div>
+        <div class="popup-description">
+            Добро пожаловать в SwapLines — инновационную криптовалютную биржу с передовыми инструментами для трейдинга и анализа рынка.
+            Наша платформа обеспечивает безопасность, скорость и удобство работы с цифровыми активами.
+        </div>
+    </div>
+    <div class="popup-item">
+        <div class="popup-title">Регистрация и Верификация</div>
+        <div class="popup-description">
+            Для начала работы зарегистрируйтесь, подтвердите e-mail и пройдите процедуру KYC для повышения лимитов и доступа ко всем функциям.
+        </div>
+    </div>
+    <div class="popup-item">
+        <div class="popup-title">API Доступ</div>
+        <div class="popup-description">
+            Наш REST API позволяет:
+            <ul>
+                <li>Получать котировки и исторические данные</li>
+                <li>Создавать и отменять ордера</li>
+                <li>Управлять балансом и выводить средства</li>
+                <li>Отслеживать статусы сделок и уведомления</li>
+            </ul>
+            Для получения API ключа перейдите в личный кабинет в раздел "API".
+        </div>
+    </div>
+    <div class="popup-item">
+        <div class="popup-title">Торговые Комиссии</div>
+        <div class="popup-description">
+            Комиссии зависят от объема торгов:
+            <ul>
+                <li>Мейкер: от 0.05% до 0.01%</li>
+                <li>Тейкер: от 0.1% до 0.02%</li>
+            </ul>
+            Детальная таблица доступна на странице "Комиссии".
+        </div>
+    </div>
+    <div class="popup-item">
+        <div class="popup-title">Спотовая Торговля</div>
+        <div class="popup-description">
+            Торгуйте основными криптовалютами с минимальными спредами и высокой ликвидностью. Доступны лимитные, рыночные и стоп-ордера.
+        </div>
+    </div>
+    <div class="popup-item">
+        <div class="popup-title">Фьючерсы и Перпетуальные Контракты</div>
+        <div class="popup-description">
+            Торгуйте бессрочными контрактами с плечом до 100x. Поддержка маржинальных позиций и страхового фонда для защиты от ликвидаций.
+        </div>
+    </div>
+    <div class="popup-item">
+        <div class="popup-title">Безопасность</div>
+        <div class="popup-description">
+            Мы применяем:
+            <ul>
+                <li>Двухфакторную аутентификацию (2FA)</li>
+                <li>Холодное хранение 95% активов</li>
+                <li>Мониторинг подозрительных операций</li>
+                <li>Шифрование данных и HTTPS</li>
+            </ul>
+        </div>
+    </div>
+    <div class="popup-item">
+        <div class="popup-title">Депозит и Вывод Средств</div>
+        <div class="popup-description">
+            Депозиты зачисляются автоматически. Вывод занимает до 5 минут, для больших сумм возможна дополнительная проверка безопасности.
+        </div>
+    </div>
+    <div class="popup-item">
+        <div class="popup-title">Техническая Поддержка</div>
+        <div class="popup-description">
+            Круглосуточная поддержка через чат, e-mail и телефон. Мы всегда готовы помочь с любыми вопросами и проблемами.
+        </div>
+    </div>
+    <div class="popup-item">
+        <div class="popup-title">Обновления Платформы</div>
+        <div class="popup-description">
+            Регулярные обновления с улучшениями функционала, новыми торговыми инструментами и повышением безопасности.
+        </div>
+    </div>
+</div>
+
         <div class="left-header">
             <div class="logo">SwapLines</div>
             <button class="nav-btn active"><i class="fas fa-exchange-alt"></i> Торговля</button>
-            <button class="nav-btn"><i class="fas fa-chart-line"></i> Фьючерсы</button>
+         <button class="nav-btn" onclick="openModal('futuresModal')"><i class="fas fa-chart-line"></i> Фьючерсы</button>
+
             <button class="nav-btn"><i class="fas fa-tools"></i> Инструменты</button>
-            <button class="nav-btn"><i class="fas fa-wallet"></i> Купить Крипту</button>
+   
             <button class="nav-btn"><i class="fas fa-file-alt"></i> Документация</button>
-            <button class="nav-btn"><i class="fas fa-id-card"></i> Наша Карта</button>
+        
         </div>
         <div class="right-header">
-            <button class="nav-btn"><i class="fas fa-wallet"></i> Депозит</button>
-            <button class="nav-btn"><i class="fas fa-history"></i> История</button>
+       
+           
             <button class="nav-btn"><i class="fas fa-coins"></i> Активы</button>
             <button class="account-btn"><i class="fas fa-user"></i> Аккаунт</button>
             <button class="language-btn">RU</button>
         </div>
     </header>
+    
+   <div id="toolsPopup" class="popup wide-popup">
+    <div class="popup-item">
+        <div class="popup-title">Рыночная капитализация</div>
+        <div class="popup-description">
+            Показатель, отражающий общую стоимость всех монет определённой криптовалюты на рынке
+        </div>
+    </div>
+    <div class="popup-item">
+        <div class="popup-title">Маркет-скринер</div>
+        <div class="popup-description">
+            Инструмент, позволяющий фильтровать и отслеживать различные криптовалюты по множеству критериев
+        </div>
+    </div>
+    <div class="popup-item">
+        <div class="popup-title">Кросс-курсы</div>
+        <div class="popup-description">
+            Курсы обмена между двумя валютами, выраженные через третью валюту
+        </div>
+    </div>
+    <div class="popup-item">
+        <div class="popup-title">Карта волатильности</div>
+        <div class="popup-description">
+            Визуальный инструмент, отображающий изменение цен различных криптовалют друг относительно друга в виде цветной карты
+        </div>
+    </div>
+    <div class="popup-item">
+        <div class="popup-title">Технический анализ</div>
+        <div class="popup-description">
+            Метод прогнозирования будущих цен криптовалют на основе анализа прошлых рыночных данных
+        </div>
+    </div>
+</div>
+
+
+<div id="futuresPopup" class="popup">
+    <div class="popup-title">USDT Perpetuals</div>
+    <div class="popup-description">Торгуйте бессрочными контрактами, рассчитанными в USDT.</div>
+</div>
+
     <div class="main-content">
         <div style="width: 100%;">
             <div class="balance-section">
@@ -744,6 +953,150 @@
         loadCoins();
         setInterval(loadCoins, 60000); // оновлення кожні 60 сек
     };
+
+    function openModal(modalId) {
+    document.getElementById(modalId).style.display = 'flex';
+}
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const futuresBtn = document.querySelector('.nav-btn i.fa-chart-line').parentElement;
+    const popup = document.getElementById('futuresPopup');
+
+    futuresBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+
+        if (popup.style.display === 'block') {
+            popup.style.display = 'none';
+            return;
+        }
+
+        const rect = futuresBtn.getBoundingClientRect();
+
+        popup.style.left = rect.right - 10 + 'px'; // трохи правіше краю кнопки
+        popup.style.top = rect.bottom + window.scrollY + 8 + 'px'; // під кнопкою
+
+        popup.style.display = 'block';
+    });
+
+    document.addEventListener('click', function () {
+        popup.style.display = 'none';
+    });
+
+    popup.addEventListener('click', function (e) {
+        e.stopPropagation(); // щоб не закривався при кліку всередині
+    });
+});
+
+
+// Попап для "Инструменты"
+document.addEventListener('DOMContentLoaded', function () {
+    const toolsBtn = document.querySelector('.nav-btn i.fa-tools').parentElement;
+    const toolsPopup = document.getElementById('toolsPopup');
+
+    toolsBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+
+        // закриття іншого попапа, якщо відкритий
+        document.getElementById('futuresPopup').style.display = 'none';
+
+        if (toolsPopup.style.display === 'block') {
+            toolsPopup.style.display = 'none';
+            return;
+        }
+
+        const rect = toolsBtn.getBoundingClientRect();
+        toolsPopup.style.left = rect.right - 10 + 'px';
+        toolsPopup.style.top = rect.bottom + window.scrollY + 8 + 'px';
+        toolsPopup.style.display = 'block';
+    });
+
+    document.addEventListener('click', function () {
+        toolsPopup.style.display = 'none';
+    });
+
+    toolsPopup.addEventListener('click', function (e) {
+        e.stopPropagation();
+    });
+});
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const docsBtn = document.querySelector('.nav-btn i.fa-file-alt').parentElement;
+    const docsPopup = document.getElementById('docsPopup');
+
+    docsBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+
+        // Закриваємо інші попапи
+        document.getElementById('futuresPopup').style.display = 'none';
+        document.getElementById('toolsPopup').style.display = 'none';
+
+        if (docsPopup.style.display === 'block') {
+            docsPopup.style.display = 'none';
+            return;
+        }
+
+        const rect = docsBtn.getBoundingClientRect();
+        docsPopup.style.left = rect.right - 10 + 'px';
+        docsPopup.style.top = rect.bottom + window.scrollY + 8 + 'px';
+        docsPopup.style.display = 'block';
+    });
+
+    document.addEventListener('click', function () {
+        docsPopup.style.display = 'none';
+    });
+
+    docsPopup.addEventListener('click', function (e) {
+        e.stopPropagation();
+    });
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  const assetsBtn = document.querySelector('.nav-btn i.fa-coins').parentElement;
+  const assetsPopup = document.getElementById('assetsPopup');
+
+  function toggleAssetsPopup(e) {
+    e.stopPropagation();
+
+    if (assetsPopup.style.display === 'block') {
+      assetsPopup.style.display = 'none';
+    } else {
+      const rect = assetsBtn.getBoundingClientRect();
+      const popupWidth = 240; // ширина попапа в px (за CSS)
+      const spaceRight = window.innerWidth - rect.right;
+      let left;
+
+      if (spaceRight < popupWidth + 16) {
+        // Якщо справа мало місця, ставимо попап лівіше кнопки
+        left = rect.left - popupWidth - 8;
+        if (left < 8) left = 8; // щоб не вилазив ліворуч за край
+      } else {
+        // Якщо достатньо місця справа — ставимо праворуч
+        left = rect.right + 8;
+      }
+
+      const top = rect.bottom + window.scrollY + 8;
+
+      assetsPopup.style.left = left + 'px';
+      assetsPopup.style.top = top + 'px';
+      assetsPopup.style.display = 'block';
+    }
+  }
+
+  assetsBtn.addEventListener('click', toggleAssetsPopup);
+
+  document.addEventListener('click', () => {
+    assetsPopup.style.display = 'none';
+  });
+
+  assetsPopup.addEventListener('click', e => {
+    e.stopPropagation();
+  });
+});
+
+
 </script>
 
 </body>
