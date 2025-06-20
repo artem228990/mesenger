@@ -726,27 +726,28 @@
     <header>
         <div class="left-header">
             <div class="logo">SwapLines</div>
-            <button class="nav-btn active desktop-only"><i class="fas fa-exchange-alt"></i> Торговля</button>
+            <button class="nav-btn active desktop-only" onclick="showTradingPage()"><i class="fas fa-exchange-alt"></i> Торговля</button>
             <button class="nav-btn desktop-only" onclick="openModal('futuresModal')"><i class="fas fa-chart-line"></i> Фьючерсы</button>
-            <button class="nav-btn desktop-only"><i class="fas fa-tools"></i> Инструменты</button>
-            <button class="nav-btn desktop-only"><i class="fas fa-file-alt"></i> Документация</button>
+            <button class="nav-btn desktop-only" onclick="openModal('toolsModal')"><i class="fas fa-tools"></i> Инструменты</button>
+            <button class="nav-btn desktop-only" onclick="openModal('docsModal')"><i class="fas fa-file-alt"></i> Документация</button>
             <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-ellipsis-v"></i></button>
         </div>
         <div class="right-header">
-            <button class="nav-btn desktop-only"><i class="fas fa-coins"></i> Активы</button>
-            <button class="account-btn"><i class="fas fa-user"></i> Аккаунт</button>
-            <button class="language-btn">RU</button>
+            <button class="nav-btn desktop-only" onclick="openModal('assetsModal')"><i class="fas fa-coins"></i> Активы</button>
+            <button class="account-btn" onclick="openModal('accountModal')"><i class="fas fa-user"></i> Аккаунт</button>
+            <button class="language-btn" onclick="changeLanguage()">RU</button>
         </div>
 
         <div class="mobile-menu" id="mobileMenu">
             <div class="mobile-menu-item" onclick="openModal('futuresModal')"><i class="fas fa-chart-line"></i> Фьючерсы</div>
-            <div class="mobile-menu-item"><i class="fas fa-exchange-alt"></i> Торговля</div>
-            <div class="mobile-menu-item"><i class="fas fa-tools"></i> Инструменты</div>
-            <div class="mobile-menu-item"><i class="fas fa-file-alt"></i> Документация</div>
-            <div class="mobile-menu-item"><i class="fas fa-coins"></i> Активы</div>
+            <div class="mobile-menu-item" onclick="showTradingPage()"><i class="fas fa-exchange-alt"></i> Торговля</div>
+            <div class="mobile-menu-item" onclick="openModal('toolsModal')"><i class="fas fa-tools"></i> Инструменты</div>
+            <div class="mobile-menu-item" onclick="openModal('docsModal')"><i class="fas fa-file-alt"></i> Документация</div>
+            <div class="mobile-menu-item" onclick="openModal('assetsModal')"><i class="fas fa-coins"></i> Активы</div>
         </div>
     </header>
     
+    <!-- Попап для активів -->
     <div id="assetsPopup" class="popup small-popup">
         <div class="popup-title"> </div>
         <h2>0.00 USD</h2> 
@@ -766,6 +767,7 @@
         <p><pre> Earn                           $0.00</pre></p>
     </div>
 
+    <!-- Попап для документації -->
     <div id="docsPopup" class="popup wide-popup" style="max-height: 400px; overflow-y: auto; padding-right: 15px;">
         <div class="popup-item">
             <div class="popup-title">Введение</div>
@@ -806,6 +808,7 @@
         </div>
     </div>
 
+    <!-- Попап для інструментів -->
     <div id="toolsPopup" class="popup wide-popup">
         <div class="popup-item">
             <div class="popup-title">Рыночная капитализация</div>
@@ -827,9 +830,65 @@
         </div>
     </div>
 
+    <!-- Попап для ф'ючерсів -->
     <div id="futuresPopup" class="popup">
         <div class="popup-title">USDT Perpetuals</div>
         <div class="popup-description">Торгуйте бессрочными контрактами, рассчитанными в USDT.</div>
+    </div>
+
+    <!-- Модальне вікно для ф'ючерсів -->
+    <div class="modal" id="futuresModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Ф'ючерси</div>
+                <button class="close-btn" onclick="closeModal('futuresModal')">&times;</button>
+            </div>
+            <p>Тут буде інтерфейс торгівлі ф'ючерсами...</p>
+        </div>
+    </div>
+
+    <!-- Модальне вікно для інструментів -->
+    <div class="modal" id="toolsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Інструменти</div>
+                <button class="close-btn" onclick="closeModal('toolsModal')">&times;</button>
+            </div>
+            <p>Тут буде інтерфейс інструментів аналізу...</p>
+        </div>
+    </div>
+
+    <!-- Модальне вікно для документації -->
+    <div class="modal" id="docsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Документація</div>
+                <button class="close-btn" onclick="closeModal('docsModal')">&times;</button>
+            </div>
+            <p>Тут буде документація по API та інструкції...</p>
+        </div>
+    </div>
+
+    <!-- Модальне вікно для активів -->
+    <div class="modal" id="assetsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Активи</div>
+                <button class="close-btn" onclick="closeModal('assetsModal')">&times;</button>
+            </div>
+            <p>Тут буде інформація про ваші активи...</p>
+        </div>
+    </div>
+
+    <!-- Модальне вікно для аккаунта -->
+    <div class="modal" id="accountModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Аккаунт</div>
+                <button class="close-btn" onclick="closeModal('accountModal')">&times;</button>
+            </div>
+            <p>Тут буде інформація про ваш аккаунт...</p>
+        </div>
     </div>
 
     <div class="main-content">
@@ -1015,6 +1074,7 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
+        // Відкриття модального вікна
         // Копіювання адреси в буфер
         function copyToClipboard(elementId) {
             const text = document.getElementById(elementId).textContent;
