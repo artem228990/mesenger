@@ -261,10 +261,11 @@
         color: black;
     }
 
-    .withdraw-btn {
-        background-color: #ff3300;
-        color: white;
-    }
+  .withdraw-btn {
+    background-color: #00cc66;
+    color: white;
+}
+
 
     .action-btn:hover {
         opacity: 0.9;
@@ -439,6 +440,45 @@
         border-radius: 50%;
     }
 
+/* Підсвітка кнопок при наведенні */
+.nav-btn:hover, .account-btn:hover, .language-btn:hover {
+    box-shadow: 0 0 8px #ffa500;
+}
+
+/* Підсвітка активної кнопки */
+.nav-btn.active {
+    box-shadow: 0 0 10px #ffa500;
+}
+
+/* Підсвітка при наведенні на рядок з монетою */
+.asset-item:hover {
+    box-shadow: 0 0 10px rgba(255,165,0,0.2);
+    background-color: #1f1f1f;
+}
+
+/* Підсвітка кнопок дій */
+.action-btn:hover {
+    box-shadow: 0 0 8px rgba(255,165,0,0.5);
+}
+
+/* Підсвітка модального вікна */
+.modal-content {
+    box-shadow: 0 0 25px rgba(255,165,0,0.3);
+}
+
+/* Підсвітка полів вводу при фокусі */
+.input-field:focus {
+    border-color: #ffa500;
+    box-shadow: 0 0 8px rgba(255,165,0,0.4);
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffa500;
+    margin-right: 30px;
+    text-shadow: 0 0 10px #ffa500, 0 0 20px #ff8c00;
+}
 
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -521,10 +561,12 @@
     <div class="modal" id="withdrawModal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">
-                    <img id="withdrawCoinIcon" class="coin-icon" src="">
-                    <span id="withdrawCoinName"></span>
-                </div>
+             <div class="modal-title">
+    <img id="withdrawCoinIcon" class="coin-icon" src="">
+    <span id="withdrawCoinName"></span>
+    <span id="withdrawCoinSymbol" style="margin-left: 5px; color: #aaa;"></span>
+</div>
+
                 <button class="close-btn" onclick="closeModal('withdrawModal')">&times;</button>
             </div>
             <div class="input-group">
@@ -532,7 +574,7 @@
                 <input type="text" class="input-field" id="withdrawAddress" placeholder="0x...">
             </div>
             <div class="input-group">
-                <label class="input-label">Сумма вывода:</label>
+                <label class="input-label">Число вывода монет:</label>
                 <input type="text" class="input-field" id="withdrawAmount" placeholder="0.00">
             </div>
             <button class="submit-btn" onclick="attemptWithdraw()">Вывести</button>
