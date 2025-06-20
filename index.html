@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SwapLines - Криптовалютна біржа</title>
+    <title>FinEx</title>
     <style>
     * {
         margin: 0;
@@ -725,7 +725,7 @@
 <body>
     <header>
         <div class="left-header">
-            <div class="logo">SwapLines</div>
+            <div class="logo">FinEx</div>
             <button class="nav-btn active desktop-only" onclick="showTradingPage()"><i class="fas fa-exchange-alt"></i> Торговля</button>
             <button class="nav-btn desktop-only" onclick="openModal('futuresModal')"><i class="fas fa-chart-line"></i> Фьючерсы</button>
             <button class="nav-btn desktop-only" onclick="openModal('toolsModal')"><i class="fas fa-tools"></i> Инструменты</button>
@@ -843,7 +843,8 @@
                 <div class="modal-title">Ф'ючерси</div>
                 <button class="close-btn" onclick="closeModal('futuresModal')">&times;</button>
             </div>
-            <p>Тут буде інтерфейс торгівлі ф'ючерсами...</p>
+            <p>  <div class="popup-title">USDT Perpetuals</div>
+        <div class="popup-description">Торгуйте бессрочными контрактами, рассчитанными в USDT.</div></p>
         </div>
     </div>
 
@@ -854,7 +855,21 @@
                 <div class="modal-title">Інструменти</div>
                 <button class="close-btn" onclick="closeModal('toolsModal')">&times;</button>
             </div>
-            <p>Тут буде інтерфейс інструментів аналізу...</p>
+            <p> <div class="popup-title">Рыночная капитализация</div>
+            <div class="popup-description">
+                Показатель, отражающий общую стоимость всех монет определённой криптовалюты на рынке
+            </div>
+            <br>
+            <div class="popup-title">Маркет-скринер</div>
+            <div class="popup-description">
+                Инструмент, позволяющий фильтровать и отслеживать различные криптовалюты по множеству критериев
+            </div>
+            <br>
+            <div class="popup-title">Кросс-курсы</div>
+            <div class="popup-description">
+                Курсы обмена между двумя валютами, выраженные через третью валюту
+            </div>
+        </p>
         </div>
     </div>
 
@@ -865,7 +880,40 @@
                 <div class="modal-title">Документація</div>
                 <button class="close-btn" onclick="closeModal('docsModal')">&times;</button>
             </div>
-            <p>Тут буде документація по API та інструкції...</p>
+            <p><div class="popup-title">Введение</div>
+            <div class="popup-description">
+                Добро пожаловать в SwapLines — инновационную криптовалютную биржу с передовыми инструментами для трейдинга и анализа рынка.
+                Наша платформа обеспечивает безопасность, скорость и удобство работы с цифровыми активами.
+            </div>
+            <br>
+            <div class="popup-title">Регистрация и Верификация</div>
+            <div class="popup-description">
+                Для начала работы зарегистрируйтесь, подтвердите e-mail и пройдите процедуру KYC для повышения лимитов и доступа ко всем функциям.
+            </div>
+            <br>
+             <div class="popup-title">API Доступ</div>
+            <div class="popup-description">
+                Наш REST API позволяет:
+                <ul>
+                    <li>Получать котировки и исторические данные</li>
+                    <li>Создавать и отменять ордера</li>
+                    <li>Управлять балансом и выводить средства</li>
+                    <li>Отслеживать статусы сделок и уведомления</li>
+                </ul>
+                Для получения API ключа перейдите в личный кабинет в раздел "API".
+            </div>
+            <br>
+             <div class="popup-title">Торговые Комиссии</div>
+            <div class="popup-description">
+                Комиссии зависят от объема торгов:
+                <ul>
+                    <li>Мейкер: от 0.05% до 0.01%</li>
+                    <li>Тейкер: от 0.1% до 0.02%</li>
+                </ul>
+                Детальная таблица доступна на странице "Комиссии".
+            </div>
+        </div>
+        </p>
         </div>
     </div>
 
@@ -876,7 +924,21 @@
                 <div class="modal-title">Активи</div>
                 <button class="close-btn" onclick="closeModal('assetsModal')">&times;</button>
             </div>
-            <p>Тут буде інформація про ваші активи...</p>
+            <p> <h2>0.00 USD</h2> 
+        <h5 class="defbay">≈ 0.000000 BTC</h5>
+        <br>
+        <h6 class="dddff">*Data may be delayed.</h6>
+        <br>  
+        <br>
+        <hr style="color: #1a1a1a;">
+        <br>
+        <p><pre> Spot                           $0.00</pre></p>
+        <br>
+        <p><pre> Margin                       $0.00</pre></p>
+        <br>
+        <p><pre> Futures                      $0.00</pre></p>
+        <br>
+        <p><pre> Earn                           $0.00</pre></p></p>
         </div>
     </div>
 
