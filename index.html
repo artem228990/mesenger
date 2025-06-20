@@ -584,274 +584,167 @@
         </div>
     </div>
 
-    <script>
-        // Top 100 cryptocurrencies by market cap
-        const cryptocurrencies = [
-            { id: "bitcoin", symbol: "BTC", name: "Bitcoin" },
-            { id: "ethereum", symbol: "ETH", name: "Ethereum" },
-            { id: "tether", symbol: "USDT", name: "Tether" },
-            { id: "binancecoin", symbol: "BNB", name: "BNB" },
-            { id: "solana", symbol: "SOL", name: "Solana" },
-            { id: "usd-coin", symbol: "USDC", name: "USD Coin" },
-            { id: "ripple", symbol: "XRP", name: "XRP" },
-            { id: "cardano", symbol: "ADA", name: "Cardano" },
-            { id: "dogecoin", symbol: "DOGE", name: "Dogecoin" },
-            { id: "shiba-inu", symbol: "SHIB", name: "Shiba Inu" },
-            { id: "avalanche-2", symbol: "AVAX", name: "Avalanche" },
-            { id: "polkadot", symbol: "DOT", name: "Polkadot" },
-            { id: "tron", symbol: "TRX", name: "TRON" },
-            { id: "chainlink", symbol: "LINK", name: "Chainlink" },
-            { id: "polygon", symbol: "MATIC", name: "Polygon" },
-            { id: "wrapped-bitcoin", symbol: "WBTC", name: "Wrapped Bitcoin" },
-            { id: "uniswap", symbol: "UNI", name: "Uniswap" },
-            { id: "bitcoin-cash", symbol: "BCH", name: "Bitcoin Cash" },
-            { id: "litecoin", symbol: "LTC", name: "Litecoin" },
-            { id: "internet-computer", symbol: "ICP", name: "Internet Computer" },
-            { id: "dai", symbol: "DAI", name: "Dai" },
-            { id: "ethereum-classic", symbol: "ETC", name: "Ethereum Classic" },
-            { id: "filecoin", symbol: "FIL", name: "Filecoin" },
-            { id: "cosmos", symbol: "ATOM", name: "Cosmos" },
-            { id: "aptos", symbol: "APT", name: "Aptos" },
-            { id: "stellar", symbol: "XLM", name: "Stellar" },
-            { id: "monero", symbol: "XMR", name: "Monero" },
-            { id: "okb", symbol: "OKB", name: "OKB" },
-            { id: "hedera-hashgraph", symbol: "HBAR", name: "Hedera" },
-            { id: "crypto-com-chain", symbol: "CRO", name: "Cronos" },
-            { id: "near", symbol: "NEAR", name: "NEAR Protocol" },
-            { id: "arbitrum", symbol: "ARB", name: "Arbitrum" },
-            { id: "vechain", symbol: "VET", name: "VeChain" },
-            { id: "aave", symbol: "AAVE", name: "Aave" },
-            { id: "quant-network", symbol: "QNT", name: "Quant" },
-            { id: "pancakeswap-token", symbol: "CAKE", name: "PancakeSwap" },
-            { id: "the-graph", symbol: "GRT", name: "The Graph" },
-            { id: "algorand", symbol: "ALGO", name: "Algorand" },
-            { id: "frax", symbol: "FRAX", name: "Frax" },
-            { id: "eos", symbol: "EOS", name: "EOS" },
-            { id: "elrond-erd-2", symbol: "EGLD", name: "MultiversX" },
-            { id: "theta-token", symbol: "THETA", name: "Theta Network" },
-            { id: "bitcoin-sv", symbol: "BSV", name: "Bitcoin SV" },
-            { id: "tezos", symbol: "XTZ", name: "Tezos" },
-            { id: "axie-infinity", symbol: "AXS", name: "Axie Infinity" },
-            { id: "true-usd", symbol: "TUSD", name: "TrueUSD" },
-            { id: "mina-protocol", symbol: "MINA", name: "Mina Protocol" },
-            { id: "iota", symbol: "MIOTA", name: "IOTA" },
-            { id: "flow", symbol: "FLOW", name: "Flow" },
-            { id: "kucoin-shares", symbol: "KCS", name: "KuCoin" },
-            { id: "huobi-token", symbol: "HT", name: "Huobi" },
-            { id: "neo", symbol: "NEO", name: "NEO" },
-            { id: "terra-luna-2", symbol: "LUNA", name: "Terra" },
-            { id: "radix", symbol: "XRD", name: "Radix" },
-            { id: "gala", symbol: "GALA", name: "Gala" },
-            { id: "klay-token", symbol: "KLAY", name: "Klaytn" },
-            { id: "chiliz", symbol: "CHZ", name: "Chiliz" },
-            { id: "maker", symbol: "MKR", name: "Maker" },
-            { id: "dash", symbol: "DASH", name: "Dash" },
-            { id: "ecash", symbol: "XEC", name: "eCash" },
-            { id: "paxos-standard", symbol: "USDP", name: "Pax Dollar" },
-            { id: "compound-ether", symbol: "CETH", name: "cETH" },
-            { id: "bitget-token", symbol: "BGB", name: "Bitget" },
-            { id: "zcash", symbol: "ZEC", name: "Zcash" },
-            { id: "immutable-x", symbol: "IMX", name: "Immutable" },
-            { id: "curve-dao-token", symbol: "CRV", name: "Curve DAO" },
-            { id: "trust-wallet-token", symbol: "TWT", name: "Trust Wallet" },
-            { id: "decentraland", symbol: "MANA", name: "Decentraland" },
-            { id: "1inch", symbol: "1INCH", name: "1inch" },
-            { id: "kava", symbol: "KAVA", name: "Kava" },
-            { id: "compound-governance-token", symbol: "COMP", name: "Compound" },
-            { id: "mask-network", symbol: "MASK", name: "Mask Network" },
-            { id: "enjincoin", symbol: "ENJ", name: "Enjin" },
-            { id: "gatetoken", symbol: "GT", name: "GateToken" },
-            { id: "casper-network", symbol: "CSPR", name: "Casper" },
-            { id: "xdc-network", symbol: "XDC", name: "XDC Network" },
-            { id: "loopring", symbol: "LRC", name: "Loopring" },
-            { id: "basic-attention-token", symbol: "BAT", name: "Basic Attention" },
-            { id: "oasis-network", symbol: "ROSE", name: "Oasis Network" },
-            { id: "arweave", symbol: "AR", name: "Arweave" },
-            { id: "thorchain", symbol: "RUNE", name: "THORChain" },
-            { id: "holo", symbol: "HOT", name: "Holo" },
-            { id: "ankr", symbol: "ANKR", name: "Ankr" },
-            { id: "celo", symbol: "CELO", name: "Celo" },
-            { id: "qtum", symbol: "QTUM", name: "Qtum" },
-            { id: "ravencoin", symbol: "RVN", name: "Ravencoin" },
-            { id: "kadena", symbol: "KDA", name: "Kadena" },
-            { id: "waves", symbol: "WAVES", name: "Waves" },
-            { id: "nem", symbol: "XEM", name: "NEM" },
-            { id: "conflux-token", symbol: "CFX", name: "Conflux" },
-            { id: "terra-luna", symbol: "LUNC", name: "Terra Classic" },
-            { id: "iota", symbol: "IOTA", name: "IOTA" },
-            { id: "synthetix-network-token", symbol: "SNX", name: "Synthetix" },
-            { id: "zilliqa", symbol: "ZIL", name: "Zilliqa" },
-            { id: "icon", symbol: "ICX", name: "ICON" },
-            { id: "harmony", symbol: "ONE", name: "Harmony" },
-            { id: "audius", symbol: "AUDIO", name: "Audius" },
-            { id: "stacks", symbol: "STX", name: "Stacks" },
-            { id: "omisego", symbol: "OMG", name: "OMG Network" },
-            { id: "fetch-ai", symbol: "FET", name: "Fetch.ai" },
-            { id: "0x", symbol: "ZRX", name: "0x" },
-            { id: "rocket-pool", symbol: "RPL", name: "Rocket Pool" },
-            { id: "helium", symbol: "HNT", name: "Helium" }
-        ];
+   <script>
+    let cryptocurrencies = [];
 
-        // Generate wallet addresses for each coin
-        cryptocurrencies.forEach(coin => {
-            coin.walletAddress = generateWalletAddress(coin.symbol);
-            coin.iconUrl = `https://cryptologos.cc/logos/${coin.id}-${coin.symbol.toLowerCase()}-logo.png`;
-        });
-
-        // Generate random wallet address
-        function generateWalletAddress(prefix) {
-            const chars = '0123456789ABCDEF';
-            let result = '0x';
-            for (let i = 0; i < 40; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
+    // Генерація випадкової адреси гаманця
+    function generateWalletAddress(prefix) {
+        const chars = '0123456789ABCDEF';
+        let result = '0x';
+        for (let i = 0; i < 40; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
         }
+        return result;
+    }
 
-        // Load cryptocurrencies with real prices
-        async function loadCoins() {
-            const coinList = document.getElementById('coinList');
-            coinList.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Завантаження даних...</div>';
-            
-            try {
-                // Fetch prices for all coins at once
-                const ids = cryptocurrencies.map(coin => coin.id).join(',');
-                const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
-                const prices = await response.json();
-                
-                coinList.innerHTML = '';
-                
-                cryptocurrencies.forEach(coin => {
-                    const priceData = prices[coin.id];
-                    if (!priceData) return;
-                    
-                    const currentPrice = priceData.usd;
-                    const sellPrice = currentPrice * 1.005; // 0.5% higher for sell
-                    const priceChange = priceData.usd_24h_change;
-                    
-                    const changeClass = priceChange >= 0 ? 'positive' : 'negative';
-                    
-                    const li = document.createElement('li');
-                    li.className = 'asset-item';
-                    li.innerHTML = `
-                        <div class="asset-name">
-                            <img src="${coin.iconUrl}" alt="${coin.symbol}" class="asset-icon" onerror="this.src='https://via.placeholder.com/24'">
-                            <span class="asset-symbol">${coin.symbol}</span>
-                            <span class="asset-fullname">${coin.name}</span>
+    // Завантаження монет з API CoinGecko
+    async function loadCoins() {
+        const coinList = document.getElementById('coinList');
+        coinList.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Завантаження даних...</div>';
+
+        try {
+            const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false');
+            const data = await response.json();
+
+            cryptocurrencies = data.map(coin => ({
+                id: coin.id,
+                symbol: coin.symbol.toUpperCase(),
+                name: coin.name,
+                price: coin.current_price,
+                change: coin.price_change_percentage_24h,
+                iconUrl: coin.image,
+                walletAddress: generateWalletAddress(coin.symbol)
+            }));
+
+            coinList.innerHTML = '';
+
+            cryptocurrencies.forEach(coin => {
+                const currentPrice = coin.price;
+                const sellPrice = currentPrice * 1.005;
+                const changeClass = coin.change >= 0 ? 'positive' : 'negative';
+
+                const li = document.createElement('li');
+                li.className = 'asset-item';
+                li.innerHTML = `
+                    <div class="asset-name">
+                        <img src="${coin.iconUrl}" alt="${coin.symbol}" class="asset-icon" onerror="this.src='https://via.placeholder.com/24'">
+                        <span class="asset-symbol">${coin.symbol}</span>
+                        <span class="asset-fullname">${coin.name}</span>
+                    </div>
+                    <div class="asset-price">
+                        <div class="price-container">
+                            <span class="buy-price">$${currentPrice.toFixed(4)}</span>
+                            <span class="sell-price">$${sellPrice.toFixed(4)}</span>
+                            <span class="spread">Спред: 0.5%</span>
                         </div>
-                        <div class="asset-price">
-                            <div class="price-container">
-                                <span class="buy-price">$${currentPrice.toFixed(4)}</span>
-                                <span class="sell-price">$${sellPrice.toFixed(4)}</span>
-                                <span class="spread">Спред: 0.5%</span>
-                            </div>
-                        </div>
-                        <div class="asset-change ${changeClass}">${priceChange ? priceChange.toFixed(2) + '%' : 'N/A'}</div>
-                        <div class="asset-balance zero-balance">0 ${coin.symbol}</div>
-                        <div class="asset-actions">
-                            <button class="action-btn deposit-btn" onclick="openDepositModal('${coin.symbol}', '${coin.name}', '${coin.iconUrl}')">
-                                <i class="fas fa-plus"></i> Поповнити
-                            </button>
-                            <button class="action-btn withdraw-btn" onclick="openWithdrawModal('${coin.symbol}', '${coin.name}', '${coin.iconUrl}')">
-                                <i class="fas fa-minus"></i> Вивести
-                            </button>
-                        </div>
-                    `;
-                    coinList.appendChild(li);
-                });
-            } catch (error) {
-                console.error('Error fetching prices:', error);
-                coinList.innerHTML = '<div class="loading">Помилка завантаження даних. Будь ласка, спробуйте пізніше.</div>';
-            }
-        }
-
-        // Modal functions
-        function openDepositModal(symbol, name, iconUrl) {
-            const coin = cryptocurrencies.find(c => c.symbol === symbol);
-            document.getElementById('depositCoinName').textContent = name;
-            document.getElementById('depositCoinSymbol').textContent = symbol;
-            document.getElementById('depositAddress').textContent = coin.walletAddress;
-            document.getElementById('depositCoinIcon').src = iconUrl;
-            document.getElementById('depositModal').style.display = 'flex';
-        }
-
-        function openWithdrawModal(symbol, name, iconUrl) {
-            document.getElementById('withdrawCoinName').textContent = name;
-            document.getElementById('withdrawCoinSymbol').textContent = symbol;
-            document.getElementById('withdrawCoinIcon').src = iconUrl;
-            document.getElementById('withdrawAddress').value = '';
-            document.getElementById('withdrawAmount').value = '';
-            document.getElementById('withdrawError').style.display = 'none';
-            document.getElementById('withdrawModal').style.display = 'flex';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        function copyToClipboard(elementId) {
-            const text = document.getElementById(elementId).textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                const copyBtn = document.querySelector('.copy-btn');
-                const originalText = copyBtn.innerHTML;
-                copyBtn.innerHTML = '<i class="fas fa-check"></i> Скопійовано!';
-                setTimeout(() => {
-                    copyBtn.innerHTML = originalText;
-                }, 2000);
+                    </div>
+                    <div class="asset-change ${changeClass}">${coin.change?.toFixed(2) ?? '0.00'}%</div>
+                    <div class="asset-balance zero-balance">0 ${coin.symbol}</div>
+                    <div class="asset-actions">
+                        <button class="action-btn deposit-btn" onclick="openDepositModal('${coin.symbol}', '${coin.name}', '${coin.iconUrl}')">
+                            <i class="fas fa-plus"></i> Поповнити
+                        </button>
+                        <button class="action-btn withdraw-btn" onclick="openWithdrawModal('${coin.symbol}', '${coin.name}', '${coin.iconUrl}')">
+                            <i class="fas fa-minus"></i> Вивести
+                        </button>
+                    </div>
+                `;
+                coinList.appendChild(li);
             });
-        }
 
-        function attemptWithdraw() {
-            const address = document.getElementById('withdrawAddress').value;
-            const amount = document.getElementById('withdrawAmount').value;
-            
-            if (!address || !amount) {
-                document.getElementById('withdrawError').textContent = "Будь ласка, заповніть всі поля";
-                document.getElementById('withdrawError').style.display = 'block';
-                return;
-            }
-            
-            // Always show insufficient funds for demo
-            document.getElementById('withdrawError').textContent = "Недостатньо активів";
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            coinList.innerHTML = '<div class="loading">Помилка завантаження даних. Спробуйте пізніше.</div>';
+        }
+    }
+
+    // Відкриття модального вікна для поповнення
+    function openDepositModal(symbol, name, iconUrl) {
+        const coin = cryptocurrencies.find(c => c.symbol === symbol);
+        document.getElementById('depositCoinName').textContent = name;
+        document.getElementById('depositCoinSymbol').textContent = symbol;
+        document.getElementById('depositAddress').textContent = coin.walletAddress;
+        document.getElementById('depositCoinIcon').src = iconUrl;
+        document.getElementById('depositModal').style.display = 'flex';
+    }
+
+    // Відкриття модального вікна для виводу
+    function openWithdrawModal(symbol, name, iconUrl) {
+        document.getElementById('withdrawCoinName').textContent = name;
+        document.getElementById('withdrawCoinSymbol').textContent = symbol;
+        document.getElementById('withdrawCoinIcon').src = iconUrl;
+        document.getElementById('withdrawAddress').value = '';
+        document.getElementById('withdrawAmount').value = '';
+        document.getElementById('withdrawError').style.display = 'none';
+        document.getElementById('withdrawModal').style.display = 'flex';
+    }
+
+    // Закриття модального вікна
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Копіювання адреси в буфер
+    function copyToClipboard(elementId) {
+        const text = document.getElementById(elementId).textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            const copyBtn = document.querySelector('.copy-btn');
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<i class="fas fa-check"></i> Скопійовано!';
+            setTimeout(() => {
+                copyBtn.innerHTML = originalText;
+            }, 2000);
+        });
+    }
+
+    // Спроба виводу коштів
+    function attemptWithdraw() {
+        const address = document.getElementById('withdrawAddress').value;
+        const amount = document.getElementById('withdrawAmount').value;
+
+        if (!address || !amount) {
+            document.getElementById('withdrawError').textContent = "Будь ласка, заповніть всі поля";
             document.getElementById('withdrawError').style.display = 'block';
-            
-            // In a real app, you would make an API call here
-            // to process the withdrawal
+            return;
         }
 
-        // Search functionality
-        function searchCoins() {
-            const input = document.getElementById('coinSearch');
-            const filter = input.value.toUpperCase();
-            const coinList = document.getElementById('coinList');
-            const coins = coinList.getElementsByClassName('asset-item');
-            
-            for (let i = 0; i < coins.length; i++) {
-                const symbol = coins[i].getElementsByClassName('asset-symbol')[0];
-                const name = coins[i].getElementsByClassName('asset-fullname')[0];
-                if (symbol.textContent.toUpperCase().indexOf(filter) > -1 || 
-                    name.textContent.toUpperCase().indexOf(filter) > -1) {
-                    coins[i].style.display = "";
-                } else {
-                    coins[i].style.display = "none";
-                }
+        // Для демонстрації — завжди помилка
+        document.getElementById('withdrawError').textContent = "Недостатньо активів";
+        document.getElementById('withdrawError').style.display = 'block';
+    }
+
+    // Пошук монет
+    function searchCoins() {
+        const input = document.getElementById('coinSearch');
+        const filter = input.value.toUpperCase();
+        const coinList = document.getElementById('coinList');
+        const coins = coinList.getElementsByClassName('asset-item');
+
+        for (let i = 0; i < coins.length; i++) {
+            const symbol = coins[i].getElementsByClassName('asset-symbol')[0];
+            const name = coins[i].getElementsByClassName('asset-fullname')[0];
+            if (symbol.textContent.toUpperCase().indexOf(filter) > -1 || 
+                name.textContent.toUpperCase().indexOf(filter) > -1) {
+                coins[i].style.display = "";
+            } else {
+                coins[i].style.display = "none";
             }
         }
+    }
 
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            if (event.target.className === 'modal') {
-                event.target.style.display = 'none';
-            }
+    // Закриття модалки при кліку поза вікном
+    window.onclick = function(event) {
+        if (event.target.className === 'modal') {
+            event.target.style.display = 'none';
         }
+    }
 
-        // Initialize the page
-        window.onload = function() {
-            loadCoins();
-            // Refresh prices every 60 seconds
-            setInterval(loadCoins, 60000);
-        };
-        
-    </script>
+    // Запуск
+    window.onload = function() {
+        loadCoins();
+        setInterval(loadCoins, 60000); // оновлення кожні 60 сек
+    };
+</script>
+
 </body>
 </html>
