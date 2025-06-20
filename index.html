@@ -569,6 +569,96 @@
     color: #525252;
 }
 
+@media screen and (max-width: 768px) {
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 15px;
+    }
+
+    .left-header, .right-header {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .nav-btn, .account-btn, .language-btn {
+        width: 100%;
+        margin: 5px 0;
+        font-size: 16px;
+        padding: 10px 15px;
+        text-align: left;
+    }
+
+    .main-content {
+        flex-direction: column;
+        padding: 80px 15px 20px;
+    }
+
+    .balance-section,
+    .search-bar,
+    .assets-section {
+        width: 100%;
+    }
+
+    .assets-header {
+        display: none;
+    }
+
+    .asset-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 15px;
+    }
+
+    .asset-name {
+        margin-bottom: 8px;
+    }
+
+    .asset-price,
+    .asset-change,
+    .asset-balance,
+    .asset-actions {
+        width: 100%;
+        margin-bottom: 6px;
+    }
+
+    .asset-actions {
+        justify-content: space-between;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+
+    .popup {
+        max-width: 90vw;
+        font-size: 14px;
+    }
+
+    .popup.small-popup {
+        width: 90%;
+    }
+
+    .popup.wide-popup {
+        width: 95%;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .total-balance {
+        font-size: 22px;
+    }
+
+    .balance-change {
+        font-size: 12px;
+    }
+
+    .search-input {
+        font-size: 14px;
+    }
+}
 
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
