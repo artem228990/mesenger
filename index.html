@@ -213,6 +213,7 @@
         border-bottom: 1px solid #333;
         align-items: center;
         transition: background-color 0.3s;
+        cursor: pointer;
     }
 
     .asset-item:hover {
@@ -557,85 +558,289 @@
         color: #525252;
     }
 
-    /* Mobile menu styles */
-.mobile-menu-btn {
-    display: none;
-    background: none;
-    border: none;
-    color: #bbb;
-    font-size: 24px;
-    cursor: pointer;
-    margin-left: 15px;
-    order: 3; /* Додаємо це, щоб кнопка була останньою в правому блоці */
-}
+    /* Trading Page Styles */
+    .trading-page {
+        display: none;
+        width: 100%;
+    }
 
-.mobile-menu {
-    display: none;
-    position: fixed;
-    top: 70px;
-    right: 20px;
-    background-color: #1a1a1a;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(255,165,0,0.3);
-    z-index: 1000;
-    width: 200px;
-    padding: 10px 0;
-}
+    .trading-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        background-color: #1a1a1a;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
 
-.mobile-menu.active {
-    display: block;
-}
+    .trading-pair {
+        display: flex;
+        align-items: center;
+    }
 
-.mobile-menu-item {
-    padding: 12px 20px;
-    color: #bbb;
-    cursor: pointer;
-    transition: all 0.3s;
-}
+    .trading-pair-icon {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+        border-radius: 50%;
+    }
 
-.mobile-menu-item:hover {
-    background-color: #222;
-    color: #ffa500;
-}
+    .trading-pair-name {
+        font-size: 18px;
+        font-weight: bold;
+    }
 
-.mobile-menu-item i {
-    margin-right: 10px;
-    width: 20px;
-    text-align: center;
-}
+    .trading-pair-price {
+        font-size: 18px;
+        color: #00cc66;
+    }
 
-/* Оновлюємо медіа-запити для правильного відображення */
-@media (max-width: 768px) {
-    header {
+    .trading-container {
+        display: flex;
+        gap: 15px;
+    }
+
+    /* Оновлені стилі для графіка */
+    .chart-container {
+        flex: 3;
+        background-color: #1a1a1a;
+        border-radius: 8px;
+        padding: 15px;
+        height: 700px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #tradingview-chart {
+        width: 100%;
+        height: 100%;
+        min-height: 650px;
+    }
+
+    .trading-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .order-book {
+        background-color: #1a1a1a;
+        border-radius: 8px;
         padding: 15px;
     }
 
-    .logo {
-        font-size: 20px;
-        margin-right: 15px;
+    .order-book-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #ffa500;
     }
 
-    .left-header .nav-btn:not(.mobile-menu-btn),
-    .right-header .nav-btn {
-        display: none;
+    .order-book-table {
+        width: 100%;
+        border-collapse: collapse;
     }
 
+    .order-book-table th {
+        text-align: left;
+        padding: 5px 0;
+        color: #aaa;
+        font-size: 12px;
+    }
+
+    .order-book-table td {
+        padding: 5px 0;
+        font-size: 13px;
+    }
+
+    .order-book-bid {
+        color: #00cc66;
+    }
+
+    .order-book-ask {
+        color: #ff4444;
+    }
+
+    .order-form {
+        background-color: #1a1a1a;
+        border-radius: 8px;
+        padding: 15px;
+    }
+
+    .order-form-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #ffa500;
+    }
+
+    .order-tabs {
+        display: flex;
+        margin-bottom: 15px;
+    }
+
+    .order-tab {
+        flex: 1;
+        padding: 8px;
+        text-align: center;
+        background-color: #222;
+        cursor: pointer;
+    }
+
+    .order-tab.active {
+        background-color: #ffa500;
+        color: #000;
+    }
+
+    .order-tab:first-child {
+        border-radius: 4px 0 0 4px;
+    }
+
+    .order-tab:last-child {
+        border-radius: 0 4px 4px 0;
+    }
+
+    .order-input-group {
+        margin-bottom: 15px;
+    }
+
+    .order-input-label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 13px;
+        color: #aaa;
+    }
+
+    .order-input {
+        width: 100%;
+        padding: 10px;
+        background-color: #2a2a2a;
+        border: 1px solid #444;
+        border-radius: 4px;
+        color: #fff;
+    }
+
+    .order-slider {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .order-btn {
+        width: 100%;
+        padding: 12px;
+        border-radius: 4px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .buy-btn {
+        background-color: #00cc66;
+        color: white;
+    }
+
+    .sell-btn {
+        background-color: #ff4444;
+        color: white;
+    }
+
+    .back-btn {
+        background: none;
+        border: none;
+        color: #ffa500;
+        cursor: pointer;
+        font-size: 14px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .back-btn i {
+        margin-right: 5px;
+    }
+
+    /* Mobile menu styles */
     .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        color: #bbb;
+        font-size: 24px;
+        cursor: pointer;
+        margin-left: 15px;
+        order: 3;
+    }
+
+    .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 70px;
+        right: 20px;
+        background-color: #1a1a1a;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(255,165,0,0.3);
+        z-index: 1000;
+        width: 200px;
+        padding: 10px 0;
+    }
+
+    .mobile-menu.active {
         display: block;
     }
 
-    .account-btn {
-        margin-left: 10px;
-        padding: 6px 12px;
-        font-size: 14px;
-        order: 1; /* Кнопка аккаунта буде першою */
+    .mobile-menu-item {
+        padding: 12px 20px;
+        color: #bbb;
+        cursor: pointer;
+        transition: all 0.3s;
     }
 
-    .language-btn {
-        margin-left: 10px;
-        order: 2; /* Кнопка мови буде другою */
+    .mobile-menu-item:hover {
+        background-color: #222;
+        color: #ffa500;
     }
-}
+
+    .mobile-menu-item i {
+        margin-right: 10px;
+        width: 20px;
+        text-align: center;
+    }
+
+    /* Оновлюємо медіа-запити для правильного відображення */
+    @media (max-width: 768px) {
+        header {
+            padding: 15px;
+        }
+
+        .logo {
+            font-size: 20px;
+            margin-right: 15px;
+        }
+
+        .left-header .nav-btn:not(.mobile-menu-btn),
+        .right-header .nav-btn {
+            display: none;
+        }
+
+        .mobile-menu-btn {
+            display: block;
+        }
+
+        .account-btn {
+            margin-left: 10px;
+            padding: 6px 12px;
+            font-size: 14px;
+            order: 1;
+        }
+
+        .language-btn {
+            margin-left: 10px;
+            order: 2;
+        }
+    }
 
     /* Responsive styles */
     @media (max-width: 992px) {
@@ -656,6 +861,19 @@
         .action-btn {
             padding: 5px 8px;
             font-size: 11px;
+        }
+
+        .trading-container {
+            flex-direction: column;
+        }
+
+        /* Адаптація графіка для мобільних пристроїв */
+        .chart-container {
+            height: 500px;
+        }
+
+        #tradingview-chart {
+            min-height: 450px;
         }
     }
 
@@ -752,9 +970,29 @@
         .popup.wide-popup {
             width: 280px;
         }
+
+        .trading-pair-name {
+            font-size: 16px;
+        }
+
+        .trading-pair-price {
+            font-size: 16px;
+        }
+
+        /* Адаптація графіка для дуже малих екранів */
+        .chart-container {
+            height: 400px;
+            padding: 10px;
+        }
+
+        #tradingview-chart {
+            min-height: 350px;
+        }
     }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Підключаємо бібліотеку TradingView -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 </head>
 <body>
     <header>
@@ -780,6 +1018,138 @@
             <div class="mobile-menu-item" onclick="openModal('assetsModal')"><i class="fas fa-coins"></i> Активы</div>
         </div>
     </header>
+    
+    <!-- Основной контент -->
+    <div class="main-content">
+        <div style="width: 100%;" id="assetsPage">
+            <div class="balance-section">
+                <div class="balance-header">
+                    <div>
+                        <div class="balance-title">Общий баланс</div>
+                        <div class="total-balance">$0.00</div>
+                        <div class="balance-change">+0.00% (24ч)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="search-bar">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" id="coinSearch" placeholder="Поиск монет..." onkeyup="searchCoins()">
+                </div>
+            </div>
+            <div class="assets-section">
+                <div class="assets-header">
+                    <div class="asset-header-item">Актив</div>
+                    <div class="asset-header-item">Цена (Покупка/Продажа)</div>
+                    <div class="asset-header-item">Изм. (24ч)</div>
+                    <div class="asset-header-item">Баланс</div>
+                    <div class="asset-header-item">Действия</div>
+                </div>
+                <ul class="asset-list" id="coinList">
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> Загрузка данных...
+                    </div>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Страница торговли -->
+        <div class="trading-page" id="tradingPage">
+            <button class="back-btn" onclick="showAssetsPage()"><i class="fas fa-arrow-left"></i> Назад к списку активов</button>
+            
+            <div class="trading-header">
+                <div class="trading-pair">
+                    <img id="tradingPairIcon" class="trading-pair-icon" src="">
+                    <span id="tradingPairName" class="trading-pair-name">BTC/USDT</span>
+                </div>
+                <div id="tradingPairPrice" class="trading-pair-price">$0.00</div>
+            </div>
+            
+            <div class="trading-container">
+                <div class="chart-container">
+                    <div id="tradingview-chart"></div>
+                </div>
+                
+                <div class="trading-panel">
+                    <div class="order-book">
+                        <div class="order-book-title">Стакан ордеров</div>
+                        <table class="order-book-table">
+                            <thead>
+                                <tr>
+                                    <th>Цена (USDT)</th>
+                                    <th>Количество</th>
+                                    <th>Всего</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="order-book-ask">40,123.45</td>
+                                    <td>0.125</td>
+                                    <td>5,015.43</td>
+                                </tr>
+                                <tr>
+                                    <td class="order-book-ask">40,120.00</td>
+                                    <td>0.250</td>
+                                    <td>10,030.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="order-book-ask">40,115.75</td>
+                                    <td>0.500</td>
+                                    <td>20,057.88</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="text-align: center; padding: 10px 0; color: #ffa500;">40,100.50</td>
+                                </tr>
+                                <tr>
+                                    <td class="order-book-bid">40,098.00</td>
+                                    <td>0.750</td>
+                                    <td>30,073.50</td>
+                                </tr>
+                                <tr>
+                                    <td class="order-book-bid">40,095.25</td>
+                                    <td>1.000</td>
+                                    <td>40,095.25</td>
+                                </tr>
+                                <tr>
+                                    <td class="order-book-bid">40,090.00</td>
+                                    <td>1.250</td>
+                                    <td>50,112.50</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="order-form">
+                        <div class="order-form-title">Новый ордер</div>
+                        
+                        <div class="order-tabs">
+                            <div class="order-tab active" id="buyTab" onclick="switchOrderTab('buy')">Купить</div>
+                            <div class="order-tab" id="sellTab" onclick="switchOrderTab('sell')">Продать</div>
+                        </div>
+                        
+                        <div class="order-input-group">
+                            <label class="order-input-label">Цена (USDT)</label>
+                            <input type="text" class="order-input" id="orderPrice" value="40,100.50">
+                        </div>
+                        
+                        <div class="order-input-group">
+                            <label class="order-input-label">Количество</label>
+                            <input type="text" class="order-input" id="orderAmount" placeholder="0.00">
+                        </div>
+                        
+                        <input type="range" class="order-slider" min="0" max="100" value="0">
+                        
+                        <div class="order-input-group">
+                            <label class="order-input-label">Всего</label>
+                            <input type="text" class="order-input" id="orderTotal" placeholder="0.00" readonly>
+                        </div>
+                        
+                        <button class="order-btn buy-btn" id="orderBtn">Купить BTC</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- Попап для активів -->
     <div id="assetsPopup" class="popup small-popup">
@@ -987,40 +1357,6 @@
         </div>
     </div>
 
-    <div class="main-content">
-        <div style="width: 100%;">
-            <div class="balance-section">
-                <div class="balance-header">
-                    <div>
-                        <div class="balance-title">Общий баланс</div>
-                        <div class="total-balance">$0.00</div>
-                        <div class="balance-change">+0.00% (24ч)</div>
-                    </div>
-                </div>
-            </div>
-            <div class="search-bar">
-                <div class="search-container">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" class="search-input" id="coinSearch" placeholder="Поиск монет..." onkeyup="searchCoins()">
-                </div>
-            </div>
-            <div class="assets-section">
-                <div class="assets-header">
-                    <div class="asset-header-item">Актив</div>
-                    <div class="asset-header-item">Цена (Покупка/Продажа)</div>
-                    <div class="asset-header-item">Изм. (24ч)</div>
-                    <div class="asset-header-item">Баланс</div>
-                    <div class="asset-header-item">Действия</div>
-                </div>
-                <ul class="asset-list" id="coinList">
-                    <div class="loading">
-                        <i class="fas fa-spinner fa-spin"></i> Загрузка данных...
-                    </div>
-                </ul>
-            </div>
-        </div>
-    </div>
-    
     <!-- Deposit Modal -->
     <div class="modal" id="depositModal">
         <div class="modal-content">
@@ -1072,6 +1408,57 @@
 
     <script>
         let cryptocurrencies = [];
+        let currentTradingPair = null;
+        let tvWidget = null;
+
+        // Функція для ініціалізації графіка TradingView
+        function initTradingView(symbol) {
+            if (tvWidget !== null) {
+                tvWidget.remove();
+                tvWidget = null;
+            }
+            
+            // Знаходимо повну назву монети для TradingView
+            const coin = cryptocurrencies.find(c => c.symbol === symbol);
+            const fullName = coin ? coin.name : symbol;
+            
+            tvWidget = new TradingView.widget({
+                "autosize": true,
+                "width": "100%",
+                "height": "100%",
+                "symbol": `BINANCE:${symbol}USDT`,
+                "interval": "15",
+                "timezone": "Etc/UTC",
+                "theme": "dark",
+                "style": "1",
+                "locale": "ru",
+                "toolbar_bg": "#1a1a1a",
+                "enable_publishing": false,
+                "hide_top_toolbar": false,
+                "hide_side_toolbar": false,
+                "allow_symbol_change": true,
+                "container_id": "tradingview-chart",
+                "details": true,
+                "studies": [
+                    "MAExp@tv-basicstudies",
+                    "RSI@tv-basicstudies",
+                    "Volume@tv-basicstudies"
+                ],
+                "overrides": {
+                    "paneProperties.background": "#1a1a1a",
+                    "paneProperties.vertGridProperties.color": "#333",
+                    "paneProperties.horzGridProperties.color": "#333",
+                    "symbolWatermarkProperties.transparency": 90,
+                    "scalesProperties.textColor": "#AAA",
+                    "mainSeriesProperties.candleStyle.upColor": "#00cc66",
+                    "mainSeriesProperties.candleStyle.downColor": "#ff4444",
+                    "mainSeriesProperties.candleStyle.borderUpColor": "#00cc66",
+                    "mainSeriesProperties.candleStyle.borderDownColor": "#ff4444",
+                    "mainSeriesProperties.candleStyle.wickUpColor": "#00cc66",
+                    "mainSeriesProperties.candleStyle.wickDownColor": "#ff4444"
+                }
+            });
+        }
 
         // Генерація випадкової адреси гаманця
         function generateWalletAddress(prefix) {
@@ -1112,7 +1499,7 @@
                     const li = document.createElement('li');
                     li.className = 'asset-item';
                     li.innerHTML = `
-                        <div class="asset-name">
+                        <div class="asset-name" onclick="showTradingPair('${coin.symbol}', '${coin.name}', '${coin.iconUrl}', ${coin.price})">
                             <img src="${coin.iconUrl}" alt="${coin.symbol}" class="asset-icon" onerror="this.src='https://via.placeholder.com/24'">
                             <span class="asset-symbol">${coin.symbol}</span>
                             <span class="asset-fullname">${coin.name}</span>
@@ -1144,6 +1531,45 @@
             }
         }
 
+        // Показать страницу торговли для выбранной пары
+        function showTradingPair(symbol, name, iconUrl, price) {
+            currentTradingPair = { symbol, name, iconUrl, price };
+            
+            document.getElementById('assetsPage').style.display = 'none';
+            document.getElementById('tradingPage').style.display = 'block';
+            
+            document.getElementById('tradingPairIcon').src = iconUrl;
+            document.getElementById('tradingPairName').textContent = `${symbol}/USDT`;
+            document.getElementById('tradingPairPrice').textContent = `$${price.toFixed(2)}`;
+            document.getElementById('orderPrice').value = price.toFixed(2);
+            document.getElementById('orderBtn').textContent = `Купить ${symbol}`;
+            
+            // Ініціалізуємо графік TradingView
+            initTradingView(symbol);
+        }
+
+        // Вернуться к списку активов
+        function showAssetsPage() {
+            document.getElementById('assetsPage').style.display = 'block';
+            document.getElementById('tradingPage').style.display = 'none';
+        }
+
+        // Переключение между вкладками покупки/продажи
+        function switchOrderTab(tab) {
+            document.getElementById('buyTab').classList.remove('active');
+            document.getElementById('sellTab').classList.remove('active');
+            document.getElementById(`${tab}Tab`).classList.add('active');
+            
+            const btn = document.getElementById('orderBtn');
+            if (tab === 'buy') {
+                btn.className = 'order-btn buy-btn';
+                btn.textContent = `Купить ${currentTradingPair?.symbol || 'BTC'}`;
+            } else {
+                btn.className = 'order-btn sell-btn';
+                btn.textContent = `Продать ${currentTradingPair?.symbol || 'BTC'}`;
+            }
+        }
+
         // Відкриття модального вікна для поповнення
         function openDepositModal(symbol, name, iconUrl) {
             const coin = cryptocurrencies.find(c => c.symbol === symbol);
@@ -1152,6 +1578,9 @@
             document.getElementById('depositAddress').textContent = coin.walletAddress;
             document.getElementById('depositCoinIcon').src = iconUrl;
             document.getElementById('depositModal').style.display = 'flex';
+            
+            // Остановить всплытие события
+            event.stopPropagation();
         }
 
         // Відкриття модального вікна для виводу
@@ -1163,6 +1592,9 @@
             document.getElementById('withdrawAmount').value = '';
             document.getElementById('withdrawError').style.display = 'none';
             document.getElementById('withdrawModal').style.display = 'flex';
+            
+            // Остановить всплытие события
+            event.stopPropagation();
         }
 
         // Закриття модального вікна
@@ -1171,6 +1603,10 @@
         }
 
         // Відкриття модального вікна
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
         // Копіювання адреси в буфер
         function copyToClipboard(elementId) {
             const text = document.getElementById(elementId).textContent;
@@ -1249,8 +1685,15 @@
             setInterval(loadCoins, 60000); // оновлення кожні 60 сек
         };
 
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'flex';
+        function showTradingPage() {
+            // Показываем первую монету по умолчанию
+            if (cryptocurrencies.length > 0) {
+                const firstCoin = cryptocurrencies[0];
+                showTradingPair(firstCoin.symbol, firstCoin.name, firstCoin.iconUrl, firstCoin.price);
+            } else {
+                // Если данные еще не загружены, показываем BTC/USDT
+                showTradingPair('BTC', 'Bitcoin', 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579', 40000);
+            }
         }
     </script>
 </body>
