@@ -7,7 +7,7 @@
   <style>
     body {
       margin: 0;
-      background-color: #121212; /* однорідний вигорілий чорний фон */
+      background-color: #121212; /* плоский вигорілий чорний фон */
       color: #fff;
       font-family: Arial, sans-serif;
     }
@@ -16,9 +16,9 @@
       display: flex;
       align-items: center;
       padding: 4px 16px;
-      background-color: #121212; /* хедер такого ж кольору */
-      border: none;
-      box-shadow: none;
+      background: linear-gradient(to right, #121212, #0d0d0d, #1a1a1a); /* градієнт у хедері */
+      border-bottom: 1px solid #222;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
       height: 60px;
       box-sizing: border-box;
     }
