@@ -7,7 +7,7 @@
   <style>
     body {
       margin: 0;
-      background: linear-gradient(to bottom, #141414, #0f0f0f, #1a1a1a);
+      background-color: #121212; /* однорідний вигорілий чорний фон */
       color: #fff;
       font-family: Arial, sans-serif;
     }
@@ -15,16 +15,16 @@
     header {
       display: flex;
       align-items: center;
-      padding: 4px 16px; /* зменшений паддінг зверху/знизу */
-      background: linear-gradient(to right, #121212, #0d0d0d, #1a1a1a);
-      border-bottom: 1px solid #222;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      height: 60px; /* зменшена висота */
+      padding: 4px 16px;
+      background-color: #121212; /* хедер такого ж кольору */
+      border: none;
+      box-shadow: none;
+      height: 60px;
       box-sizing: border-box;
     }
 
     .avatar {
-      width: 40px;  /* залишаємо старий розмір */
+      width: 40px;
       height: 40px;
       border-radius: 50%;
       object-fit: cover;
@@ -32,21 +32,21 @@
     }
 
     .nickname {
-      max-width: 100px; /* трохи більший, щоб вмістити більше */
+      max-width: 100px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       margin-right: auto;
-      font-size: 16px; /* без змін */
+      font-size: 16px;
       font-weight: 500;
-      line-height: 40px; /* вирівнюємо по висоті аватарки */
+      line-height: 40px;
     }
 
     .balance {
       margin-right: 10px;
       font-size: 16px;
       font-weight: bold;
-      line-height: 40px; /* вирівнюємо */
+      line-height: 40px;
     }
 
     .ton-logo {
