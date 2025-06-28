@@ -1,110 +1,189 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>TON Wallet</title>
-<style>
-  body {
-    margin: 0;
-    background-color: #121212;
-    color: #fff;
-    font-family: Arial, sans-serif;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TON Wallet</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #121212;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
 
-  header {
-    display: flex;
-    align-items: center;
-    padding: 4px 16px;
-    background: linear-gradient(to right, #121212, #0d0d0d, #1a1a1a);
-    border-bottom: none;
-    box-shadow: none;
-    height: 70px;
-    box-sizing: border-box;
-  }
+    header {
+      display: flex;
+      align-items: center;
+      padding: 4px 16px;
+      background: linear-gradient(to right, #121212, #0d0d0d, #1a1a1a);
+      height: 70px;
+      box-sizing: border-box;
+    }
 
-  .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 10px;
-  }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+    }
 
-  .nickname {
-    max-width: 75px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-right: auto;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 40px;
-  }
+    .nickname {
+      max-width: 75px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-right: auto;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 40px;
+    }
 
-  .balance {
-    margin-right: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 40px;
-  }
+    .balance {
+      margin-right: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 40px;
+    }
 
-  .ton-logo {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-    filter: drop-shadow(0 0 3px #00f0ff88);
-  }
+    .ton-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      filter: drop-shadow(0 0 3px #00f0ff88);
+    }
 
-  .card {
-    margin: 10px 10px 0 10px;
-    padding: 16px 16px 16px 60px;
-    background-color: #141414;
-    border-radius: 12px;
-    color: #fff;
-    font-size: 15px;
-    position: relative;
-    height: 35px;
-  }
+    .card {
+      margin: 10px;
+      padding-left: 60px;
+      background-color: #141414;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 15px;
+      position: relative;
+      height: 70px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
 
-  .live-indicator {
-    position: absolute;
-    top: 50%;
-    left: 1px;
-    transform: translateY(-50%) rotate(-90deg);
-    display: flex;
-    align-items: center;
-    color: #2ecc71;       /* менш яскравий зелений */
-    font-weight: bold;
-    font-size: 16px;
-    user-select: none;
-    gap: 6px;
-  }
+    .live-indicator {
+      position: absolute;
+      top: 50%;
+      left: 5px;
+      transform: translateY(-50%) rotate(-90deg);
+      display: flex;
+      align-items: center;
+      color: #2ecc71;
+      font-weight: bold;
+      font-size: 16px;
+      user-select: none;
+      gap: 6px;
+      z-index: 5;
+    }
 
-  .dot {
-    width: 6px;
-    height: 6px;
-    background-color: #2ecc71;  /* менш яскравий зелений */
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-</style>
+    .dot {
+      width: 6px;
+      height: 6px;
+      background-color: #2ecc71;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .image-wrapper {
+      position: relative;
+      margin-left: 40px;
+      height: 50px;
+      overflow: hidden;
+    }
+
+    .image-container {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      height: 50px;
+      overflow: hidden;
+    }
+
+    .image-container img {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      object-fit: contain;
+      background: linear-gradient(135deg, #2f2f2f, #666666);
+      flex-shrink: 0;
+      transition: transform 0.6s ease;
+    }
+
+    @keyframes disappear {
+      from { opacity: 1; transform: scale(1); }
+      to { opacity: 0; transform: scale(0.8); }
+    }
+  </style>
 </head>
 <body>
-<header>
-  <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar" class="avatar" />
-  <div class="nickname">KosiakDev</div>
-  <div class="balance">0.00</div>
-  <img src="XTVCTON--600.png" alt="TON" class="ton-logo" />
-</header>
+  <header>
+    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar" class="avatar" />
+    <div class="nickname">KosiakDev</div>
+    <div class="balance">0.00</div>
+    <img src="XTVCTON--600.png" alt="TON" class="ton-logo" />
+  </header>
 
-<div class="card">
-  <div class="live-indicator">
-    <span class="dot"></span>
-    <span>Live</span>
+  <div class="card">
+    <div class="live-indicator">
+      <span class="dot"></span>
+      <span>Live</span>
+    </div>
+
+    <div class="image-wrapper">
+      <div class="image-container" id="imageContainer"></div>
+    </div>
   </div>
-</div>
 
+  <script>
+    const container = document.getElementById('imageContainer');
+
+    const images = [
+      '070af3c1dccaedab.webp',
+      '872afbc06f7fdd39.webp',
+      'f3f741a7679dd1f2.webp',
+      'images (1).jfif',
+      'images.jfif'
+    ];
+
+    let index = 0;
+
+    function insertImage() {
+      const existing = Array.from(container.children);
+      existing.forEach(img => {
+        img.style.transform = 'translateX(54px)'; // 50px + 4px gap
+      });
+
+      const newImg = document.createElement('img');
+      newImg.src = images[index];
+      container.prepend(newImg);
+
+      requestAnimationFrame(() => {
+        existing.forEach(img => {
+          img.style.transform = 'translateX(0)';
+        });
+      });
+
+      if (container.children.length > 10) {
+        const last = container.lastChild;
+        last.style.animation = 'disappear 0.6s ease forwards';
+        setTimeout(() => {
+          last.remove();
+        }, 600);
+      }
+
+      index = (index + 1) % images.length;
+    }
+
+    insertImage();
+    setInterval(insertImage, 2000);
+  </script>
 </body>
 </html>
