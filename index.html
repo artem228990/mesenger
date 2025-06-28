@@ -17,8 +17,11 @@
       align-items: center;
       padding: 4px 16px;
       background: linear-gradient(to right, #121212, #0d0d0d, #1a1a1a);
-      border-bottom: 1px solid #222;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+  border-bottom: none;
+  box-shadow: none;
+
+
       height: 70px;
       box-sizing: border-box;
     }
@@ -56,6 +59,15 @@
       object-fit: cover;
       filter: drop-shadow(0 0 3px #00f0ff88);
     }
+ .card {
+  margin: 10px 10px 0 10px;  /* відступ зверху + по боках */
+  padding: 16px;
+  background-color: #141414; /* трохи світліший за фон */
+  border-radius: 12px;       /* згладжені кути */
+  color: #fff;
+  font-size: 15px;
+}
+
   </style>
 </head>
 <body>
@@ -67,5 +79,10 @@
     <!-- Твоя кругла картинка TON -->
     <img src="XTVCTON--600.png" alt="TON" class="ton-logo" />
   </header>
+  <div class="card">
+  
+
+</div>
+
 </body>
 </html>
