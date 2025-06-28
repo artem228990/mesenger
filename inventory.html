@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Інвентарь</title>
+  <style>
+    body {
+      background: #0e0e0e;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    header {
+      background: #1a1a1a;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-buttons button {
+      margin-right: 10px;
+      padding: 10px 15px;
+      background: #2a2a2a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #inventoryList div {
+      background: #2a2a2a;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #inventoryList button {
+      background: #00c896;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .balance {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-buttons">
+    <button onclick="window.location.href='index.html'">Кейси</button>
+    <button onclick="window.location.href='inventory.html'">Інвентарь</button>
+    <button onclick="window.location.href='profile.html'">Профіль</button>
+  </div>
+</header>
+
+<h2>🎒 Інвентарь</h2>
+<div id="inventoryList"></div>
+<div class="balance">Баланс: <span id="balance">0.00</span> TON</div>
+
+<script>
+  let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+
+  function loadBalance() {
+    let balance = localStorage.getItem('balance');
+    if (balance === null) {
+      balance = "0.00";
+      localStorage.setItem('balance', balance);
+    }
+    document.getElementById('balance').innerText = parseFloat(balance).toFixed(2);
+  }
+
+  function saveBalance(amount) {
+    localStorage.setItem('balance', amount.toFixed(2));
+    document.getElementById('balance').innerText = amount.toFixed(2);
+  }
+
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'balance') {
+      loadBalance();
+    }
+  });
+
+  function renderInventory() {
+    const list = document.getElementById('inventoryList');
+    list.innerHTML = "";
+    inventory.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.innerHTML = `<span>${item.name} - ${item.ton} TON</span> <button onclick="sellItem(${index})">Продати</button>`;
+      list.appendChild(div);
+    });
+  }
+
+  function sellItem(index) {
+    const item = inventory.splice(index, 1)[0];
+    let balance = parseFloat(localStorage.getItem('balance'));
+    balance += item.ton;
+    saveBalance(balance);
+    localStorage.setItem('inventory', JSON.stringify(inventory));
+    renderInventory();
+  }
+
+  // Завантаження балансу і інвентаря при старті
+  loadBalance();
+  renderInventory();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Профіль</title>
+  <style>
+    body {
+      background: #0e0e0e;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    header {
+      background: #1a1a1a;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-buttons button {
+      margin-right: 10px;
+      padding: 10px 15px;
+      background: #2a2a2a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .balance {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-buttons">
+    <button onclick="window.location.href='index.html'">Кейси</button>
+    <button onclick="window.location.href='inventory.html'">Інвентарь</button>
+    <button onclick="window.location.href='profile.html'">Профіль</button>
+  </div>
+</header>
+
+<h2>Профіль</h2>
+<p>Тут ти можеш додати інформацію про себе.</p>
+
+<div class="balance">Баланс: <span id="balance">0.00</span> TON</div>
+
+<script>
+  function loadBalance() {
+    let balance = localStorage.getItem('balance');
+    if (balance === null) {
+      balance = "0.00";
+      localStorage.setItem('balance', balance);
+    }
+    document.getElementById('balance').innerText = parseFloat(balance).toFixed(2);
+  }
+
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'balance') {
+      loadBalance();
+    }
+  });
+
+  loadBalance();
+</script>
+
+</body>
+</html>
