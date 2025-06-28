@@ -7,7 +7,7 @@
   <style>
     body {
       margin: 0;
-      background-color: #121212; /* плоский вигорілий чорний фон */
+      background-color: #121212;
       color: #fff;
       font-family: Arial, sans-serif;
     }
@@ -16,7 +16,7 @@
       display: flex;
       align-items: center;
       padding: 4px 16px;
-      background: linear-gradient(to right, #121212, #0d0d0d, #1a1a1a); /* градієнт у хедері */
+      background: linear-gradient(to right, #121212, #0d0d0d, #1a1a1a);
       border-bottom: 1px solid #222;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
       height: 60px;
@@ -50,20 +50,22 @@
     }
 
     .ton-logo {
-      width: 24px;
-      height: 24px;
-      object-fit: contain;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
       filter: drop-shadow(0 0 3px #00f0ff88);
-      align-self: center;
     }
   </style>
 </head>
 <body>
   <header>
     <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar" class="avatar" />
-    <div class="nickname">KosiakDeveloperLongName</div>
+    <div class="nickname">KosiakDev</div>
     <div class="balance">0.00</div>
-    <img src="https://seeklogo.com/images/T/toncoin-ton-logo-6D7D55D97F-seeklogo.com.png" alt="TON" class="ton-logo" />
+
+    <!-- Твоя кругла картинка TON -->
+    <img src="XTVCTON--600.png" alt="TON" class="ton-logo" />
   </header>
 </body>
 </html>
