@@ -7,7 +7,7 @@
   <style>
     body {
       margin: 0;
-      background: #000;
+      background: linear-gradient(to bottom, #141414, #0f0f0f, #1a1a1a);
       color: #fff;
       font-family: Arial, sans-serif;
     }
@@ -16,8 +16,9 @@
       display: flex;
       align-items: center;
       padding: 20px;
-      background: #000;
-      border-bottom: 1px solid #333;
+      background: linear-gradient(to right, #121212, #0d0d0d, #1a1a1a);
+      border-bottom: 1px solid #222;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     }
 
     .avatar {
@@ -34,6 +35,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       margin-right: auto;
+      font-weight: 500;
     }
 
     .balance {
@@ -42,9 +44,10 @@
     }
 
     .ton-logo {
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       object-fit: contain;
+      filter: drop-shadow(0 0 3px #00f0ff88);
     }
   </style>
 </head>
@@ -54,13 +57,16 @@
     <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar" class="avatar" />
 
     <!-- Нік -->
-    <div class="nickname">KosiakSuperDev</div>
+    <div class="nickname">KosiakDev</div>
 
     <!-- Баланс -->
     <div class="balance">0.00</div>
 
     <!-- TON логотип -->
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Toncoin_logo.svg" alt="TON" class="ton-logo" />
+    <img 
+      src="https://seeklogo.com/images/T/toncoin-ton-logo-6D7D55D97F-seeklogo.com.png" 
+      alt="TON" 
+      class="ton-logo" />
   </header>
 </body>
 </html>
