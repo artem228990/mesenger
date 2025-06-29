@@ -63,7 +63,7 @@
       color: #fff;
       font-size: 15px;
       position: relative;
-    height: 60px;
+      height: 60px;
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -97,8 +97,6 @@
       margin-left: 1px;
       height: 50px;
       overflow: hidden;
-
-
     }
 
     .image-container {
@@ -123,6 +121,52 @@
       from { opacity: 1; transform: scale(1); }
       to { opacity: 0; transform: scale(0.8); }
     }
+
+    /* Друга карта */
+    .news-card {
+      margin: 4px auto 20px auto;
+      width: 90%;
+      max-width: 700px;
+      height: 100px;
+      background: linear-gradient(to right, #60aafc, #b2dfff);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+
+    .news-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .news-left img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+
+    .news-text {
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .news-button {
+      background-color: white;
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+
+    .news-button:hover {
+      background-color: #ddd;
+    }
   </style>
 </head>
 <body>
@@ -133,6 +177,7 @@
     <img src="XTVCTON--600.png" alt="TON" class="ton-logo" />
   </header>
 
+  <!-- Перша картка -->
   <div class="card">
     <div class="live-indicator">
       <span class="dot"></span>
@@ -142,6 +187,15 @@
     <div class="image-wrapper">
       <div class="image-container" id="imageContainer"></div>
     </div>
+  </div>
+
+  <!-- Друга картка -->
+  <div class="news-card">
+    <div class="news-left">
+      <img src="XTVCTON--600.png" alt="TON Logo" />
+      <div class="news-text">Check our news</div>
+    </div>
+    <a class="news-button" href="https://t.me/yourchannel" target="_blank">Open @####</a>
   </div>
 
   <script>
@@ -160,7 +214,7 @@
     function insertImage() {
       const existing = Array.from(container.children);
       existing.forEach(img => {
-        img.style.transform = 'translateX(54px)'; // 50px + 4px gap
+        img.style.transform = 'translateX(54px)';
       });
 
       const newImg = document.createElement('img');
