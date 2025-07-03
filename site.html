@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Замовити сайт | MadeForYou</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-bg: #0A1A2F;
+            --accent: #00F5FF;
+            --text: #E0E0E0;
+            --card-bg: rgba(15, 30, 60, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text);
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .order-container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .order-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--accent);
+        }
+
+        .order-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(0, 245, 255, 0.2);
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .radio-option:hover {
+            border-color: var(--accent);
+        }
+
+        .radio-option input {
+            width: auto;
+            margin-right: 15px;
+        }
+
+        .radio-content {
+            flex: 1;
+        }
+
+        .radio-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--accent);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-option input {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .price-summary {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 1px solid var(--accent);
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .total-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 15px;
+        }
+
+        .submit-btn {
+            background: var(--accent);
+            color: var(--dark-bg);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 245, 255, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .order-form {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="order-container">
+        <h1 class="order-title">ЗАМОВИТИ САЙТ</h1>
+        
+        <form id="orderForm" action="https://formspree.io/f/xblybqgv" method="POST">
+            <div class="order-form">
+                <div class="form-group">
+                    <label for="name">Ваше ім'я*</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email*</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Телефон*</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="company">Назва компанії</label>
+                    <input type="text" id="company" name="company">
+                </div>
+                
+                <div class="form-group full-width">
+                    <label>Тип сайту*</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="siteType" value="landing" data-price="500" required>
+                            <div class="radio-content">
+                                <div class="radio-title">Лендінг (від $500)</div>
+                                <div class="radio-description">Односторінковий сайт для презентації послуг або продукту</div>
+                            </div>
+                        </label>
+                        
+                        <label class="radio-option">
+                            <input type="radio" name="siteType" value="multi" data-price="1200">
+                            <div class="radio-content">
+                                <div class="radio-title">Багатосторінковий сайт (від $1200)</div>
+                                <div class="radio-description">Корпоративний сайт з кількома розділами</div>
+                            </div>
+                        </label>
+                        
+                        <label class="radio-option">
+                            <input type="radio" name="siteType" value="shop" data-price="2500">
+                            <div class="radio-content">
+                                <div class="radio-title">Інтернет-магазин (від $2500)</div>
+                                <div class="radio-description">Повноцінний магазин з корзиною та оплатою</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label>Додаткові послуги</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="services" value="design" data-price="300">
+                            <span>Індивідуальний дизайн (+$300)</span>
+                        </label>
+                        
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="services" value="seo" data-price="200">
+                            <span>SEO оптимізація (+$200)</span>
+                        </label>
+                        
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="services" value="content" data-price="150">
+                            <span>Наповнення контентом (+$150)</span>
+                        </label>
+                        
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="services" value="support" data-price="100">
+                            <span>Техпідтримка 1 місяць (+$100)</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="description">Опишіть ваш проект</label>
+                    <textarea id="description" name="description" rows="5"></textarea>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="deadline">Терміни виконання</label>
+                    <select id="deadline" name="deadline">
+                        <option value="no">Не терміново</option>
+                        <option value="1month">1 місяць</option>
+                        <option value="2weeks">2 тижні (+15% до вартості)</option>
+                        <option value="1week">1 тиждень (+30% до вартості)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="price-summary">
+                <h3>Вартість проекту:</h3>
+                <div class="price-row">
+                    <span>Базова вартість:</span>
+                    <span id="basePrice">$0</span>
+                </div>
+                <div class="price-row">
+                    <span>Додаткові послуги:</span>
+                    <span id="extraPrice">$0</span>
+                </div>
+                <div class="price-row">
+                    <span>Терміновість:</span>
+                    <span id="urgencyPrice">+$0</span>
+                </div>
+                <div class="total-price">
+                    <span>Разом:</span>
+                    <span id="totalPrice">$0</span>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">НАДІСЛАТИ ЗАЯВКУ</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('orderForm');
+            const basePriceEl = document.getElementById('basePrice');
+            const extraPriceEl = document.getElementById('extraPrice');
+            const urgencyPriceEl = document.getElementById('urgencyPrice');
+            const totalPriceEl = document.getElementById('totalPrice');
+            
+            let basePrice = 0;
+            let extraPrice = 0;
+            let urgencyPercent = 0;
+            
+            // Оновлення ціни при зміні опцій
+            function updatePrice() {
+                // Додаткові послуги
+                extraPrice = 0;
+                document.querySelectorAll('input[name="services"]:checked').forEach(checkbox => {
+                    extraPrice += parseInt(checkbox.dataset.price);
+                });
+                
+                // Терміновість
+                const deadline = document.getElementById('deadline').value;
+                urgencyPercent = 0;
+                if (deadline === '2weeks') urgencyPercent = 0.15;
+                if (deadline === '1week') urgencyPercent = 0.3;
+                
+                const urgencyAdd = Math.round(basePrice * urgencyPercent);
+                const total = basePrice + extraPrice + urgencyAdd;
+                
+                // Оновлення відображення
+                basePriceEl.textContent = `$${basePrice}`;
+                extraPriceEl.textContent = `$${extraPrice}`;
+                urgencyPriceEl.textContent = urgencyAdd > 0 ? `+$${urgencyAdd}` : '+$0';
+                totalPriceEl.textContent = `$${total}`;
+            }
+            
+            // Слухачі подій
+            document.querySelectorAll('input[name="siteType"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.checked) {
+                        basePrice = parseInt(this.dataset.price);
+                        updatePrice();
+                    }
+                });
+            });
+            
+            document.querySelectorAll('input[name="services"]').forEach(checkbox => {
+                checkbox.addEventListener('change', updatePrice);
+            });
+            
+            document.getElementById('deadline').addEventListener('change', updatePrice);
+            
+            // Відправка форми
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Тут можна додати додаткову валідацію
+                if (basePrice === 0) {
+                    alert('Будь ласка, оберіть тип сайту');
+                    return;
+                }
+                
+                // Відправка через Formspree
+                fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Ваша заявка успішно відправлена! Ми зв\'яжемося з вами найближчим часом.');
+                        form.reset();
+                        basePrice = 0;
+                        updatePrice();
+                    } else {
+                        throw new Error('Помилка відправки форми');
+                    }
+                })
+                .catch(error => {
+                    alert('Сталася помилка при відправці форми. Будь ласка, спробуйте ще раз або зв\'яжіться з нами іншим способом.');
+                    console.error(error);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

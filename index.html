@@ -3,1026 +3,568 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Second_shop - магазин стильного одягу</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+    <title>MadeForYou — Сайти під ключ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
-        
         :root {
-            --main-bg: #000000;
-            --secondary-bg: #222222;
-            --accent-red: #ffffff;
-            --accent-silver: #888888;
-            --text-main: #ffffff;
-            --text-secondary: #cccccc;
+            --dark-bg: #0A1A2F;
+            --accent: #00F5FF;
+            --text: #E0E0E0;
+            --card-bg: rgba(15, 30, 60, 0.7);
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Montserrat', sans-serif;
         }
-        
+
         body {
-            background-color: var(--main-bg);
-            color: var(--text-main);
+            background-color: var(--dark-bg);
+            color: var(--text);
             overflow-x: hidden;
         }
-        
-        /* Header styles */
-        header {
-            background: linear-gradient(to bottom, #000000, rgba(0, 0, 0, 0.7));
-            padding: 20px 0;
-            position: fixed;
+
+        /* Particles.js container */
+        #particles-js {
+            position: absolute;
             width: 100%;
-            z-index: 1000;
-            border-bottom: 1px solid var(--accent-red);
+            height: 100%;
+            z-index: -1;
         }
-        
-        .container {
-            width: 90%;
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 40px;
+            animation: fadeIn 2s ease;
+        }
+
+        .cta-button {
+            padding: 15px 40px;
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            background: var(--accent);
+            color: var(--dark-bg);
+            box-shadow: 0 0 20px var(--accent);
+            animation: none;
+        }
+
+        /* Services Section */
+        .section {
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background: var(--accent);
+            bottom: -10px;
+            left: 25%;
+        }
+
+        .services-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
             max-width: 1200px;
             margin: 0 auto;
         }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo img {
-            height: 40px;
-            margin-right: 10px;
-        }
-        
-        .logo-text {
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(to right, var(--accent-red), var(--accent-silver));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-        
-        /* Оновлені стилі для навігації */
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 15px;
-        }
-        
-        nav ul li {
-            margin-left: 0;
-            position: relative;
-        }
-        
-        .nav-btn {
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 600;
-            padding: 12px 20px;
-            border-radius: 30px;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid transparent;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            z-index: 1;
-        }
-        
-        .nav-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
-            z-index: -1;
-        }
-        
-        .nav-btn:hover {
-            color: white;
-            border-color: var(--accent-red);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-        }
-        
-        .nav-btn:hover::before {
-            transform: translateX(100%);
-        }
-        
-        .main-btn {
-            background: linear-gradient(45deg, var(--accent-red), #aaaaaa);
-            color: black !important;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
-            border: none;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .main-btn::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -60%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to right,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.3) 50%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: rotate(30deg);
-            animation: shine 3s infinite;
-        }
-        
-        @keyframes shine {
-            0% { left: -60%; }
-            20% { left: 100%; }
-            100% { left: 100%; }
-        }
-        
-        .main-btn:hover {
-            background: linear-gradient(45deg, #aaaaaa, var(--accent-red));
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.9);
-        }
-        
-        /* Анімація підсвічування для всіх кнопок */
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
-        }
-        
-        .nav-btn:not(.main-btn) {
-            animation: pulse 2s infinite;
-        }
-        
-        .main-btn {
-            animation: pulse 1.5s infinite;
-        }
-        
-        /* Hero section */
-        .hero {
-            height: 100vh;
-            background: url('https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
-            display: flex;
-            align-items: center;
-            position: relative;
-            padding-top: 80px;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 600px;
-        }
-        
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            background: linear-gradient(to right, var(--accent-red), var(--accent-silver));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            color: var(--text-secondary);
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(45deg, var(--accent-red), #999999);
-            color: black;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
-        }
-        
-        /* Products section */
-        .section {
-            padding: 80px 0;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-            font-size: 36px;
-            position: relative;
-        }
-        
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 100px;
-            height: 3px;
-            background: var(--accent-red);
-            margin: 15px auto 0;
-        }
-        
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
-        }
-        
-        .product-card {
-            background: var(--secondary-bg);
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            position: relative;
+
+        .service-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            width: 350px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 10px 30px rgba(0, 245, 255, 0.2);
         }
-        
-        .product-img {
-            height: 300px;
-            overflow: hidden;
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        /* Pricing Section */
+        .pricing-table {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            width: 300px;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+        }
+
+        .price {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin: 20px 0;
+        }
+
+        /* Portfolio Section */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .portfolio-item {
             position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 250px;
         }
-        
-        .product-img img {
+
+        .portfolio-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
-        
-        .product-card:hover .product-img img {
-            transform: scale(1.05);
-        }
-        
-        .product-badge {
+
+        .portfolio-overlay {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--accent-red);
-            color: black;
-            padding: 5px 10px;
-            border-radius: 3px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        
-        .product-info {
-            padding: 20px;
-        }
-        
-        .product-title {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        
-        .product-price {
-            color: var(--accent-silver);
-            font-weight: 700;
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .product-actions {
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .btn-small {
-            padding: 8px 15px;
-            font-size: 14px;
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--accent-silver);
-            color: var(--accent-silver);
-            box-shadow: none;
-        }
-        
-        .btn-outline:hover {
-            background: rgba(192, 192, 192, 0.1);
-            color: white;
-        }
-        
-        /* Delivery section */
-        .delivery {
-            background: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
-            position: relative;
-            padding: 100px 0;
-            text-align: center;
-        }
-        
-        .delivery::before {
-            content: '';
-            position: absolute;
-            top: 0;
+            bottom: -100%;
             left: 0;
             width: 100%;
-            height: 100%;
+            padding: 20px;
             background: rgba(0, 0, 0, 0.8);
+            transition: bottom 0.3s ease;
         }
-        
-        .delivery-content {
-            position: relative;
-            z-index: 1;
+
+        .portfolio-item:hover .portfolio-overlay {
+            bottom: 0;
+        }
+
+        .portfolio-item:hover .portfolio-img {
+            transform: scale(1.1);
+        }
+
+        /* FAQ Section */
+        .faq-container {
             max-width: 800px;
             margin: 0 auto;
+            text-align: left;
         }
-        
-        .timer {
-            font-size: 48px;
-            font-weight: 700;
-            color: var(--accent-red);
-            margin: 30px 0;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-        
-        /* Reviews section */
-        .reviews-container {
-            display: flex;
-            overflow-x: auto;
-            padding: 20px 0;
-            scroll-snap-type: x mandatory;
-            gap: 20px;
-        }
-        
-        .review-card {
-            min-width: 300px;
-            background: var(--secondary-bg);
-            padding: 20px;
-            border-radius: 10px;
-            scroll-snap-align: start;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .review-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .review-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 15px;
-            object-fit: cover;
-        }
-        
-        .review-name {
-            font-weight: 600;
-        }
-        
-        .review-date {
-            color: var(--text-secondary);
-            font-size: 12px;
-            margin-top: 3px;
-        }
-        
-        .review-text {
-            line-height: 1.6;
-        }
-        
-        .review-screenshot {
-            margin-top: 15px;
-            border-radius: 5px;
-            max-width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Footer */
-        footer {
-            background: #000;
-            padding: 50px 0 20px;
-            border-top: 1px solid var(--accent-red);
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .footer-column h3 {
-            font-size: 18px;
+
+        .faq-item {
             margin-bottom: 20px;
-            color: var(--accent-silver);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
         }
-        
-        .footer-column ul {
-            list-style: none;
-        }
-        
-        .footer-column ul li {
+
+        .faq-question {
+            font-size: 1.3rem;
             margin-bottom: 10px;
-        }
-        
-        .footer-column ul li a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .footer-column ul li a:hover {
-            color: var(--accent-red);
-        }
-        
-        .social-links {
+            cursor: pointer;
             display: flex;
-            gap: 15px;
+            justify-content: space-between;
+            align-items: center;
         }
-        
-        .social-links a {
-            color: var(--text-main);
-            font-size: 20px;
-            transition: color 0.3s ease;
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
         }
-        
-        .social-links a:hover {
-            color: var(--accent-red);
+
+        /* Contact Buttons */
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 50px;
         }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
-            font-size: 14px;
+
+        .contact-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-        
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
+
+        .contact-btn::before {
+            content: '';
+            position: absolute;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2));
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
         }
-        
-        .modal-content {
-            background: var(--secondary-bg);
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 500px;
-            width: 90%;
-            position: relative;
-            border: 1px solid var(--accent-red);
+
+        .contact-btn:hover::before {
+            transform: translateX(100%);
         }
-        
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 24px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-        
-        .close-modal:hover {
-            color: var(--accent-red);
-        }
-        
-        .size-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        
-        .size-table th, .size-table td {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            text-align: center;
-        }
-        
-        .size-table th {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
+
+        .contact-btn:nth-child(1) { background: var(--accent); }
+        .contact-btn:nth-child(2) { background: #25D366; } /* WhatsApp */
+        .contact-btn:nth-child(3) { background: #0088CC; } /* Telegram */
+        .contact-btn:nth-child(4) { background: #EA4335; } /* Email */
+
         /* Animations */
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        @keyframes twinkle {
-            0% { opacity: 0.3; }
-            50% { opacity: 1; }
-            100% { opacity: 0.3; }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 245, 255, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 245, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 245, 255, 0); }
         }
-        
-        .star {
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.2rem; }
+            .section-title { font-size: 2rem; }
+        }
+
+          .square-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .square-btn {
+            width: 160px;
+            height: 160px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            padding: 20px;
+            background: rgba(15, 30, 60, 0.7);
+            backdrop-filter: blur(10px);
+        }
+
+        .square-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 245, 255, 0.3);
+            border-color: var(--accent);
+        }
+
+        .square-btn i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .square-btn:hover i {
+            transform: translateX(5px);
+            color: var(--accent);
+        }
+
+        .square-btn::after {
+            content: '→';
             position: absolute;
-            background: white;
-            border-radius: 50%;
-            pointer-events: none;
-            animation: twinkle 2s infinite;
+            right: 20px;
+            bottom: 15px;
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: all 0.3s ease;
         }
-        
-        .rotating-star {
-            position: absolute;
-            color: var(--accent-silver);
-            animation: rotate 10s linear infinite;
-            font-size: 20px;
-            pointer-events: none;
+
+        .square-btn:hover::after {
+            opacity: 1;
+            right: 15px;
         }
-        
-        /* Додаткові стилі для ефекту "розливання" */
-        .ripple {
-            position: absolute;
-            transform: translate(-50%, -50%);
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 50%;
-            animation: rippleEffect 1s linear;
-            pointer-events: none;
-        }
-        
-        @keyframes rippleEffect {
-            0% {
-                width: 5px;
-                height: 5px;
-                opacity: 1;
-            }
-            100% {
-                width: 300px;
-                height: 300px;
-                opacity: 0;
-            }
-        }
-        
-      @media (max-width: 768px) {
-  header {
-    flex-direction: row; /* ✅ */
-    align-items: center;
-    justify-content: space-between;
-  }
-}
 
-            
-            nav ul {
-                margin-top: 20px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            nav ul li {
-                margin: 5px 10px;
-            }
-            
-            .hero h1 {
-                font-size: 36px;
-            }
-            
-            .section-title {
-                font-size: 28px;
-            }
-            
-            .timer {
-                font-size: 36px;
-            }
-            
-            .nav-btn {
-                padding: 10px 15px;
-                font-size: 14px;
-            }
-       
- .burger-container {
-  position: relative;
-}
-
-.burger {
-  font-size: 28px;
-  cursor: pointer;
-}
-
-.menu {
-  display: none;
-  position: absolute;
-  top: 35px; /* прямо під бургером */
-  right: 0;
-  background: #222;
-  padding: 10px;
-  border-radius: 8px;
-  flex-direction: column;
-  min-width: 150px;
-  z-index: 1000;
-}
-
-.menu a {
-  color: white;
-  text-decoration: none;
-  padding: 10px;
-  display: block;
-}
-
-.menu a:hover {
-  background: #333;
-}
-
-#fly-area {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 999;
-}
-
-.flying-photo {
-  position: absolute;
-  width: 80px;
-  height: auto;
-  transform: rotate(20deg);
-  opacity: 0.9;
-  animation: flyDown 6s linear forwards;
-}
-
-@keyframes flyDown {
-  0% {
-    top: -100px;
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  100% {
-    top: 110%;
-    opacity: 0;
-  }
-}
+        /* Кольори для кнопок */
+        .btn-order { background: var(--accent); color: #0A1A2F; }
+        .btn-telegram { background: #0088CC; }
+        .btn-whatsapp { background: #25D366; }
+        .btn-email { background: #EA4335; }
     </style>
 </head>
 <body>
-     <div id="fly-area"></div>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <img src="photo_2025-07-02_21-59-10.jpg" alt="Second_shop Logo">
-                    <div class="logo-text">Second_shop</div>
-                </div>
-              
-                  <div class="burger-container">
-    <div class="burger" onclick="toggleMenu()">☰</div>
-    <nav class="menu" id="menu">
-      <a href="f.html">Футболки</a>
-      <a href="sh.html">Шорти</a>
-      <a href="h.html">Худі</a>
-      <a href="zh.html">ЗіпХуді</a>
-      <a href="sht.html">Штани</a>
-      <a href="l.html">Лонги</a>
-      <a href="ak.html">Аксесуари</a>
-    </nav>
-  </div>
-            </div>
-        </div>
-    </header>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Second_shop</h1>
-                <p>Одяг для тих, хто створює тренди. Ексклюзивні моделі, які підкреслять вашу індивідуальність.</p>
-                <a href="#catalog" class="btn">Перейти до каталогу</a>
-            </div>
-        </div>
+        <h1>САЙТ ПІД КЛЮЧ — ДЛЯ ВАШОГО БІЗНЕСУ</h1>
+        <p>Індивідуальний дизайн, максимальна конверсія, технології майбутнього</p>
+        <a href="#contact" class="cta-button">Замовити сайт</a>
     </section>
 
-    
-
-    <!-- About Us Section -->
-    <section class="section" id="about">
-        <div class="container">
-            <h2 class="section-title">Про нас</h2>
-            <div style="max-width: 800px; margin: 0 auto; text-align: center;">
-                <p style="margin-bottom: 20px; line-height: 1.6;">
-                    Second_shop - це не просто бренд, це стиль життя. Ми створюємо одяг для тих, хто не боїться виражати себе, хто цінує якість та унікальність.
-                </p>
-                <p style="margin-bottom: 20px; line-height: 1.6;">
-                    Наші колекції - це поєднання вуличного стилю з елементами преміум якості. Кожна модель розробляється з урахуванням останніх трендів та побажань наших клієнтів.
-                </p>
-                <p style="line-height: 1.6;">
-                    Приєднуйтесь до спільноти Second_shop та відкрийте для себе новий рівень стилю!
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Delivery Section -->
-    <section class="delivery" id="delivery">
-        <div class="delivery-content">
-            <h2 class="section-title">Оплата і доставка</h2>
-            <div class="timer" id="deliveryTimer">1-3 днів</div>
-            <p style="font-size: 20px; margin-bottom: 30px;">Встигни замовити — отримаєш швидко!</p>
-            <div style="max-width: 600px; margin: 0 auto; background: rgba(10, 10, 10, 0.7); padding: 20px; border-radius: 10px;">
-                <p style="margin-bottom: 15px;">🚚 Доставка по всій Україні - 1-3 дні (Нова Пошта, Укрпошта)</p>
-                <p style="margin-bottom: 15px;">💳 Оплата - готівкою при отриманні або онлайн оплата</p>
-                <p style="margin-bottom: 15px;">🔒 Гарантія якості - 14 днів на повернення</p>
-                <p>🔄 Обмін розміру - протягом 7 днів після отримання</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Reviews Section -->
+    <!-- Services Section -->
     <section class="section">
-        <div class="container">
-            <h2 class="section-title">Відгуки покупців</h2>
-            <div class="reviews-container">
-                <!-- Review 1 -->
-                <div class="review-card">
-                    <div class="review-header">
-                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="review-avatar">
-                        <div>
-                            <div class="review-name">Олександр К.</div>
-                            <div class="review-date">15.05.2023</div>
-                        </div>
-                    </div>
-                    <div class="review-text">
-                        Замовляв худі, якість на висоті! Тканина приємна до тіла, шви акуратні. Доставка швидка, все сподобалось. Обов'язково ще замовить!
-                    </div>
-                    <img src="review1.jpg" alt="Відгук" class="review-screenshot">
+        <h2 class="section-title">НАШІ ПОСЛУГИ</h2>
+        <div class="services-container">
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-code"></i></div>
+                <h3>Розробка сайтів</h3>
+                <p>Лендінги, корпоративні сайти, інтернет-магазини з індивідуальним підходом до кожного клієнта.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-paint-brush"></i></div>
+                <h3>Дизайн сайтів</h3>
+                <p>Сучасний UI/UX дизайн, анімації та повне брендування вашого онлайн-простору.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+                <h3>Верстка</h3>
+                <p>Адаптивні сайти, що ідеально відображаються на всіх пристроях з чистим кодом.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="section">
+        <h2 class="section-title">ВАРТІСТЬ</h2>
+        <div class="pricing-table">
+            <div class="pricing-card">
+                <h3>Лендінг</h3>
+                <div class="price">від $500</div>
+                <p>Термін: 1 тиждень</p>
+                <ul>
+                    <li>1 дизайн-концепція</li>
+                    <li>Адаптивна верстка</li>
+                    <li>SEO оптимізація</li>
+                </ul>
+            </div>
+            <div class="pricing-card">
+                <h3>Багатосторінковий</h3>
+                <div class="price">від $1200</div>
+                <p>Термін: 2 тижні</p>
+                <ul>
+                    <li>5+ сторінок</li>
+                    <li>Індивідуальний дизайн</li>
+                    <li>Адмін-панель</li>
+                </ul>
+            </div>
+            <div class="pricing-card">
+                <h3>Інтернет-магазин</h3>
+                <div class="price">від $2500</div>
+                <p>Термін: 3+ тижні</p>
+                <ul>
+                    <li>Система оплати</li>
+                    <li>Кабінет користувача</li>
+                    <li>CRM-інтеграція</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="section">
+        <h2 class="section-title">НАШІ РОБОТИ</h2>
+        <div class="portfolio-grid">
+            <div class="portfolio-item">
+                <img src="photo_2025-07-03_21-41-47.jpg" alt="Проект 1" class="portfolio-img">
+                <div class="portfolio-overlay">
+                    <h3>Інтернет-магазин косметики</h3>
+                    <p>Збільшення продажів на 200%</p>
                 </div>
-                
-                <!-- Review 2 -->
-                <div class="review-card">
-                    <div class="review-header">
-                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="review-avatar">
-                        <div>
-                            <div class="review-name">Анна М.</div>
-                            <div class="review-date">22.05.2023</div>
-                        </div>
-                    </div>
-                    <div class="review-text">
-                        Футболка прийшла швидше, ніж очікувала. Принт якісний, не змивається. Розмір відповідає. Дякую за гарний сервіс!
-                    </div>
-                    <img src="review2.jpg" alt="Відгук" class="review-screenshot">
+            </div>
+            <div class="portfolio-item">
+                <img src="photo_2025-07-03_21-41-49.jpg" alt="Проект 2" class="portfolio-img">
+                <div class="portfolio-overlay">
+                    <h3>Лендінг для стартапу</h3>
+                    <p>1000+ заявок за місяць</p>
                 </div>
-                
-                <!-- Review 3 -->
-                <div class="review-card">
-                    <div class="review-header">
-                        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="User" class="review-avatar">
-                        <div>
-                            <div class="review-name">Максим В.</div>
-                            <div class="review-date">03.06.2023</div>
-                        </div>
-                    </div>
-                    <div class="review-text">
-                        Замовляв вперше, залишився задоволений. Куртка сидить ідеально, якість пошиву на рівні. Рекомендую цей магазин!
-                    </div>
-                    <img src="review3.jpg" alt="Відгук" class="review-screenshot">
+            </div>
+            <div class="portfolio-item">
+                <img src="https://via.placeholder.com/600x400?text=Corporate+Site" alt="Проект 3" class="portfolio-img">
+                <div class="portfolio-overlay">
+                    <h3>Корпоративний сайт</h3>
+                    <p>Сучасний дизайн з анімаціями</p>
                 </div>
             </div>
         </div>
     </section>
 
-    
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>Магазин</h3>
-                    <ul>
-                        <li><a href="#catalog">Каталог</a></li>
-                        <li><a href="#new">Новинки</a></li>
-                        <li><a href="#available">В наявності</a></li>
-                        <li><a href="#delivery">Оплата і доставка</a></li>
-                    </ul>
+    <!-- FAQ Section -->
+    <section class="section">
+        <h2 class="section-title">ЧИ ПОТРІБЕН САЙТ У 2025 РОЦІ?</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Навіщо сайт, якщо є соцмережі?</span>
+                    <i class="fas fa-chevron-down"></i>
                 </div>
-                <div class="footer-column">
-                    <h3>Клієнтам</h3>
-                    <ul>
-                        <li><a href="#">Повернення та обмін</a></li>
-                        <li><a href="#">Часті запитання</a></li>
-                        <li><a href="#">Контакти</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Про компанію</h3>
-                    <ul>
-                        <li><a href="#about">Про нас</a></li>
-                        <li><a href="#">Блог</a></li>
-                        <li><a href="#">Вакансії</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Контакти</h3>
-                    <ul>
-                        <li>Юз: @Second_manager1</li>
-                        <li>Графік: Пн-Нд 8:00-00:00</li>
-                    </ul>
-                    <div class="social-links" style="margin-top: 20px;">
-                        <a href="#"><i class="fab fa-tiktok"></i></a>
-                        <a href="#"><i class="fab fa-telegram"></i></a>
-                
-                    </div>
+                <div class="faq-answer">
+                    <p>Сайт — це ваша повноцінна онлайн-власність, яка працює 24/7 без алгоритмічних обмежень соцмереж. Він підвищує довіру до бренду на 80% порівняно з профілями в соцмережах.</p>
                 </div>
             </div>
-            <div class="copyright">
-                &copy; 2025 Second_shop. MadeForYou.
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Який сайт потрібен моєму бізнесу?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Ми проведои аналіз вашого бізнесу та цільової аудиторії, після чого запропонуємо оптимальний варіант — від лендінгу до складного інтернет-рішення.</p>
+                </div>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <!-- Size Modal -->
-    <div class="modal" id="sizeModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
-            <h2>Таблиця розмірів</h2>
-            <table class="size-table">
-                <thead>
-                    <tr>
-                        <th>Розмір</th>
-                        <th>Груди (см)</th>
-                        <th>Талія (см)</th>
-                        <th>Стегна (см)</th>
-                        <th>Довжина (см)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>S</td>
-                        <td>92-96</td>
-                        <td>76-80</td>
-                        <td>96-100</td>
-                        <td>66</td>
-                    </tr>
-                    <tr>
-                        <td>M</td>
-                        <td>96-100</td>
-                        <td>80-84</td>
-                        <td>100-104</td>
-                        <td>68</td>
-                    </tr>
-                    <tr>
-                        <td>L</td>
-                        <td>100-104</td>
-                        <td>84-88</td>
-                        <td>104-108</td>
-                        <td>70</td>
-                    </tr>
-                    <tr>
-                        <td>XL</td>
-                        <td>104-108</td>
-                        <td>88-92</td>
-                        <td>108-112</td>
-                        <td>72</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="btn" style="margin-top: 20px; width: 100%;" onclick="closeModal()">Закрити</button>
+    <!-- Contact Section -->
+ <section class="section" id="contact">
+        <h2 class="section-title">ПОЧНИ СВІЙ ПРОЄКТ ВЖЕ СЬОГОДНІ</h2>
+        <div class="square-buttons">
+            <a href="site.html" class="square-btn btn-order">
+                <i class="fas fa-rocket"></i>
+                Замовити сайт
+            </a>
+            <a href="https://t.me/madeforyou" class="square-btn btn-telegram">
+                <i class="fab fa-telegram"></i>
+                Telegram
+            </a>
+            <a href="https://wa.me/380XXXXXXXXX" class="square-btn btn-whatsapp">
+                <i class="fab fa-whatsapp"></i>
+                WhatsApp
+            </a>
+            <a href="mailto:contact@madeforyou.com" class="square-btn btn-email">
+                <i class="fas fa-envelope"></i>
+                Пошта
+            </a>
         </div>
-    </div>
+    </section>
 
-    <!-- Stars for background -->
-    <div id="stars-container"></div>
-
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Create stars
-        function createStars() {
-            const container = document.getElementById('stars-container');
-            const starCount = 50;
-            
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                
-                // Random size
-                const size = Math.random() * 3 + 1;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                
-                // Random position
-                star.style.left = `${Math.random() * 100}vw`;
-                star.style.top = `${Math.random() * 100}vh`;
-                
-                // Random animation delay
-                star.style.animationDelay = `${Math.random() * 5}s`;
-                
-                container.appendChild(star);
+        // Particles.js config
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#00F5FF" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": true },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#00F5FF", "opacity": 0.2, "width": 1 },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": { "enable": true, "mode": "grab" },
+                    "onclick": { "enable": true, "mode": "push" },
+                    "resize": true
+                },
+                "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } }, "push": { "particles_nb": 4 } }
             }
-            
-            // Add some rotating stars
-            const rotatingStarCount = 10;
-            for (let i = 0; i < rotatingStarCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('rotating-star');
-                star.innerHTML = '✦';
+        });
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const icon = question.querySelector('i');
                 
-                // Random position
-                star.style.left = `${Math.random() * 100}vw`;
-                star.style.top = `${Math.random() * 100}vh`;
-                
-                // Random size
-                const size = Math.random() * 10 + 15;
-                star.style.fontSize = `${size}px`;
-                
-                // Random color
-                const colors = ['#ffffff', '#888888', '#ffffff'];
-                star.style.color = colors[Math.floor(Math.random() * colors.length)];
-                
-                container.appendChild(star);
-            }
-        }
-        
-        // Modal functions
-        function openSizeModal() {
-            document.getElementById('sizeModal').style.display = 'flex';
-        }
-        
-        function closeModal() {
-            document.getElementById('sizeModal').style.display = 'none';
-        }
-        
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('sizeModal');
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-        
-        // Ripple effect for buttons
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('mouseenter', function(e) {
-                const x = e.pageX - this.getBoundingClientRect().left;
-                const y = e.pageY - this.getBoundingClientRect().top;
-                
-                const ripple = document.createElement('span');
-                ripple.classList.add('ripple');
-                ripple.style.left = `${x}px`;
-                ripple.style.top = `${y}px`;
-                
-                this.appendChild(ripple);
-                
-                setTimeout(() => {
-                    ripple.remove();
-                }, 1000);
+                if (answer.style.maxHeight) {
+                    answer.style.maxHeight = null;
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                } else {
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                }
             });
         });
-        
-        // Initialize when page loads
-        window.onload = function() {
-            createStars();
-        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
     </script>
-    
-    <!-- Font Awesome for icons -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<script>
-  function toggleMenu() {
-    const menu = document.getElementById('menu');
-    menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-  }
-</script>
-<script src="app.js"></script>
 </body>
 </html>
