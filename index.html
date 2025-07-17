@@ -103,6 +103,127 @@
             color: #333;
             cursor: pointer;
         }
+
+        /* Стилі для основного контенту */
+        main {
+            padding-top: 70px;
+            min-height: 100vh;
+        }
+
+        /* Стилі для списку товарів */
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .products-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .products-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        /* Стилі для картки товару */
+        .product-card {
+            text-align: center;
+        }
+
+        .product-images {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white; /* Змінив колір фону на білий */
+        }
+
+        .product-image {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            position: absolute;
+        }
+
+        .product-image.active {
+            opacity: 1;
+        }
+
+        .image-nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+            z-index: 1;
+        }
+
+        .nav-arrow {
+            background: rgba(255, 255, 255, 0.5);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .product-images:hover .nav-arrow {
+            opacity: 1;
+        }
+
+        .image-dots {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .image-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #ccc;
+            cursor: pointer;
+        }
+
+        .image-dot.active {
+            background-color: #000;
+        }
+
+        .product-name {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .add-to-cart {
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -140,6 +261,93 @@
         </div>
     </header>
     
+    <!-- Основний контент -->
+    <main>
+        <div class="products-container">
+            <div class="products-list">
+                <!-- Товар 1 -->
+                <div class="product-card">
+                    <div class="product-images">
+                        <img src="item-4ecbdae1-a838-42eb-bbcd-7b9ad8036f17.jpg" alt="Фото 1" class="product-image active">
+                        <img src="enzxbj7con6n14f03w6bzdyvkzeqi50a.jpg" alt="Фото 2" class="product-image">
+                        <img src="" alt="Фото 3" class="product-image">
+                        
+                        <div class="image-nav">
+                            <button class="nav-arrow prev">‹</button>
+                            <button class="nav-arrow next">›</button>
+                        </div>
+                    </div>
+                    <div class="image-dots">
+                        <div class="image-dot active" data-index="0"></div>
+                        <div class="image-dot" data-index="1"></div>
+                        <div class="image-dot" data-index="2"></div>
+                    </div>
+                 
+                </div>
+                
+                <!-- Товар 2 -->
+                <div class="product-card">
+                    <div class="product-images">
+                        <img src="balenciaga-green-track-sneakers.450x600.jpg" alt="Фото 1" class="product-image active">
+                        <img src="https://via.placeholder.com/250x300/FFFFFF/000000?text=Balenciaga+2.2" alt="Фото 2" class="product-image">
+                        <img src="https://via.placeholder.com/250x300/FFFFFF/000000?text=Balenciaga+2.3" alt="Фото 3" class="product-image">
+                        
+                        <div class="image-nav">
+                            <button class="nav-arrow prev">‹</button>
+                            <button class="nav-arrow next">›</button>
+                        </div>
+                    </div>
+                    <div class="image-dots">
+                        <div class="image-dot active" data-index="0"></div>
+                        <div class="image-dot" data-index="1"></div>
+                        <div class="image-dot" data-index="2"></div>
+                    </div>
+                 
+                </div>
+                
+                <!-- Товар 3 -->
+                <div class="product-card">
+                    <div class="product-images">
+                        <img src="9dfae3b655e21f2bf5a689b36874a0ff.jpg" alt="Фото 1" class="product-image active">
+                        <img src="https://via.placeholder.com/250x300/FFFFFF/000000?text=Balenciaga+3.2" alt="Фото 2" class="product-image">
+                        <img src="https://via.placeholder.com/250x300/FFFFFF/000000?text=Balenciaga+3.3" alt="Фото 3" class="product-image">
+                        
+                        <div class="image-nav">
+                            <button class="nav-arrow prev">‹</button>
+                            <button class="nav-arrow next">›</button>
+                        </div>
+                    </div>
+                    <div class="image-dots">
+                        <div class="image-dot active" data-index="0"></div>
+                        <div class="image-dot" data-index="1"></div>
+                        <div class="image-dot" data-index="2"></div>
+                    </div>
+                 
+                </div>
+                
+                <!-- Товар 4 -->
+                <div class="product-card">
+                    <div class="product-images">
+                        <img src="images.jfif" alt="Фото 1" class="product-image active">
+                        <img src="https://via.placeholder.com/250x300/FFFFFF/000000?text=Balenciaga+4.2" alt="Фото 2" class="product-image">
+                        <img src="https://via.placeholder.com/250x300/FFFFFF/000000?text=Balenciaga+4.3" alt="Фото 3" class="product-image">
+                        
+                        <div class="image-nav">
+                            <button class="nav-arrow prev">‹</button>
+                            <button class="nav-arrow next">›</button>
+                        </div>
+                    </div>
+                    <div class="image-dots">
+                        <div class="image-dot active" data-index="0"></div>
+                        <div class="image-dot" data-index="1"></div>
+                        <div class="image-dot" data-index="2"></div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    </main>
+    
     <script>
         // Через 3 секунди ховаємо прелоадер і показуємо хедер
         setTimeout(function() {
@@ -162,6 +370,82 @@
                 if (!e.target.closest('.search-container') && searchInput.classList.contains('active')) {
                     searchInput.classList.remove('active');
                 }
+            });
+
+            // Логіка для гортання фотографій товарів
+            document.querySelectorAll('.product-images').forEach(imagesContainer => {
+                const images = imagesContainer.querySelectorAll('.product-image');
+                const dots = imagesContainer.parentElement.querySelectorAll('.image-dot');
+                const prevBtn = imagesContainer.querySelector('.prev');
+                const nextBtn = imagesContainer.querySelector('.next');
+                
+                let currentIndex = 0;
+                
+                function showImage(index) {
+                    images.forEach(img => img.classList.remove('active'));
+                    dots.forEach(dot => dot.classList.remove('active'));
+                    
+                    images[index].classList.add('active');
+                    dots[index].classList.add('active');
+                    currentIndex = index;
+                }
+                
+                // Обробники для стрілок
+                prevBtn.addEventListener('click', function() {
+                    let newIndex = currentIndex - 1;
+                    if (newIndex < 0) newIndex = images.length - 1;
+                    showImage(newIndex);
+                });
+                
+                nextBtn.addEventListener('click', function() {
+                    let newIndex = currentIndex + 1;
+                    if (newIndex >= images.length) newIndex = 0;
+                    showImage(newIndex);
+                });
+                
+                // Обробники для точок
+                dots.forEach((dot, index) => {
+                    dot.addEventListener('click', function() {
+                        showImage(index);
+                    });
+                });
+                
+                // Додамо можливість гортання пальцем на сенсорних пристроях
+                let touchStartX = 0;
+                let touchEndX = 0;
+                
+                imagesContainer.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, false);
+                
+                imagesContainer.addEventListener('touchend', function(e) {
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleSwipe();
+                }, false);
+                
+                function handleSwipe() {
+                    if (touchEndX < touchStartX) {
+                        // Свайп вліво - наступне фото
+                        let newIndex = currentIndex + 1;
+                        if (newIndex >= images.length) newIndex = 0;
+                        showImage(newIndex);
+                    }
+                    
+                    if (touchEndX > touchStartX) {
+                        // Свайп вправо - попереднє фото
+                        let newIndex = currentIndex - 1;
+                        if (newIndex < 0) newIndex = images.length - 1;
+                        showImage(newIndex);
+                    }
+                }
+            });
+            
+            // Обробники для кнопок "Додати в кошик"
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productName = this.parentElement.querySelector('.product-name').textContent;
+                    alert(`Товар "${productName}" додано до кошика!`);
+                });
             });
         }, 3000);
     </script>
