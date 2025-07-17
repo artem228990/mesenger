@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BALENCIAGA - Track Sneakers | Luxury Fashion</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f5f0;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 40px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            text-decoration: none;
+            position: relative;
+            padding-left: 20px;
+            transition: opacity 0.3s;
+        }
+
+        .back-link:hover {
+            opacity: 0.7;
+        }
+
+        .back-link:before {
+            content: "←";
+            position: absolute;
+            left: 0;
+        }
+
+        .product-display {
+            display: flex;
+            gap: 80px;
+        }
+
+        .gallery-section {
+            flex: 1.2;
+        }
+
+        .main-image-container {
+            height: 650px;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .thumbnail-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #e5e5e5;
+            transition: border 0.3s;
+        }
+
+        .thumbnail:hover {
+            border-color: #1a1a1a;
+        }
+
+        .thumbnail img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .product-info {
+            flex: 0.8;
+            padding-top: 40px;
+        }
+
+        .brand-name {
+            font-size: 16px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .product-title {
+            font-size: 28px;
+            font-weight: 400;
+            margin: 0 0 25px 0;
+            letter-spacing: 1px;
+        }
+
+        .price-container {
+            margin-bottom: 30px;
+        }
+
+        .current-price {
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .product-details {
+            margin-bottom: 40px;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #555;
+            max-width: 400px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .size-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .size-option {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #d9d9d9;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .size-option:hover, .size-option.selected {
+            background: #1a1a1a;
+            color: #fff;
+            border-color: #1a1a1a;
+        }
+
+        .condition-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .condition-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-right: 15px;
+        }
+
+        .condition-value {
+            font-size: 14px;
+            padding: 5px 15px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        .quality-rating {
+            margin-bottom: 40px;
+        }
+
+        .rating-value {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .rating-stars {
+            display: inline-flex;
+            margin-left: 10px;
+        }
+
+        .star {
+            color: #1a1a1a;
+            font-size: 16px;
+            margin-right: 3px;
+        }
+
+        .add-to-cart {
+            background: #1a1a1a;
+            color: #fff;
+            border: none;
+            padding: 18px 0;
+            width: 100%;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .add-to-cart:hover {
+            background: #333;
+        }
+
+        .product-code {
+            font-size: 12px;
+            color: #999;
+            letter-spacing: 1px;
+        }
+
+        /* Luxury divider */
+        .divider {
+            height: 1px;
+            background: #e5e5e5;
+            margin: 40px 0;
+            width: 100%;
+        }
+
+        /* Animation for gallery */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">Back to collection</a>
+        
+        <div class="product-display">
+            <div class="gallery-section">
+                <div class="main-image-container">
+                    <img src="item-4ecbdae1-a838-42eb-bbcd-7b9ad8036f17.jpg" alt="Balenciaga Track Sneakers" class="main-image fade-in" id="mainImage">
+                </div>
+                <div class="thumbnail-container">
+                    <div class="thumbnail" onclick="changeImage('item-4ecbdae1-a838-42eb-bbcd-7b9ad8036f17.jpg')">
+                        <img src="item-4ecbdae1-a838-42eb-bbcd-7b9ad8036f17.jpg" alt="Balenciaga Front View">
+                    </div>
+                    <div class="thumbnail" onclick="changeImage('enzxbj7con6n14f03w6bzdyvkzeqi50a.jpg')">
+                        <img src="enzxbj7con6n14f03w6bzdyvkzeqi50a.jpg" alt="Balenciaga Side View">
+                    </div>
+                    <div class="thumbnail" onclick="changeImage('balenciaga-green-track-sneakers.450x600.jpg')">
+                        <img src="balenciaga-green-track-sneakers.450x600.jpg" alt="Balenciaga Detail View">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-info">
+                <div class="brand-name">Balenciaga</div>
+                <h1 class="product-title">Track Sneakers</h1>
+                
+                <div class="price-container">
+                    <div class="current-price">26 499 UAH</div>
+                </div>
+                
+                <div class="product-details">
+                    Innovative Balenciaga Track sneakers with architectural design. Made from high-quality materials that combine technology and luxury.
+                </div>
+                
+                <div class="divider"></div>
+                
+                <span class="section-title">Size</span>
+                <div class="size-options">
+                    <div class="size-option" onclick="selectSize(this)">39</div>
+                    <div class="size-option" onclick="selectSize(this)">40</div>
+                    <div class="size-option selected" onclick="selectSize(this)">41</div>
+                    <div class="size-option" onclick="selectSize(this)">42</div>
+                    <div class="size-option" onclick="selectSize(this)">43</div>
+                </div>
+                
+                <div class="condition-indicator">
+                    <span class="condition-label">Condition</span>
+                    <span class="condition-value">New</span>
+                </div>
+                
+                <div class="quality-rating">
+                    <span class="section-title">Quality</span>
+                    <div class="rating-value">
+                        9/10
+                        <div class="rating-stars">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">☆</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="add-to-cart" onclick="addToCart()">Add to cart</button>
+                
+                <div class="product-code">Product code: BLNCG-TRK-2023</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function changeImage(src) {
+            const mainImg = document.getElementById('mainImage');
+            mainImg.classList.remove('fade-in');
+            setTimeout(() => {
+                mainImg.src = src;
+                mainImg.classList.add('fade-in');
+            }, 10);
+        }
+
+        function selectSize(element) {
+            document.querySelectorAll('.size-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        function addToCart() {
+            const selectedSize = document.querySelector('.size-option.selected').textContent;
+            const productName = document.querySelector('.product-title').textContent;
+            
+            // Luxury-style notification
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '30px';
+            notification.style.right = '30px';
+            notification.style.backgroundColor = '#1a1a1a';
+            notification.style.color = '#fff';
+            notification.style.padding = '20px 30px';
+            notification.style.fontSize = '14px';
+            notification.style.letterSpacing = '1px';
+            notification.style.zIndex = '1000';
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.5s';
+            notification.textContent = `${productName} (size ${selectedSize}) added to cart`;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '1';
+            }, 10);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

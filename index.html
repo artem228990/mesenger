@@ -132,6 +132,7 @@
         /* Стилі для картки товару */
         .product-card {
             text-align: center;
+            position: relative;
         }
 
         .product-images {
@@ -143,7 +144,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: white; /* Змінив колір фону на білий */
+            background-color: white;
         }
 
         .product-image {
@@ -224,6 +225,17 @@
             width: 100%;
             font-size: 14px;
         }
+        
+        /* Стилі для іконки інформації */
+        .info-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            z-index: 2;
+        }
     </style>
 </head>
 <body>
@@ -267,11 +279,12 @@
             <div class="products-list">
                 <!-- Товар 1 -->
                 <div class="product-card">
+                    <img src="icons8-more-information-25.png" alt="Інформація" class="info-icon" data-product-id="1">
                     <div class="product-images">
                         <img src="item-4ecbdae1-a838-42eb-bbcd-7b9ad8036f17.jpg" alt="Фото 1" class="product-image active">
                         <img src="enzxbj7con6n14f03w6bzdyvkzeqi50a.jpg" alt="Фото 2" class="product-image">
                         <img src="" alt="Фото 3" class="product-image">
-                        
+                    
                         <div class="image-nav">
                             <button class="nav-arrow prev">‹</button>
                             <button class="nav-arrow next">›</button>
@@ -287,6 +300,7 @@
                 
                 <!-- Товар 2 -->
                 <div class="product-card">
+                    <img src="icons8-more-information-25.png" alt="Інформація" class="info-icon" data-product-id="2">
                     <div class="product-images">
                         <img src="balenciaga-green-track-sneakers.450x600.jpg" alt="Фото 1" class="product-image active">
                         <img src="https://via.placeholder.com/250x300/FFFFFF/000000?text=Balenciaga+2.2" alt="Фото 2" class="product-image">
@@ -307,6 +321,7 @@
                 
                 <!-- Товар 3 -->
                 <div class="product-card">
+                    <img src="icons8-more-information-25.png" alt="Інформація" class="info-icon" data-product-id="3">
                     <div class="product-images">
                         <img src="9dfae3b655e21f2bf5a689b36874a0ff.jpg" alt="Фото 1" class="product-image active">
                         <img src="https://via.placeholder.com/250x300/FFFFFF/000000?text=Balenciaga+3.2" alt="Фото 2" class="product-image">
@@ -327,6 +342,7 @@
                 
                 <!-- Товар 4 -->
                 <div class="product-card">
+                    <img src="icons8-more-information-25.png" alt="Інформація" class="info-icon" data-product-id="4">
                     <div class="product-images">
                         <img src="images.jfif" alt="Фото 1" class="product-image active">
                         <img src="https://via.placeholder.com/250x300/FFFFFF/000000?text=Balenciaga+4.2" alt="Фото 2" class="product-image">
@@ -445,6 +461,16 @@
                 button.addEventListener('click', function() {
                     const productName = this.parentElement.querySelector('.product-name').textContent;
                     alert(`Товар "${productName}" додано до кошика!`);
+                });
+            });
+            
+            // Обробники для іконок інформації
+            document.querySelectorAll('.info-icon').forEach(icon => {
+                icon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const productId = this.getAttribute('data-product-id');
+                    // Перехід на сторінку товару з відповідним ID
+                    window.location.href = `product_${productId}.html`;
                 });
             });
         }, 3000);
