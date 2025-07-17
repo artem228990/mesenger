@@ -10,15 +10,15 @@
 
 <body>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
         
         :root {
-            --main-bg: #000000;
-            --secondary-bg: #222222;
-            --accent-red: #ffffff;
-            --accent-silver: #888888;
-            --text-main: #ffffff;
-            --text-secondary: #cccccc;
+            --main-bg: #0a0a0a;
+            --secondary-bg: #1a1a1a;
+            --accent-red: #ff0033;
+            --accent-silver: #c0c0c0;
+            --text-main: #f0f0f0;
+            --text-secondary: #aaaaaa;
         }
         
         * {
@@ -72,7 +72,7 @@
             background: linear-gradient(to right, var(--accent-red), var(--accent-silver));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            text-shadow: 0 0 10px rgba(255, 0, 51, 0.3);
         }
         
         /* Оновлені стилі для навігації */
@@ -97,7 +97,7 @@
             position: relative;
             overflow: hidden;
             border: 2px solid transparent;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 0, 51, 0.1);
             backdrop-filter: blur(5px);
             z-index: 1;
         }
@@ -109,7 +109,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            background: linear-gradient(45deg, transparent, rgba(255, 0, 51, 0.3), transparent);
             transform: translateX(-100%);
             transition: transform 0.6s ease;
             z-index: -1;
@@ -118,7 +118,7 @@
         .nav-btn:hover {
             color: white;
             border-color: var(--accent-red);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(255, 0, 51, 0.5);
         }
         
         .nav-btn:hover::before {
@@ -126,9 +126,9 @@
         }
         
         .main-btn {
-            background: linear-gradient(45deg, var(--accent-red), #aaaaaa);
-            color: black !important;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+            background: linear-gradient(45deg, var(--accent-red), #cc0022);
+            color: white !important;
+            box-shadow: 0 0 20px rgba(255, 0, 51, 0.7);
             border: none;
             position: relative;
             overflow: hidden;
@@ -158,15 +158,15 @@
         }
         
         .main-btn:hover {
-            background: linear-gradient(45deg, #aaaaaa, var(--accent-red));
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.9);
+            background: linear-gradient(45deg, #cc0022, var(--accent-red));
+            box-shadow: 0 0 30px rgba(255, 0, 51, 0.9);
         }
         
         /* Анімація підсвічування для всіх кнопок */
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 51, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 0, 51, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 51, 0); }
         }
         
         .nav-btn:not(.main-btn) {
@@ -220,20 +220,20 @@
         .btn {
             display: inline-block;
             padding: 12px 30px;
-            background: linear-gradient(45deg, var(--accent-red), #999999);
-            color: black;
+            background: linear-gradient(45deg, var(--accent-red), #990022);
+            color: white;
             text-decoration: none;
             border-radius: 30px;
             font-weight: 600;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(255, 0, 51, 0.5);
         }
         
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 25px rgba(255, 0, 51, 0.8);
         }
         
         /* Products section */
@@ -274,7 +274,7 @@
         
         .product-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 20px rgba(255, 0, 51, 0.2);
         }
         
         .product-img {
@@ -299,7 +299,7 @@
             top: 15px;
             right: 15px;
             background: var(--accent-red);
-            color: black;
+            color: white;
             padding: 5px 10px;
             border-radius: 3px;
             font-size: 12px;
@@ -374,7 +374,7 @@
             font-weight: 700;
             color: var(--accent-red);
             margin: 30px 0;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 10px rgba(255, 0, 51, 0.5);
         }
         
         /* Reviews section */
@@ -542,7 +542,7 @@
         }
         
         .size-table th {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 0, 51, 0.2);
         }
         
         /* Animations */
@@ -702,8 +702,8 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <img src="photo_2025-07-02_21-59-10.jpg" alt="Dark Street Logo">
-                    <div class="logo-text">Second_shop</div>
+                    <img src="photo_2025-06-18_11-09-39.jpg" alt="Dark Street Logo">
+                    <div class="logo-text">Guf_shmot</div>
                 </div>
               
                   <div class="burger-container">
@@ -840,7 +840,7 @@
                         <div class="product-price">2499 ₴</div>
                         <div class="product-actions">
                             <button class="btn btn-small btn-outline" onclick="openSizeModal()">Обрати розмір</button>
-                             <button class="btn btn-small"><a href="https://t.me/Second_manager1">Замовити</a></button>
+                             <button class="btn btn-small"><a href="https://t.me/NeiNik">Замовити</a></button>
                         </div>
                     </div>
                 </div>
