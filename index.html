@@ -115,7 +115,37 @@
             gap: 30px;
             padding: 25px;
         }
+                .logo-3d {
+            font-family: 'Impact', sans-serif;
+            font-size: 2rem;
+            text-transform: uppercase;
+            color: #000;
+            display: inline-block;
+            margin-right: auto;
+            margin-left: 30px;
+            transform-style: preserve-3d;
+            animation: rotate3d 4s infinite linear;
+            perspective: 500px;
+        }
+
+        @keyframes rotate3d {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .logo-3d {
+                font-size: 1.8rem;
+                margin-left: 20px;
+            }
+        }
         
+        @media (max-width: 480px) {
+            .logo-3d {
+                font-size: 1.5rem;
+                margin-left: 15px;
+            }
+        }
         .product {
             cursor: pointer;
             text-align: left;
@@ -232,7 +262,7 @@
     </div>
     
     <header>
-        <div class="logo-text">Daft</div>
+       <div class="logo-3d">DAFT</div>
         <div class="header-icons">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
