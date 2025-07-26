@@ -150,7 +150,79 @@
             font-size: 1.1rem;
         }
         
-    
+        @media (max-width: 768px) {
+            .products {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                padding: 15px;
+            }
+            
+            header {
+                padding: 15px 20px;
+            }
+            
+            .logo-text {
+                font-size: 1.8rem;
+                margin-left: 20px;
+            }
+            
+            .product-image {
+                height: 250px;
+            }
+            
+            .product-name {
+                font-size: 1.3rem;
+            }
+            
+            body::after {
+                background-size: 70%;
+                opacity: 0.2;
+            }
+            
+            .loader-logo {
+                width: 250px;
+                height: 250px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding-top: 100px;
+            }
+            
+            .logo-text {
+                font-size: 1.5rem;
+                margin-left: 15px;
+            }
+            
+            .header-icons {
+                gap: 20px;
+            }
+            
+            .header-icons svg {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .product-image {
+                height: 200px;
+            }
+            
+            .product-name {
+                font-size: 1.1rem;
+            }
+            
+            body::after {
+                background-size: 90%;
+                opacity: 0.15;
+            }
+            
+            .loader-logo {
+                width: 200px;
+                height: 200px;
+                border-radius: 20px;
+            }
+        }
     </style>
 </head>
 <body>
