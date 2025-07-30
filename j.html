@@ -635,7 +635,7 @@
                 </div>
                 
                 <div class="buttons-row">
-                 
+                   
                     <button type="submit" class="submit-btn">Замовити</button>
                 </div>
             </form>
@@ -680,146 +680,210 @@
     </footer>
 
 
-    <script>
-        let currentSlide = 0;
-        const slides = document.querySelector('.slider');
-        const totalSlides = 4;
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelector('.slider');
+    const totalSlides = 4;
+    
+    function updateSlider() {
+        slides.style.transform = `translateX(-${currentSlide * 25}%)`;
+    }
+    
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateSlider();
+    }
+    
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        updateSlider();
+    }
+    
+    function showOrderForm() {
+        document.getElementById('modalOverlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+    }
+    
+    function hideOrderForm() {
+        document.getElementById('modalOverlay').style.display = 'none';
+        document.body.style.overflow = 'auto';
+        document.body.style.position = 'static';
+    }
+    
+    async function submitOrder(event) {
+        event.preventDefault();
         
-        function updateSlider() {
-            slides.style.transform = `translateX(-${currentSlide * 25}%)`;
-        }
+        const form = document.getElementById('orderFormData');
+        const formData = new FormData(form);
+        const submitBtn = form.querySelector('.submit-btn');
         
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            updateSlider();
-        }
+        // Додаємо інформацію про товар
+        formData.append('product-name', document.querySelector('.product-title').textContent);
+        formData.append('product-price', document.querySelector('.product-price').textContent);
         
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-            updateSlider();
-        }
+        // Блокуємо кнопку під час відправки
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Відправка...';
         
-        function showOrderForm() {
-            document.getElementById('modalOverlay').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.width = '100%';
-        }
-        
-        function hideOrderForm() {
-            document.getElementById('modalOverlay').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            document.body.style.position = 'static';
-        }
-        
-        function submitOrder(event) {
-            event.preventDefault();
+        try {
+            // Відправляємо дані на сервер
+            const response = await fetch('send_order.php', {
+                method: 'POST',
+                body: formData
+            });
             
-            const formData = new FormData(document.getElementById('orderFormData'));
-            const orderData = {};
+            const result = await response.json();
             
-            for (let [key, value] of formData.entries()) {
-                orderData[key] = value;
+            if (result.success) {
+                alert('Замовлення успішно оформлено! Ми зв\'яжемося з вами найближчим часом.');
+                form.reset();
+                hideOrderForm();
+            } else {
+                alert('Помилка при відправці замовлення: ' + (result.message || 'невідома помилка'));
             }
-            
-            // Додаємо інформацію про товар
-            orderData.product = {
-                name: document.querySelector('.product-title').textContent,
-                price: document.querySelector('.product-price').textContent
-            };
-            
-            // Тут буде код для відправки даних на пошту
-            sendEmail(orderData);
-            
-            alert('Замовлення успішно оформлено! Ми зв\'яжемося з вами найближчим часом.');
-            document.getElementById('orderFormData').reset();
+        } catch (error) {
+            console.error('Помилка:', error);
+            alert('Сталася помилка при відправці замовлення. Будь ласка, спробуйте ще раз.');
+        } finally {
+            // Розблоковуємо кнопку
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Замовити';
+        }
+    }
+
+    // Обробка свайпів для мобільних
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    document.querySelector('.slider-container').addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, false);
+    
+    document.querySelector('.slider-container').addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, false);
+    
+    function handleSwipe() {
+        if (touchEndX < touchStartX - 50) {
+            nextSlide();
+        }
+        if (touchEndX > touchStartX + 50) {
+            prevSlide();
+        }
+    }
+    
+    // Закриття модального вікна при кліку на оверлей
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+        if (e.target === this) {
             hideOrderForm();
         }
+    });
+    
+    // Гортання модального вікна
+    let modalTouchStartX = 0;
+    let modalTouchEndX = 0;
+    
+    document.querySelector('.order-form').addEventListener('touchstart', (e) => {
+        modalTouchStartX = e.changedTouches[0].screenX;
+    }, false);
+    
+    document.querySelector('.order-form').addEventListener('touchend', (e) => {
+        modalTouchEndX = e.changedTouches[0].screenX;
+        handleModalSwipe();
+    }, false);
+    
+    function handleModalSwipe() {
+        if (modalTouchEndX < modalTouchStartX - 50) {
+            // Свайп вліво
+            document.querySelector('.call-waiter-btn').style.backgroundColor = '#555';
+            setTimeout(() => {
+                document.querySelector('.call-waiter-btn').style.backgroundColor = '#000';
+            }, 200);
+        }
+        if (modalTouchEndX > modalTouchStartX + 50) {
+            // Свайп вправо
+            document.querySelector('.submit-btn').style.backgroundColor = '#555';
+            setTimeout(() => {
+                document.querySelector('.submit-btn').style.backgroundColor = '#000';
+            }, 200);
+        }
+    }
+
+    // Прев'ю завантаженого фото
+    document.getElementById('payment-proof').addEventListener('change', function(e) {
+        const file = this.files[0];
+        if (!file) return;
         
-        function callWaiter() {
-            alert('Келнер буде з вами найближчим часом!');
+        const previewContainer = document.querySelector('.form-group:has(#payment-proof)');
+        let preview = previewContainer.querySelector('.file-preview');
+        
+        // Видаляємо попередній прев'ю
+        if (preview) {
+            preview.remove();
         }
         
-        function sendEmail(data) {
-            // У реальному застосунку тут буде AJAX-запит до сервера
-            console.log('Дані для відправки на пошту:', data);
-            
-            // Приклад використання mailto (не ідеальний спосіб)
-            const subject = `Нове замовлення: ${data.product.name}`;
-            let body = `Нове замовлення:\n\n`;
-            body += `Товар: ${data.product.name}\n`;
-            body += `Ціна: ${data.product.price}\n\n`;
-            body += `Дані клієнта:\n`;
-            body += `Ім'я: ${data.firstName} ${data.lastName}\n`;
-            body += `Телефон: ${data.phone}\n`;
-            body += `Email: ${data.email}\n`;
-            body += `Розміри: зріст ${data.height} см, вага ${data.weight} кг, талія ${data.waist} см\n`;
-            body += `Адреса: ${data.region} обл., м. ${data.city}, відділення НП: ${data.department}\n`;
-            body += `Побажання: ${data.notes || 'немає'}\n`;
-            body += `Оплата: ${data['payment-proof'] ? 'Доказ оплати додано' : 'Доказ оплати не надано'}`;
-            
-            const mailtoLink = `mailto:2107arhaika@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = mailtoLink;
+        // Створюємо новий прев'ю
+        preview = document.createElement('div');
+        preview.className = 'file-preview';
+        preview.style.marginTop = '10px';
+        preview.style.display = 'flex';
+        preview.style.alignItems = 'center';
+        preview.style.gap = '10px';
+        
+        if (file.type.startsWith('image/')) {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.style.maxHeight = '50px';
+            img.style.maxWidth = '100px';
+            img.style.objectFit = 'contain';
+            preview.appendChild(img);
         }
         
-        // Обробка свайпів для мобільних
-        let touchStartX = 0;
-        let touchEndX = 0;
+        const fileName = document.createElement('span');
+        fileName.textContent = file.name;
+        fileName.style.fontSize = '14px';
+        fileName.style.color = '#666';
+        preview.appendChild(fileName);
         
-        document.querySelector('.slider-container').addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, false);
-        
-        document.querySelector('.slider-container').addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, false);
-        
-        function handleSwipe() {
-            if (touchEndX < touchStartX - 50) {
-                nextSlide();
-            }
-            if (touchEndX > touchStartX + 50) {
-                prevSlide();
-            }
-        }
-        
-        // Закриття модального вікна при кліку на оверлей
-        document.getElementById('modalOverlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                hideOrderForm();
-            }
+        const removeBtn = document.createElement('button');
+        removeBtn.innerHTML = '&times;';
+        removeBtn.style.background = 'none';
+        removeBtn.style.border = 'none';
+        removeBtn.style.cursor = 'pointer';
+        removeBtn.style.fontSize = '16px';
+        removeBtn.style.color = '#999';
+        removeBtn.addEventListener('click', function() {
+            preview.remove();
+            document.getElementById('payment-proof').value = '';
         });
+        preview.appendChild(removeBtn);
         
-        // Гортання модального вікна
-        let modalTouchStartX = 0;
-        let modalTouchEndX = 0;
+        previewContainer.appendChild(preview);
+    });
+
+    // Анімація появи елементів при скролі
+    function checkVisibility() {
+        const infoSection = document.querySelector('.info-section');
+        const footer = document.querySelector('footer');
         
-        document.querySelector('.order-form').addEventListener('touchstart', (e) => {
-            modalTouchStartX = e.changedTouches[0].screenX;
-        }, false);
+        const infoSectionPosition = infoSection.getBoundingClientRect().top;
+        const footerPosition = footer.getBoundingClientRect().top;
+        const screenPosition = window.innerHeight / 1.2;
         
-        document.querySelector('.order-form').addEventListener('touchend', (e) => {
-            modalTouchEndX = e.changedTouches[0].screenX;
-            handleModalSwipe();
-        }, false);
-        
-        function handleModalSwipe() {
-            if (modalTouchEndX < modalTouchStartX - 50) {
-                // Свайп вліво
-                document.querySelector('.call-waiter-btn').style.backgroundColor = '#555';
-                setTimeout(() => {
-                    document.querySelector('.call-waiter-btn').style.backgroundColor = '#000';
-                }, 200);
-            }
-            if (modalTouchEndX > modalTouchStartX + 50) {
-                // Свайп вправо
-                document.querySelector('.submit-btn').style.backgroundColor = '#555';
-                setTimeout(() => {
-                    document.querySelector('.submit-btn').style.backgroundColor = '#000';
-                }, 200);
-            }
+        if (infoSectionPosition < screenPosition) {
+            infoSection.classList.add('visible');
         }
-    </script>
+        
+        if (footerPosition < screenPosition) {
+            footer.classList.add('visible');
+        }
+    }
+    
+    window.addEventListener('scroll', checkVisibility);
+    window.addEventListener('load', checkVisibility);
+</script>
 </body>
 </html>

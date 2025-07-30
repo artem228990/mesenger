@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SHOP NOW</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <style>
+  
+    /* Зневага до зовнішніх відступів */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+    }
+
+    .grid-gallery {
+      display: block; /* Десктоп - блок */
+      max-width: 600px; /* Для прикладу */
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .grid-gallery {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: auto;
+        gap: 5px; /* Проміжки тільки між зображеннями */
+        margin: 0; /* Без зовнішніх відступів */
+        padding: 0;
+      }
+      .image-container.full {
+        grid-column: span 2;
+      }
+    }
+
+    /* Контейнер для зображення з текстом */
+    .image-container {
+      position: relative;
+      display: block;
+      margin: 0;
+      padding: 0;
+      cursor: pointer; /* Додаємо курсор-покажчик */
+    }
+
+    .grid-gallery img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      border-radius: 0;
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+      transition: none;
+    }
+
+    /* Текст "jeans" на зображенні */
+    .image-label {
+      position: absolute;
+      bottom: 15px;
+      left: 10px;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+      pointer-events: none; /* Дозволяє клікати крізь текст */
+    }
+
+    /* Новий блок під зображенням */
+    .info-section {
+        width: 100%;
+        max-width: 1200px;
+        padding: 40px 20px 30px 20px;
+        box-sizing: border-box;
+    }
+
+    /* Follow Us */
+    .follow-us {
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-left: 20px;
+        margin-bottom: 25px;
+    }
+
+    .social-icons {
+        display: flex;
+        gap: 20px;
+        margin-left: 20px;
+        margin-bottom: 25px;
+    }
+
+    .social-icons a {
+        display: inline-flex;
+        width: 30px;
+        height: 30px;
+        color: #333;
+        transition: color 0.3s ease;
+        text-decoration: none;
+    }
+
+    .social-icons a:hover {
+        color: #555;
+    }
+
+    .social-icons svg {
+        width: 100%;
+        height: 100%;
+        fill: currentColor;
+    }
+
+    /* Stay Posted */
+    .stay-posted {
+        max-width: 600px;
+        margin-left: 20px;
+    }
+
+    .stay-posted strong {
+        display: block;
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .stay-posted p {
+        margin-bottom: 15px;
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.4;
+    }
+
+    /* Форма підписки */
+    .newsletter-form {
+        display: flex;
+        max-width: 400px;
+    }
+
+    .newsletter-form input[type="email"] {
+        flex: 1;
+        padding: 12px 15px;
+        font-size: 1rem;
+        background-color: #f7f7f7;
+        border: none;
+        border-radius: 4px 0 0 4px;
+        outline: none;
+        color: #333;
+    }
+
+    .newsletter-form input[type="email"]::placeholder {
+        color: #888;
+    }
+
+    .newsletter-form button {
+        background-color: #f7f7f7;
+        color: #000000;
+        border: none;
+        padding: 12px 20px;
+        font-weight: 600; /* Зменшена жирність */
+        cursor: pointer;
+        border-radius: 0 4px 4px 0;
+        transition: background-color 0.3s ease;
+        font-size: 1rem;
+        letter-spacing: 0.05em;
+    }
+
+    .newsletter-form button:hover {
+        background-color: #d4d4d4;
+    }
+
+    /* Футер */
+    footer {
+        width: 100%;
+        background-color: #ffffff;
+        font-size: 0.75rem; /* Зменшений шрифт */
+        color: #666;
+        text-align: center;
+        padding: 15px 20px;
+        user-select: none;
+        box-sizing: border-box;
+        margin-top: 20px;
+        margin-bottom: 0px;
+    }
+
+    footer .footer-content {
+        display: inline-flex;
+        gap: 10px; /* Менші пробіли */
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    footer .footer-content span {
+        margin-right: 5px;
+    }
+
+    footer a {
+        color: #666;
+        text-decoration: none;
+        padding: 0 3px;
+        transition: color 0.3s ease;
+        white-space: nowrap;
+    }
+
+    footer a:hover {
+        color: #000;
+        text-decoration: underline;
+    }
+
+    @keyframes shimmer {
+        0% {
+            text-shadow: 
+                0 0 15px rgba(230, 230, 230, 1),
+                0 0 30px rgba(180, 180, 180, 0.9),
+                0 0 45px rgba(130, 130, 130, 0.8);
+        }
+        100% {
+            text-shadow: 
+                0 0 20px rgba(170, 170, 170, 1),
+                0 0 40px rgba(120, 120, 120, 0.9),
+                0 0 60px rgba(70, 70, 70, 0.8);
+        }
+    }
+
+     .header-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            background-color: transparent; /* Прозорий фон */
+        }
+
+        .header-text {
+             position: absolute;
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: clamp(2rem, 8vw, 5rem);
+            font-weight: bold;
+            text-align: center;
+            font-family: 'Sitka Display', serif;
+            text-shadow: 
+                0 0 15px rgba(200, 200, 200, 1),
+                0 0 30px rgba(150, 150, 150, 0.8),
+                0 0 45px rgba(100, 100, 100, 0.6);
+            animation: shimmer 2s infinite ease-in-out alternate;
+            z-index: 10;
+            width: 100%;
+            padding: 0 1rem;
+                 margin-top: 20px;
+        }
+  </style>
+</head>
+<body>
+     <div class="header-container">
+        <div class="header-text">2107ARHAЇKA</div>
+    </div>
+  <div class="grid-gallery">
+    <!-- Виправлена структура з посиланнями -->
+    <div class="image-container full" onclick="location.href='NewArrivals.html';">
+      <img src="photo_2025-07-27_10-49-56.jpg" alt="Image 1" />
+      <div class="image-label">New Arrivals</div>
+    </div>
+    <div class="image-container" onclick="location.href='Longsleeves.html';">
+      <img src="photo_2025-07-27_10-49-56.jpg" alt="Image 2" />
+      <div class="image-label">Longsleeves</div>
+    </div>
+    <div class="image-container" onclick="location.href='jeans.html';">
+      <img src="photo_2025-07-27_10-49-56.jpg" alt="Image 3" />
+      <div class="image-label">Jeans</div>
+    </div>
+  </div>
+
+  <section class="info-section">
+        <div class="follow-us">
+            Follow Us
+        </div>
+        <div class="social-icons" aria-label="Соціальні мережі">
+        <a href="#" aria-label="Instagram" title="Instagram" target="_blank" rel="noopener">
+                <i class="bi bi-instagram"></i>
+            </a>
+            <a href="#" aria-label="YouTube" title="YouTube" target="_blank" rel="noopener">
+                <i class="bi bi-youtube"></i>
+            </a>
+            <a href="#" aria-label="TikTok" title="TikTok" target="_blank" rel="noopener">
+                <i class="bi bi-tiktok"></i>
+            </a>
+        </div>
+
+        <div class="stay-posted">
+            <strong>Stay Posted</strong>
+            <p>Sign up to our Newsletter for latest news, offers and updates.</p>
+            <form class="newsletter-form" action="#" method="post" novalidate>
+                <input type="email" name="email" placeholder=" Email " required />
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <span>© 2025 2107ARHAЇKA |</span>
+            <a href="#">Terms of Use</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Cookies Policy</a>
+            <a href="#">Corporate Social Responsibility</a>
+        </div>
+    </footer>
+</body>
+</html>
