@@ -6,7 +6,9 @@
   <title>Фото товару та замовлення</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
-    * {
+    /* Увесь твій CSS залишився без змін — урізаний тут для зручності перегляду */
+    /* Весь CSS, який ти надав, встав сюди без змін */
+       * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -429,12 +431,79 @@
             color: #000;
             text-decoration: underline;
         }
+
+    .telegram-btn {
+      display: block;
+      width: 80%;
+      max-width: 300px;
+      margin: 0 auto 30px;
+      padding: 12px 20px;
+      background-color: #0088cc;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .telegram-btn:hover {
+      background-color: #0077b3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Модальне вікно */
+    #countryModal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 9999;
+    }
+
+    #countryModal > div {
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    #countryModal h2 {
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+    #countrySelect {
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
-     <div class="header-container">
-        <div class="header-text">2107ARHAЇKA</div>
+
+  <!-- Модальне вікно -->
+  <div id="countryModal">
+    <div>
+      <h2>Оберіть вашу країну</h2>
+      <select id="countrySelect">
+        <option value="" disabled selected>Виберіть країну</option>
+        <option value="UA">Україна</option>
+        <option value="PL">Польща</option>
+        <option value="DE">Німеччина</option>
+        <option value="US">США</option>
+        <option value="Other">Інша країна</option>
+      </select>
     </div>
+  </div>
+
+  <div class="header-container">
+    <div class="header-text">2107ARHAЇKA</div>
+  </div>
+
   <div class="slider-container">
     <div class="slider">
       <div class="slide"><img src="photo_2025-07-27_10-49-56.jpg" alt="Фото товару 1"></div>
@@ -450,54 +519,43 @@
     <h1 class="product-title">2107ARHAЇKA</h1>
     <p class="product-price">999 ₴</p>
     <div style="text-align: center; margin-top: 20px;">
-  <button onclick="window.location.href='success.html'" class="submit-btn">Оформити замовлення</button>
-</div>
-
+      <button id="orderButton" onclick="window.location.href='success.html'" class="submit-btn">Оформити замовлення</button>
+      <button id="telegramButton" onclick="openTelegram()" class="telegram-btn" style="display: none;">Замовити через Telegram</button>
+    </div>
   </div>
 
-  
+  <section class="info-section">
+    <div class="follow-us">Follow Us</div>
+    <div class="social-icons" aria-label="Соціальні мережі">
+      <a href="#" aria-label="Instagram" title="Instagram" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
+      <a href="#" aria-label="YouTube" title="YouTube" target="_blank" rel="noopener"><i class="bi bi-youtube"></i></a>
+      <a href="#" aria-label="TikTok" title="TikTok" target="_blank" rel="noopener"><i class="bi bi-tiktok"></i></a>
+    </div>
+    <div class="stay-posted">
+      <strong>Stay Posted</strong>
+      <p>Sign up to our Newsletter for latest news, offers and updates.</p>
+      <form class="newsletter-form" action="#" method="post" novalidate>
+        <input type="email" name="email" placeholder=" Email " required />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </section>
 
-<section class="info-section">
-        <div class="follow-us">
-            Follow Us
-        </div>
-        <div class="social-icons" aria-label="Соціальні мережі">
-        <a href="#" aria-label="Instagram" title="Instagram" target="_blank" rel="noopener">
-                <i class="bi bi-instagram"></i>
-            </a>
-            <a href="#" aria-label="YouTube" title="YouTube" target="_blank" rel="noopener">
-                <i class="bi bi-youtube"></i>
-            </a>
-            <a href="#" aria-label="TikTok" title="TikTok" target="_blank" rel="noopener">
-                <i class="bi bi-tiktok"></i>
-            </a>
-        </div>
+  <footer>
+    <div class="footer-content">
+      <span>© 2025 2107ARHAЇKA |</span>
+      <a href="#">Terms of Use</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Cookies Policy</a>
+      <a href="#">Corporate Social Responsibility</a>
+    </div>
+  </footer>
 
-        <div class="stay-posted">
-            <strong>Stay Posted</strong>
-            <p>Sign up to our Newsletter for latest news, offers and updates.</p>
-            <form class="newsletter-form" action="#" method="post" novalidate>
-                <input type="email" name="email" placeholder=" Email " required />
-                <button type="submit">Submit</button>
-            </form>
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer-content">
-            <span>© 2025 2107ARHAЇKA |</span>
-            <a href="#">Terms of Use</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Cookies Policy</a>
-            <a href="#">Corporate Social Responsibility</a>
-        </div>
-    </footer>
-
-  
   <script>
-    // Функції слайдера
+    // Слайдер
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
+
     function showSlide(index) {
       const slider = document.querySelector('.slider');
       if (index < 0) currentSlide = slides.length - 1;
@@ -505,38 +563,43 @@
       else currentSlide = index;
       slider.style.transform = `translateX(${-currentSlide * 25}%)`;
     }
+
     function prevSlide() {
       showSlide(currentSlide - 1);
     }
+
     function nextSlide() {
       showSlide(currentSlide + 1);
     }
+
     showSlide(currentSlide);
 
-    // Відкрити Telegram (постав свій username)
+    // Telegram відкриття
     function openTelegram() {
-      window.open('https://t.me/your_telegram_username', '_blank');
+      window.open('https://t.me/YOUR_TELEGRAM_USERNAME', '_blank'); // Замінити на свій username
     }
 
-    // Обробка форми через fetch (щоб не перезавантажувати сторінку)
-    document.getElementById('orderForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const form = event.target;
-      fetch(form.action, {
-        method: form.method,
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
-      }).then(response => {
-        if (response.ok) {
-          alert('Дякуємо за замовлення! Ми зв’яжемось з вами найближчим часом.');
-          form.reset();
+    // Обробка модального вибору країни
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('countryModal');
+      const select = document.getElementById('countrySelect');
+      const orderBtn = document.getElementById('orderButton');
+      const telegramBtn = document.getElementById('telegramButton');
+
+      select.addEventListener('change', () => {
+        const country = select.value;
+        modal.style.display = 'none';
+
+        if (country === 'UA') {
+          orderBtn.style.display = 'inline-block';
+          telegramBtn.style.display = 'none';
         } else {
-          alert('Виникла помилка при відправці. Спробуйте пізніше.');
+          orderBtn.style.display = 'none';
+          telegramBtn.style.display = 'inline-block';
         }
-      }).catch(() => {
-        alert('Виникла помилка при відправці. Спробуйте пізніше.');
       });
     });
   </script>
+
 </body>
 </html>
