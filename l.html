@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Фото товару та замовлення</title>
+  <title>Product Photos and Order</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
-    /* Увесь твій CSS залишився без змін — урізаний тут для зручності перегляду */
-    /* Весь CSS, який ти надав, встав сюди без змін */
-       * {
+    /* Весь ваш CSS залишається без змін */
+    * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -120,7 +119,6 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
-    /* Інструкція */
     .payment-instruction {
       max-width: 600px;
       background-color: #fffbea;
@@ -138,7 +136,6 @@
       color: #c68a00;
     }
 
-    /* Форма замовлення */
     .order-form {
       background-color: white;
       width: 90%;
@@ -208,7 +205,6 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
-    /* Адаптив */
     @media (max-width: 480px) {
       .slider-container {
         height: 70vh;
@@ -224,236 +220,206 @@
       }
     }
 
-       .payment-info {
-            background-color: #f8f8f8;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 1px solid #e0e0e0;
-        }
-        
-        .payment-info h3 {
-            margin-top: 0;
-            color: #333;
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-        
-        .card-number {
-            font-size: 20px;
-            font-weight: bold;
-            color: #222;
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #fff;
-            border-radius: 5px;
-            text-align: center;
-            border: 1px dashed #ccc;
-        }
-        
-        .payment-instructions {
-            font-size: 15px;
-            color: #555;
-            line-height: 1.5;
-        }
-        
-
-
-        .header-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            background-color: transparent; /* Прозорий фон */
-        }
-
-        .header-text {
-             position: absolute;
-            top: 5%;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-size: clamp(2rem, 8vw, 5rem);
-            font-weight: bold;
-            text-align: center;
-            font-family: 'Sitka Display', serif;
-            text-shadow: 
-                0 0 15px rgba(200, 200, 200, 1),
-                0 0 30px rgba(150, 150, 150, 0.8),
-                0 0 45px rgba(100, 100, 100, 0.6);
-            animation: shimmer 2s infinite ease-in-out alternate;
-            z-index: 10;
-            width: 100%;
-            padding: 0 1rem;
-            margin-top: 20px;
-        }
-
-        /* Новий блок під зображенням */
-        .info-section {
-            width: 100%;
-            max-width: 1200px;
-            padding: 40px 20px 30px 20px;
-            box-sizing: border-box;
-        }
-
-        /* Follow Us */
-        .follow-us {
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-left: 20px;
-            margin-bottom: 25px;
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 20px;
-            margin-left: 20px;
-            margin-bottom: 25px;
-        }
-
-        .social-icons a {
-            display: inline-flex;
-            width: 30px;
-            height: 30px;
-            color: #333;
-            transition: color 0.3s ease;
-            text-decoration: none;
-        }
-
-        .social-icons a:hover {
-            color: #555;
-        }
-
-        .social-icons svg {
-            width: 100%;
-            height: 100%;
-            fill: currentColor;
-        }
-
-        /* Stay Posted */
-        .stay-posted {
-            max-width: 600px;
-            margin-left: 20px;
-        }
-
-        .stay-posted strong {
-            display: block;
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-        }
-
-        .stay-posted p {
-            margin-bottom: 15px;
-            color: #666;
-            font-size: 0.95rem;
-            line-height: 1.4;
-        }
-
-        /* Форма підписки */
-        .newsletter-form {
-            display: flex;
-            max-width: 400px;
-        }
-
-        .newsletter-form input[type="email"] {
-            flex: 1;
-            padding: 12px 15px;
-            font-size: 1rem;
-            background-color: #f7f7f7;
-            border: none;
-            border-radius: 4px 0 0 4px;
-            outline: none;
-            color: #333;
-        }
-
-        .newsletter-form input[type="email"]::placeholder {
-            color: #888;
-        }
-
-        .newsletter-form button {
-            background-color: #f7f7f7;
-            color: #000000;
-            border: none;
-            padding: 12px 20px;
-            font-weight: 600; /* Зменшена жирність */
-            cursor: pointer;
-            border-radius: 0 4px 4px 0;
-            transition: background-color 0.3s ease;
-            font-size: 1rem;
-            letter-spacing: 0.05em;
-        }
-
-        .newsletter-form button:hover {
-            background-color: #d4d4d4;
-        }
-
-        /* Футер */
-        footer {
-            width: 100%;
-            background-color: #ffffff;
-            font-size: 0.75rem; /* Зменшений шрифт */
-            color: #666;
-            text-align: center;
-            padding: 15px 20px;
-            user-select: none;
-            box-sizing: border-box;
-            margin-top: 20px;
-          
-        }
-
-        footer .footer-content {
-            display: inline-flex;
-            gap: 10px; /* Менші пробіли */
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-        }
-
-        footer .footer-content span {
-            margin-right: 5px;
-        }
-
-        footer a {
-            color: #666;
-            text-decoration: none;
-            padding: 0 3px;
-            transition: color 0.3s ease;
-            white-space: nowrap;
-        }
-
-        footer a:hover {
-            color: #000;
-            text-decoration: underline;
-        }
-
-    .telegram-btn {
-      display: block;
-      width: 80%;
-      max-width: 300px;
-      margin: 0 auto 30px;
-      padding: 12px 20px;
-      background-color: #0088cc;
-      color: white;
-      border: none;
-      border-radius: 25px;
+    .payment-info {
+      background-color: #f8f8f8;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 25px;
+      border: 1px solid #e0e0e0;
+    }
+    
+    .payment-info h3 {
+      margin-top: 0;
+      color: #333;
       font-size: 18px;
+      margin-bottom: 15px;
+    }
+    
+    .card-number {
+      font-size: 20px;
+      font-weight: bold;
+      color: #222;
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 5px;
+      text-align: center;
+      border: 1px dashed #ccc;
+    }
+    
+    .payment-instructions {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .header-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      background-color: transparent;
+    }
+
+    .header-text {
+      position: absolute;
+      top: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: clamp(2rem, 8vw, 5rem);
+      font-weight: bold;
+      text-align: center;
+      font-family: 'Sitka Display', serif;
+      text-shadow: 
+        0 0 15px rgba(200, 200, 200, 1),
+        0 0 30px rgba(150, 150, 150, 0.8),
+        0 0 45px rgba(100, 100, 100, 0.6);
+      animation: shimmer 2s infinite ease-in-out alternate;
+      z-index: 10;
+      width: 100%;
+      padding: 0 1rem;
+      margin-top: 20px;
+    }
+
+    .info-section {
+      width: 100%;
+      max-width: 1200px;
+      padding: 40px 20px 30px 20px;
+      box-sizing: border-box;
+    }
+
+    .follow-us {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-left: 20px;
+      margin-bottom: 25px;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 20px;
+      margin-left: 20px;
+      margin-bottom: 25px;
+    }
+
+    .social-icons a {
+      display: inline-flex;
+      width: 30px;
+      height: 30px;
+      color: #333;
+      transition: color 0.3s ease;
+      text-decoration: none;
+    }
+
+    .social-icons a:hover {
+      color: #555;
+    }
+
+    .social-icons svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
+
+    .stay-posted {
+      max-width: 600px;
+      margin-left: 20px;
+    }
+
+    .stay-posted strong {
+      display: block;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .stay-posted p {
+      margin-bottom: 15px;
+      color: #666;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .newsletter-form {
+      display: flex;
+      max-width: 400px;
+    }
+
+    .newsletter-form input[type="email"] {
+      flex: 1;
+      padding: 12px 15px;
+      font-size: 1rem;
+      background-color: #f7f7f7;
+      border: none;
+      border-radius: 4px 0 0 4px;
+      outline: none;
+      color: #333;
+    }
+
+    .newsletter-form input[type="email"]::placeholder {
+      color: #888;
+    }
+
+    .newsletter-form button {
+      background-color: #f7f7f7;
+      color: #000000;
+      border: none;
+      padding: 12px 20px;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s;
+      border-radius: 0 4px 4px 0;
+      transition: background-color 0.3s ease;
+      font-size: 1rem;
+      letter-spacing: 0.05em;
     }
 
-    .telegram-btn:hover {
-      background-color: #0077b3;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    .newsletter-form button:hover {
+      background-color: #d4d4d4;
     }
 
-    /* Модальне вікно */
+    footer {
+      width: 100%;
+      background-color: #ffffff;
+      font-size: 0.75rem;
+      color: #666;
+      text-align: center;
+      padding: 15px 20px;
+      user-select: none;
+      box-sizing: border-box;
+      margin-top: 20px;
+    }
+
+    footer .footer-content {
+      display: inline-flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    footer .footer-content span {
+      margin-right: 5px;
+    }
+
+    footer a {
+      color: #666;
+      text-decoration: none;
+      padding: 0 3px;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    footer a:hover {
+      color: #000;
+      text-decoration: underline;
+    }
+
     #countryModal {
       position: fixed;
       top: 0; left: 0;
@@ -488,14 +454,11 @@
   <!-- Модальне вікно -->
   <div id="countryModal">
     <div>
-      <h2>Оберіть вашу країну</h2>
+      <h2>Select your country</h2>
       <select id="countrySelect">
-        <option value="" disabled selected>Виберіть країну</option>
-        <option value="UA">Україна</option>
-        <option value="PL">Польща</option>
-        <option value="DE">Німеччина</option>
-        <option value="US">США</option>
-        <option value="Other">Інша країна</option>
+        <option value="" disabled selected>Select country</option>
+        <option value="UA">Ukraine</option>
+        <option value="Other">Other country</option>
       </select>
     </div>
   </div>
@@ -506,10 +469,10 @@
 
   <div class="slider-container">
     <div class="slider">
-      <div class="slide"><img src="photo_2025-07-27_10-49-56.jpg" alt="Фото товару 1"></div>
-      <div class="slide"><img src="photo2.jpg" alt="Фото товару 2"></div>
-      <div class="slide"><img src="photo3.jpg" alt="Фото товару 3"></div>
-      <div class="slide"><img src="photo4.jpg" alt="Фото товару 4"></div>
+      <div class="slide"><img src="photo_2025-07-27_10-49-56.jpg" alt="Product photo 1"></div>
+      <div class="slide"><img src="photo2.jpg" alt="Product photo 2"></div>
+      <div class="slide"><img src="photo3.jpg" alt="Product photo 3"></div>
+      <div class="slide"><img src="photo4.jpg" alt="Product photo 4"></div>
     </div>
     <button class="arrow arrow-left" onclick="prevSlide()">&#10094;</button>
     <button class="arrow arrow-right" onclick="nextSlide()">&#10095;</button>
@@ -517,16 +480,16 @@
 
   <div class="product-info">
     <h1 class="product-title">2107ARHAЇKA</h1>
-    <p class="product-price">999 ₴</p>
+    <p class="product-price">$25</p>
     <div style="text-align: center; margin-top: 20px;">
-      <button id="orderButton" onclick="window.location.href='success.html'" class="submit-btn">Оформити замовлення</button>
-      <button id="telegramButton" onclick="openTelegram()" class="telegram-btn" style="display: none;">Замовити через Telegram</button>
+      <button id="orderButton" onclick="window.location.href='success.html'" class="submit-btn">Place Order</button>
+      <button id="telegramButton" onclick="openTelegram()" class="telegram-btn" style="display: none;">Order via Telegram</button>
     </div>
   </div>
 
   <section class="info-section">
     <div class="follow-us">Follow Us</div>
-    <div class="social-icons" aria-label="Соціальні мережі">
+    <div class="social-icons" aria-label="Social networks">
       <a href="#" aria-label="Instagram" title="Instagram" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
       <a href="#" aria-label="YouTube" title="YouTube" target="_blank" rel="noopener"><i class="bi bi-youtube"></i></a>
       <a href="#" aria-label="TikTok" title="TikTok" target="_blank" rel="noopener"><i class="bi bi-tiktok"></i></a>
@@ -576,7 +539,101 @@
 
     // Telegram відкриття
     function openTelegram() {
-      window.open('https://t.me/manager2107arhaika', '_blank'); // Замінити на свій username
+      window.open('https://t.me/manager2107arhaika', '_blank');
+    }
+
+    // Ukrainian translations
+    const translations = {
+      "Select your country": "Оберіть вашу країну",
+      "Select country": "Виберіть країну",
+      "Ukraine": "Україна",
+      "Poland": "Польща",
+      "Germany": "Німеччина",
+      "USA": "США",
+      "Other country": "Інша країна",
+      "Place Order": "Оформити замовлення",
+      "Order via Telegram": "Замовити через Telegram",
+      "Follow Us": "Слідкуйте за нами",
+      "Stay Posted": "Будьте в курсі",
+      "Sign up to our Newsletter for latest news, offers and updates.": "Підпишіться на нашу розсилку для отримання останніх новин, пропозицій та оновлень.",
+      "Submit": "Надіслати",
+      "Terms of Use": "Умови використання",
+      "Privacy Policy": "Політика конфіденційності",
+      "Cookies Policy": "Політика cookie",
+      "Corporate Social Responsibility": "Корпоративна соціальна відповідальність",
+      "$25": "999 ₴"
+    };
+
+    // Function to translate elements
+    function translateToUkrainian() {
+      document.querySelectorAll('[data-translate]').forEach(element => {
+        const key = element.getAttribute('data-translate');
+        if (translations[key]) {
+          element.textContent = translations[key];
+        }
+      });
+      
+      // Update price
+      const priceElement = document.querySelector('.product-price');
+      if (priceElement) priceElement.textContent = translations["$25"];
+      
+      // Translate placeholders
+      const emailInput = document.querySelector('.newsletter-form input[type="email"]');
+      if (emailInput) {
+        emailInput.placeholder = " Email ";
+      }
+      
+      // Translate modal
+      const modalTitle = document.querySelector('#countryModal h2');
+      if (modalTitle) modalTitle.textContent = "Оберіть вашу країну";
+      
+      const countrySelect = document.querySelector('#countrySelect');
+      if (countrySelect) {
+        countrySelect.innerHTML = `
+          <option value="" disabled selected>Виберіть країну</option>
+          <option value="UA">Україна</option>
+          <option value="PL">Польща</option>
+          <option value="DE">Німеччина</option>
+          <option value="US">США</option>
+          <option value="Other">Інша країна</option>
+        `;
+      }
+    }
+
+    // Function to set English language
+    function setEnglishLanguage() {
+      document.querySelectorAll('[data-translate]').forEach(element => {
+        const key = element.getAttribute('data-translate');
+        if (translations[key]) {
+          element.textContent = key; // Return to original English text
+        }
+      });
+      
+      // Update price
+      const priceElement = document.querySelector('.product-price');
+      if (priceElement) priceElement.textContent = "$25";
+      
+      // Return placeholders to English
+      const emailInput = document.querySelector('.newsletter-form input[type="email"]');
+      if (emailInput) {
+        emailInput.placeholder = " Email ";
+      }
+      
+      // Return modal to English
+      const modalTitle = document.querySelector('#countryModal h2');
+      if (modalTitle) modalTitle.textContent = "Select your country";
+      
+      const countrySelect = document.querySelector('#countrySelect');
+      if (countrySelect) {
+        countrySelect.innerHTML = `
+          <option value="" disabled selected>Select country</option>
+          <option value="UA">Ukraine</option>
+          <option value="PL">Poland</option>
+          <option value="DE">Germany</option>
+          <option value="US">USA</option>
+          <option value="Other">Other country</option>
+        `;
+      }
     }
 
     // Обробка модального вибору країни
@@ -586,14 +643,30 @@
       const orderBtn = document.getElementById('orderButton');
       const telegramBtn = document.getElementById('telegramButton');
 
+      // Add data-translate attributes to elements that need translation
+      document.querySelector('.follow-us').setAttribute('data-translate', 'Follow Us');
+      document.querySelector('.stay-posted strong').setAttribute('data-translate', 'Stay Posted');
+      document.querySelector('.stay-posted p').setAttribute('data-translate', 'Sign up to our Newsletter for latest news, offers and updates.');
+      document.querySelector('.newsletter-form button').setAttribute('data-translate', 'Submit');
+      document.querySelectorAll('footer a').forEach((el, index) => {
+        const texts = ["Terms of Use", "Privacy Policy", "Cookies Policy", "Corporate Social Responsibility"];
+        el.setAttribute('data-translate', texts[index]);
+      });
+      orderBtn.setAttribute('data-translate', 'Place Order');
+      telegramBtn.setAttribute('data-translate', 'Order via Telegram');
+
       select.addEventListener('change', () => {
         const country = select.value;
         modal.style.display = 'none';
 
         if (country === 'UA') {
+          // Ukrainian selected - show Ukrainian version
+          translateToUkrainian();
           orderBtn.style.display = 'inline-block';
           telegramBtn.style.display = 'none';
         } else {
+          // Other country selected - show English version
+          setEnglishLanguage();
           orderBtn.style.display = 'none';
           telegramBtn.style.display = 'inline-block';
         }
